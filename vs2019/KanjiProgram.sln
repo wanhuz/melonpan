@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KanjiProgram", "KanjiProgram.vcxproj", "{98E91A1F-1480-4BA6-A2C0-E19DADAD2756}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98E91A1F-1480-4BA6-A2C0-E19DADAD2756}.Debug|x64.ActiveCfg = Debug|x64
+		{98E91A1F-1480-4BA6-A2C0-E19DADAD2756}.Debug|x64.Build.0 = Debug|x64
+		{98E91A1F-1480-4BA6-A2C0-E19DADAD2756}.Release|x64.ActiveCfg = Release|x64
+		{98E91A1F-1480-4BA6-A2C0-E19DADAD2756}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {372978BC-97E4-48DC-B53A-69B9A518900D}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,17 @@
+0.01
+Setup Project Directory
+Compile Tesseract x
+
+0.02
+Test Tesseract on Image file x
+First commit to github
+
+0.03
+Plan more
+Define classes
+
+0.04
+Find good name for project
+
+
+Major 0.1 - Classes are defined, scope/plan is finalized
