@@ -91,16 +91,15 @@
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\ocr\ocr.cpp" />
-    <ClCompile Include="..\src\ui\KanjiProgram.cpp" />
+    <ClCompile Include="..\src\ui\MainWindow.cpp" />
     <QtRcc Include="..\src\ui\KanjiProgram.qrc" />
-    <CustomBuild Include="..\src\ui\KanjiProgram.ui" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtMoc Include="..\src\ui\KanjiProgram.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ocr\ocr.h" />
-    <ClInclude Include="..\src\ui\ui_KanjiProgram.h" />
+    <QtMoc Include="..\src\ui\MainWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="MainWindow.ui" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

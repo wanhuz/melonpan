@@ -44,20 +44,15 @@ Essential requirements:
 	- High performance
 	- Error-correction
 
-Non-essential requirements:
-	- Modes of UI
 
  Throw around idea:
-  - Educational-focused? Or minimalism
   - Conceptualize minimalism mode as subtitle
   - How to correct mistake in fullscreen mode?
-  - Subtitle can be customized
-  - Subtitle mode, Minimalism mode, Full mode
   - How do you fix mistake cause by incorrect recognition, manually?
 	x. Manual input based on experience
 	x. Provide kanji text boxes showing different probability of the predicted word
 	x. 
-  - Find research paper of "OCR to language learning"
+  - Improve performance by caching recently looked up word 
 
 What cannot be done? (Now or future)
   - OCR lookup of unclear defined text, e,g, text without clear border, weird font, etc. Hard enough preprocessing for this task. Best case is flat background.
@@ -88,9 +83,25 @@ What need further research for this plan?
 Project Scope:
   - Use case: Visual novel, light novel, manga.
   - Focus on being a dictionary.
+  - Focus on digital and image format.
+  - 
+  
+Core class:
+  - User Interface
+  - OCR engine
+  - Dictionary
+  - Text capture engine
+  - Controller
 
-Milestone
-	0.1 Finished technical planning, feasibility test, github initial commit
-	0.5 Complete core classes
-	1.0 Functional according to minimum specification
-	1.x Extra features
+
+
+Progress:
+	1 Design UI
+	2 Complete core classes and functional
+	3 
+	
+Extra features:
+	1. Audio read
+	2. Subtitle mode
+	3. Word history 
+	4. Multi dictionary

@@ -32,14 +32,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\src\ui\KanjiProgram.ui">
-      <Filter>Resource Files</Filter>
-    </CustomBuild>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\src\ui\ui_KanjiProgram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\ocr\ocr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -48,13 +40,18 @@
     <ClCompile Include="..\src\ocr\ocr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ui\KanjiProgram.cpp">
+    <ClCompile Include="..\src\ui\MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="..\src\ui\KanjiProgram.h">
+    <QtMoc Include="..\src\ui\MainWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="MainWindow.ui">
+      <Filter>Resource Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>
