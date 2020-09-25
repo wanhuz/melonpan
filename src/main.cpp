@@ -7,9 +7,11 @@
 #include <stdio.h>
 #include <iostream>
 #include <qtextcodec.h>
+#include "ui/MainWindow.h"
 
 QString runOCR() {
     char * outText;
+    QString outstring;
 
     tesseract::TessBaseAPI* api = new tesseract::TessBaseAPI();
     // Initialize tesseract-ocr with English, without specifying tessdata path
@@ -19,11 +21,10 @@ QString runOCR() {
     }
 
     // Open input image with leptonica library
-    Pix* image = pixRead("C:/Users/WanHuz/Documents/KanjiTomo v2/test/17sx.jpg");
+    Pix* image = pixRead("../test/17sx.jpg");
     api->SetImage(image);
     // Get OCR result
     outText = api->GetUTF8Text();
-    QString outstring;
     outstring = QString::fromUtf8(outText);
 
     // Destroy used object and release memory
@@ -39,13 +40,13 @@ QString runOCR() {
 int main(int argc, char *argv[])
 {
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
-    _setmode(_fileno(stdout), _O_U16TEXT);
     
     QApplication a(argc, argv);
-    KanjiProgram w;
     QString text = runOCR();
-    w.displayOCRresult(text);
-    
-    w.show();
+    MainWindow m;
+    m.displayOCRresult(text);
+    m.show();
+
+
     return a.exec();
 }
