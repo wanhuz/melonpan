@@ -2,16 +2,19 @@
 #include <QtWidgets/qlineedit.h>
 #include <qstandarditemmodel.h>
 #include <qstring.h>
+#include <qmainwindow.h>
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
+    
     ui.setupUi(this);
     textbox = ui.lineEdit;
     table = ui.tableView;
     dockw = ui.dockWidget;
     QStandardItemModel* model = new QStandardItemModel(14,2);
-
+    
+    
     
     for (int row = 0; row < model->rowCount(); ++row) {
         for (int column = 0; column < model->columnCount(); ++column) {
