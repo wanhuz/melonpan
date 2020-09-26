@@ -1,4 +1,3 @@
-#include "ui/KanjiProgram.h"
 #include <QtWidgets/QApplication>
 #include <tesseract/baseapi.h>
 #include <leptonica/allheaders.h>
@@ -42,9 +41,9 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     
     QApplication a(argc, argv);
-    QString text = runOCR();
+    //QString text = runOCR();
     MainWindow m;
-    m.displayOCRresult(text);
+    //m.displayOCRresult(text);
     m.show();
 
 

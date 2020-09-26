@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_MainWindow.h"
+#include <qdockwidget.h>
 
 class MainWindow : public QMainWindow
 {
@@ -14,4 +15,6 @@ public:
 private:
     Ui::MainWindow ui;
     QLineEdit* textbox;
+    QTableView* table;
+    QDockWidget* dockw;
 };

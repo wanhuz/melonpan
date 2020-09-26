@@ -24,9 +24,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="..\src\ui\KanjiProgram.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
     <ClCompile Include="..\src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -50,8 +47,13 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="MainWindow.ui">
+    <QtUic Include="..\src\ui\MainWindow.ui">
       <Filter>Resource Files</Filter>
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="..\src\ui\MainWindow.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>
