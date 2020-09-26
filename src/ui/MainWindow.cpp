@@ -11,10 +11,8 @@ MainWindow::MainWindow(QWidget* parent)
     ui.setupUi(this);
     textbox = ui.lineEdit;
     table = ui.tableView;
-    dockw = ui.dockWidget;
+    table->verticalHeader()->setVisible(false);
     QStandardItemModel* model = new QStandardItemModel(14,2);
-    
-    
     
     for (int row = 0; row < model->rowCount(); ++row) {
         for (int column = 0; column < model->columnCount(); ++column) {
@@ -24,8 +22,6 @@ MainWindow::MainWindow(QWidget* parent)
     }
     table->setModel(model);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-    this->resizeDocks({dockw}, { 300 }, Qt::Vertical);
     
     
 
