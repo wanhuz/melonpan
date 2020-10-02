@@ -91,10 +91,13 @@
   <ItemGroup>
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\ocr\ocr.cpp" />
+    <ClCompile Include="..\src\ui\frame.cpp" />
     <ClCompile Include="..\src\ui\MainWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ocr\ocr.h" />
+    <ClInclude Include="..\src\util\util.h" />
+    <QtMoc Include="..\src\ui\frame.h" />
     <QtMoc Include="..\src\ui\MainWindow.h" />
   </ItemGroup>
   <ItemGroup>
