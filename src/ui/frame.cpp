@@ -1,6 +1,11 @@
 #include "frame.h"
 #include <qframe.h>
 #include <qlayout.h>
+#include <qguiapplication.h>
+#include <qwindow.h>
+#include <qscreen.h>
+#include <qapplication.h>
+#include <qpixmap.h>
 
 
 Frame::Frame(QWidget* parent)
@@ -11,7 +16,7 @@ Frame::Frame(QWidget* parent)
 
 	this->setLayout(lay);
 	lay->addWidget(border);
-	lay->setContentsMargins(1, 1, 1, 1);
+	lay->setContentsMargins(0, 0, 0, 0);
 	border->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	border->setLineWidth(1);
 	border->setFrameShape(QFrame::Box);
@@ -20,13 +25,16 @@ Frame::Frame(QWidget* parent)
 	
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-	this->setContentsMargins(1, 1, 1, 1);
+	this->setContentsMargins(0, 0, 0, 0);
 	this->setAttribute(Qt::WA_TranslucentBackground);
+	
+
 
 	this->setOrientation(1);
 	this->setFontSize(12);
 	this->setBoxSize();
 	this->show();
+	
 }
 
 Frame::~Frame() {
@@ -70,10 +78,12 @@ void Frame::setBoxSize() {
 
 	if (orien) {
 		this->setGeometry(curX, curY, y, x);
+		QScreen* screen = QGuiApplication::primaryScreen();
+		QPixmap desktopPixmap = screen->grabWindow(0, curX, curY, y, x);
+		desktopPixmap.save("../test/testpixmap3.png");
 	}
 	else {
 		this->setGeometry(curX, curY, x, y);
 	}
 }
-
 

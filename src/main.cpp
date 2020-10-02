@@ -8,6 +8,7 @@
 #include <qtextcodec.h>
 #include "ui/MainWindow.h"
 #include "ui/frame.h"
+#include <qscreen.h>
 
 QString runOCR() {
     char * outText;
