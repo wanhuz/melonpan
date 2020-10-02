@@ -24,15 +24,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <QtRcc Include="..\src\ui\KanjiProgram.qrc">
-      <Filter>Resource Files</Filter>
-    </QtRcc>
     <ClCompile Include="..\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui\frame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ocr\ocr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -48,10 +51,18 @@
     <QtMoc Include="..\src\ui\MainWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="..\src\ui\frame.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="MainWindow.ui">
+    <QtUic Include="..\src\ui\MainWindow.ui">
       <Filter>Resource Files</Filter>
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="..\src\ui\MainWindow.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>

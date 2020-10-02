@@ -1,4 +1,3 @@
-#include "ui/KanjiProgram.h"
 #include <QtWidgets/QApplication>
 #include <tesseract/baseapi.h>
 #include <leptonica/allheaders.h>
@@ -8,6 +7,7 @@
 #include <iostream>
 #include <qtextcodec.h>
 #include "ui/MainWindow.h"
+#include "ui/frame.h"
 
 QString runOCR() {
     char * outText;
@@ -15,18 +15,22 @@ QString runOCR() {
 
     tesseract::TessBaseAPI* api = new tesseract::TessBaseAPI();
     // Initialize tesseract-ocr with English, without specifying tessdata path
-    if (api->Init(NULL, "jpn")) {
+    if (api->Init(NULL, "jpn_vert")) {
         fprintf(stderr, "Could not initialize tesseract.\n");
         exit(1);
     }
 
     // Open input image with leptonica library
-    Pix* image = pixRead("../test/17sx.jpg");
+    Pix* image = pixRead("../test/17ss.jpg");
+    api->SetPageSegMode(tesseract::PageSegMode(5));
     api->SetImage(image);
     // Get OCR result
     outText = api->GetUTF8Text();
+    
     outstring = QString::fromUtf8(outText);
-
+    Pixa* pixa = pixaCreateFromPix(image, 1, 1, 1);
+    Boxa* box = api->GetWords(&pixa);
+    
     // Destroy used object and release memory
     api->End();
     delete api;
@@ -42,10 +46,12 @@ int main(int argc, char *argv[])
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     
     QApplication a(argc, argv);
-    QString text = runOCR();
-    MainWindow m;
-    m.displayOCRresult(text);
-    m.show();
+    //QString text = runOCR();
+    //MainWindow m;
+    Frame kek;
+    
+    //m.displayOCRresult(text);
+    //m.show();
 
 
     return a.exec();

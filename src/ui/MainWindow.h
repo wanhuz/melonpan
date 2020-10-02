@@ -14,4 +14,5 @@ public:
 private:
     Ui::MainWindow ui;
     QLineEdit* textbox;
+    QTableView* table;
 };
