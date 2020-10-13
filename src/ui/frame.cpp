@@ -28,8 +28,6 @@ Frame::Frame(QWidget* parent)
 	this->setContentsMargins(0, 0, 0, 0);
 	this->setAttribute(Qt::WA_TranslucentBackground);
 	
-
-
 	this->setOrientation(1);
 	this->setFontSize(12);
 	this->setBoxSize();
@@ -50,7 +48,6 @@ void Frame::setOrientation(bool orienVal) {
 		orien = orienVal;
 	}
 
-	
 }
 
 /*Setter for font size*/
@@ -85,7 +82,6 @@ void Frame::setBoxSize() {
 QPixmap Frame::shootScreenshot() {
 	QScreen* screen = QGuiApplication::primaryScreen();
 	QPixmap desktopPixmap = screen->grabWindow(0, curX, curY, y, x);
-	desktopPixmap.save("../test/testpixmap3.png");
 	return desktopPixmap;
 }
 

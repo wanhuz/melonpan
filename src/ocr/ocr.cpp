@@ -14,7 +14,7 @@ QString Ocr::recognize(Pix* image) {
 
     tesseract::TessBaseAPI* api = new tesseract::TessBaseAPI();
     // Initialize tesseract-ocr with English, without specifying tessdata path
-    if (api->Init(NULL, "jpn_vert")) {
+    if (api->Init(NULL, "jpn_vert_fast")) {
         fprintf(stderr, "Could not initialize tesseract.\n");
         exit(1);
     }
@@ -26,8 +26,6 @@ QString Ocr::recognize(Pix* image) {
     outText = api->GetUTF8Text();
 
     outstring = QString::fromUtf8(outText);
-    Pixa* pixa = pixaCreateFromPix(image, 1, 1, 1);
-    Boxa* box = api->GetWords(&pixa);
 
     // Destroy used object and release memory
     api->End();

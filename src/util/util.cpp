@@ -12,6 +12,10 @@ Pix* Util::qPixMap2PIX(QPixmap* pixmap) {
 	
 	qimage = QImage(pixmap->toImage());
 
+	int dpm = 300 / 0.0254; // ~300 DPI
+	qimage.setDotsPerMeterX(dpm);
+	qimage.setDotsPerMeterY(dpm);
+
 	qimage = qimage.rgbSwapped();
 	int width = qimage.width();
 	int height = qimage.height();

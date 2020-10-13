@@ -36,24 +36,19 @@ MainWindow::MainWindow(QWidget* parent)
     connect(OCRBtn, SIGNAL(clicked()), this, SLOT(hideFrame()));
 }
 
-void MainWindow::displayOCRresult(QString result)
-{
-    textbox->setText(result);
-}
-
 
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
     
     if (OCRBtn->isChecked()) {
         if (event->key() == Qt::Key_F2) {
-            QPixmap temppix = frame->shootScreenshot();
-
-            Pix* pix = Util::qPixMap2PIX(&temppix);
+            frame->hide();
+            frame->setBoxSize();
+            QPixmap screenshot = frame->shootScreenshot();
+            Pix* pix = Util::qPixMap2PIX(&screenshot);
             Ocr ocr;
             QString text = ocr.recognize(pix);
             textbox->setText(text);
-            frame->setBoxSize();
             frame->show();
 
             this->activateWindow();
