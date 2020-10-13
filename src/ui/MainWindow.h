@@ -3,6 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_MainWindow.h"
 #include "frame.h"
+#include "../ocr/ocr.h"
 
 class MainWindow : public QMainWindow
 {
@@ -23,4 +24,5 @@ private:
     Ui::MainWindow ui;
     QLineEdit* textbox;
     QTableView* table;
+    Ocr* ocr;
 };

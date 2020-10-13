@@ -7,7 +7,12 @@
 class Ocr {
 public:
 	Ocr();
+	~Ocr();
 	QString recognize(Pix* image);
+
+
+private:
+	tesseract::TessBaseAPI* api;
 };
 
 
