@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_MainWindow.h"
+#include "frame.h"
 
 class MainWindow : public QMainWindow
 {
@@ -9,9 +10,16 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget* parent = Q_NULLPTR);
-    void displayOCRresult(QString result);
+
+protected:
+    void keyPressEvent(QKeyEvent* event);
+
+private slots:
+    void hideFrame();
 
 private:
+    Frame* frame;
+    QPushButton* OCRBtn;
     Ui::MainWindow ui;
     QLineEdit* textbox;
     QTableView* table;

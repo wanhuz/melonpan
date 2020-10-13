@@ -3,16 +3,28 @@
 #include <qstandarditemmodel.h>
 #include <qstring.h>
 #include <qmainwindow.h>
+#include <QKeyEvent>
+#include "../util/util.h"
+#include "../ocr/ocr.h"
+#include <qtextcodec.h>
+
+
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
-    
     ui.setupUi(this);
-    textbox = ui.lineEdit;
-    table = ui.tableView;
+    OCRBtn = ui.ocrBtn;
+    textbox = ui.textLine;
+    table = ui.dictView;
+    frame = new Frame();
+    QStandardItemModel* model = new QStandardItemModel(14, 2);
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+
+    OCRBtn->setCheckable(true);
     table->verticalHeader()->setVisible(false);
-    QStandardItemModel* model = new QStandardItemModel(14,2);
+    table->setModel(model);
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     
     for (int row = 0; row < model->rowCount(); ++row) {
         for (int column = 0; column < model->columnCount(); ++column) {
@@ -20,15 +32,39 @@ MainWindow::MainWindow(QWidget* parent)
             model->setItem(row, column, item);
         }
     }
-    table->setModel(model);
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     
-    
-
-
+    connect(OCRBtn, SIGNAL(clicked()), this, SLOT(hideFrame()));
 }
 
 void MainWindow::displayOCRresult(QString result)
 {
     textbox->setText(result);
 }
+
+
+void MainWindow::keyPressEvent(QKeyEvent* event)
+{
+    
+    if (OCRBtn->isChecked()) {
+        if (event->key() == Qt::Key_F2) {
+            QPixmap temppix = frame->shootScreenshot();
+
+            Pix* pix = Util::qPixMap2PIX(&temppix);
+            Ocr ocr;
+            QString text = ocr.recognize(pix);
+            textbox->setText(text);
+            frame->setBoxSize();
+            frame->show();
+
+            this->activateWindow();
+        }
+      
+    }
+}
+
+void MainWindow::hideFrame() {
+    frame->hide();
+    
+}
+
+

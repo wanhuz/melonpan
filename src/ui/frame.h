@@ -13,11 +13,11 @@ public:
 	void setOrientation(bool orientation);
 	void setBoxSize();
 	void setFontSize(int size);
-	const bool Vertical = true;
-	const bool Horizontal = false;
+	QPixmap shootScreenshot();
 
 	
 private:
+	int y, x, curX, curY;
 	bool orien;
 	QPoint cursorPos;
 	int fontsize;

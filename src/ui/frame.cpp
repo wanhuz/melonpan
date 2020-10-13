@@ -33,7 +33,6 @@ Frame::Frame(QWidget* parent)
 	this->setOrientation(1);
 	this->setFontSize(12);
 	this->setBoxSize();
-	this->show();
 	
 }
 
@@ -63,7 +62,6 @@ void Frame::setFontSize(int size) {
 
 /* Set the box size of the frame*/
 void Frame::setBoxSize() {
-	int y, x, curX, curY;
 	QPoint curCurPos;
 	if (fontsize == NULL) {
 		printf("Err: font size is not specified");
@@ -78,12 +76,16 @@ void Frame::setBoxSize() {
 
 	if (orien) {
 		this->setGeometry(curX, curY, y, x);
-		QScreen* screen = QGuiApplication::primaryScreen();
-		QPixmap desktopPixmap = screen->grabWindow(0, curX, curY, y, x);
-		desktopPixmap.save("../test/testpixmap3.png");
 	}
 	else {
 		this->setGeometry(curX, curY, x, y);
 	}
+}
+
+QPixmap Frame::shootScreenshot() {
+	QScreen* screen = QGuiApplication::primaryScreen();
+	QPixmap desktopPixmap = screen->grabWindow(0, curX, curY, y, x);
+	desktopPixmap.save("../test/testpixmap3.png");
+	return desktopPixmap;
 }
 

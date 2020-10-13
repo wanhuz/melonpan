@@ -93,6 +93,7 @@
     <ClCompile Include="..\src\ocr\ocr.cpp" />
     <ClCompile Include="..\src\ui\frame.cpp" />
     <ClCompile Include="..\src\ui\MainWindow.cpp" />
+    <ClCompile Include="..\src\util\util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ocr\ocr.h" />
