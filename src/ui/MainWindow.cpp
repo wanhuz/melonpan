@@ -26,12 +26,13 @@ MainWindow::MainWindow(QWidget* parent)
     table->setModel(model);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     
-    for (int row = 0; row < model->rowCount(); ++row) {
-        for (int column = 0; column < model->columnCount(); ++column) {
-            QStandardItem* item = new QStandardItem(QString("row %0, column %1").arg(row).arg(column));
-            model->setItem(row, column, item);
-        }
-    }
+    model->appendRow(new QStandardItem(QString("lol")));
+    //for (int row = 0; row < model->rowCount(); ++row) {
+    //    for (int column = 0; column < model->columnCount(); ++column) {
+    //        QStandardItem* item = new QStandardItem(QString("row %0, column %1").arg(row).arg(column));
+    //        model->setItem(row, column, item);
+    //    }
+    //}
     ocr = new Ocr();
     connect(OCRBtn, SIGNAL(clicked()), this, SLOT(hideFrame()));
 }
