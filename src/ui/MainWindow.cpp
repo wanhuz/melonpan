@@ -7,6 +7,7 @@
 #include "../util/util.h"
 #include "../ocr/ocr.h"
 #include <qtextcodec.h>
+#include "../dict/dict.h"
 
 
 
@@ -19,11 +20,13 @@ MainWindow::MainWindow(QWidget* parent)
     table = ui.dictView;
     frame = new Frame();
     QStandardItemModel* model = new QStandardItemModel(14, 2);
+    Dict dict;
+    dict.load();
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     
     OCRBtn->setCheckable(true);
     table->verticalHeader()->setVisible(false);
-    table->setModel(model);
+    table->setModel(dict.getModel());
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     
     model->appendRow(new QStandardItem(QString("lol")));

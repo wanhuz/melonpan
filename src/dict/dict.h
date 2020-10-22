@@ -1,5 +1,6 @@
 #pragma once
 #include <qstring.h>
+#include <qstandarditemmodel.h>
 
 class Dict {
 public:
@@ -8,7 +9,7 @@ public:
 	QStandardItemModel* getModel();
 
 private:
-	void parse(QString string);
+	void parse(QByteArray* line);
 	QStandardItemModel* dictmodel;
 
 };
