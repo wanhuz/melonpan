@@ -6,7 +6,12 @@
 #include <QBuffer>
 
 Dict::Dict() {
-    dictmodel = new QStandardItemModel(4000,2);
+    dictmodel = new QStandardItemModel(2500,3);
+    QStringList labels;
+    labels.insert(0, QString("Kanji"));
+    labels.insert(1, QString("Kana"));
+    labels.insert(2, QString("Meaning"));
+    dictmodel->setHorizontalHeaderLabels(labels);
 }
 
 /*Load file into qstandarditemmodel*/
@@ -20,7 +25,6 @@ void Dict::load() {
     this->parse(&data);
 
 
-
 }
 
 void Dict::parse(QByteArray* data) {
@@ -30,29 +34,34 @@ void Dict::parse(QByteArray* data) {
     out.setCodec("UTF-8");
     int rowCount = 0;
 
-    QString colline = "";
+    QString meanings = "";
+    QString kanji;
+    QString readings = "";
+    QString line;
+
     while (!out.atEnd()) {
-        QString line = out.readLine();
+        line = out.readLine();
 
         if (line.contains("<keb>")) {
-            dictmodel->setItem(rowCount, 0, new QStandardItem(line));
+            kanji = line;
         }
         else if (line.contains("<gloss>")) {
-            colline = colline + ";" + line;
+            meanings = meanings + line;
+        }
+        else if (line.contains("<reb>")) {
+            readings = readings + line;
         }
         else if (line.contains("</entry>")) {
-            dictmodel->setItem(rowCount, 1, new QStandardItem(colline));
-            colline = "";
+            dictmodel->setItem(rowCount, 0, new QStandardItem(kanji));
+            dictmodel->setItem(rowCount, 1, new QStandardItem(readings));
+            dictmodel->setItem(rowCount, 2, new QStandardItem(meanings));
             rowCount++;
-            if (rowCount == dictmodel->rowCount()) {
-                break;
-            }
+            meanings = "";
+            kanji = "";
+            readings = "";
         }
-
-
         
     }
-
 }
 
 QStandardItemModel* Dict::getModel() {
