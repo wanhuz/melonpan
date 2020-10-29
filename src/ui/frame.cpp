@@ -34,9 +34,6 @@ Frame::Frame(QWidget* parent)
 	
 }
 
-Frame::~Frame() {
-	
-}
 
 /*Setter for orientation, 1 = vertical, 0 = horizontal */
 void Frame::setOrientation(bool orienVal) {

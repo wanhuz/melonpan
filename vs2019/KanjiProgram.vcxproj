@@ -90,6 +90,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\src\dict\dict.cpp" />
+    <ClCompile Include="..\src\dict\DictLoader.cpp" />
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\ocr\ocr.cpp" />
     <ClCompile Include="..\src\ui\frame.cpp" />
@@ -98,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\dict\dict.h" />
+    <QtMoc Include="..\src\dict\DictLoader.h" />
     <ClInclude Include="..\src\ocr\ocr.h" />
     <ClInclude Include="..\src\util\util.h" />
     <QtMoc Include="..\src\ui\frame.h" />

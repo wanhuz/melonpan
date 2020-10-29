@@ -21,6 +21,7 @@ QString Ocr::recognize(Pix* image) {
     // Open input image with leptonica library
     api->SetPageSegMode(tesseract::PageSegMode(5));
     api->SetImage(image);
+
     // Get OCR result
     outText = api->GetUTF8Text();
     outstring = QString::fromUtf8(outText);

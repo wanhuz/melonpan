@@ -9,7 +9,6 @@ class Frame : public QDialog
 public:
 	
 	Frame(QWidget* parent = Q_NULLPTR);
-	~Frame();
 	void setOrientation(bool orientation);
 	void setBoxSize();
 	void setFontSize(int size);

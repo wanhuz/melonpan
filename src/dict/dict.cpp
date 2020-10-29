@@ -4,9 +4,10 @@
 #include <QDebug>
 #include <qstring.h>
 #include <QBuffer>
+#include <qeventloop.h>
 
 Dict::Dict() {
-    dictmodel = new QStandardItemModel(2500,3);
+    dictmodel = new QStandardItemModel(185000,3);
     QStringList labels;
     labels.insert(0, QString("Kanji"));
     labels.insert(1, QString("Kana"));
@@ -21,7 +22,6 @@ void Dict::load() {
         return;
 
     QByteArray data = dictFile.readAll();
-
     this->parse(&data);
 
 
@@ -39,19 +39,25 @@ void Dict::parse(QByteArray* data) {
     QString readings = "";
     QString line;
 
+    //This code below takes ~40 seconds
     while (!out.atEnd()) {
-        line = out.readLine();
+        line = out.readLine(); 
 
         if (line.contains("<keb>")) {
+            line.remove(QRegExp("<...>|<\/...>"));
             kanji = line;
         }
         else if (line.contains("<gloss>")) {
+            line.remove(QRegExp("<.....>"));
+            line.replace("</gloss>", "; ");
             meanings = meanings + line;
         }
         else if (line.contains("<reb>")) {
+            line.remove(QRegExp("<...>|<\/...>"));
             readings = readings + line;
         }
         else if (line.contains("</entry>")) {
+            //Memory allocation here is high, but this is not why it takes long to load
             dictmodel->setItem(rowCount, 0, new QStandardItem(kanji));
             dictmodel->setItem(rowCount, 1, new QStandardItem(readings));
             dictmodel->setItem(rowCount, 2, new QStandardItem(meanings));
@@ -62,6 +68,8 @@ void Dict::parse(QByteArray* data) {
         }
         
     }
+
+
 }
 
 QStandardItemModel* Dict::getModel() {

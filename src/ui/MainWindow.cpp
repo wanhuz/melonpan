@@ -8,34 +8,33 @@
 #include "../ocr/ocr.h"
 #include <qtextcodec.h>
 #include "../dict/dict.h"
-
+#include "../dict/DictLoader.h"
 
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+    QEventLoop eventloop;
     OCRBtn = ui.ocrBtn;
     textbox = ui.textLine;
     table = ui.dictView;
     frame = new Frame();
     QStandardItemModel* model = new QStandardItemModel(14, 2);
-    Dict dict;
-    dict.load();
+
+    //Dict dict;
+    //dict.load();
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     
     OCRBtn->setCheckable(true);
     table->verticalHeader()->setVisible(false);
-    table->setModel(dict.getModel());
-    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     
-    model->appendRow(new QStandardItem(QString("lol")));
-    //for (int row = 0; row < model->rowCount(); ++row) {
-    //    for (int column = 0; column < model->columnCount(); ++column) {
-    //        QStandardItem* item = new QStandardItem(QString("row %0, column %1").arg(row).arg(column));
-    //        model->setItem(row, column, item);
-    //    }
-    //}
+    DictLoader* dictloader = new DictLoader();
+    table->setModel(dictloader->getModel());
+    dictloader->start();
+    
+    table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
     ocr = new Ocr();
     connect(OCRBtn, SIGNAL(clicked()), this, SLOT(hideFrame()));
 }
