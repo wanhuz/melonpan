@@ -9,34 +9,30 @@
 #include <qtextcodec.h>
 #include "../dict/dict.h"
 #include "../dict/DictLoader.h"
+#include <qdebug.h>
+#include <qstandarditemmodel.h>
 
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
-    QEventLoop eventloop;
     OCRBtn = ui.ocrBtn;
     textbox = ui.textLine;
     table = ui.dictView;
     frame = new Frame();
-    QStandardItemModel* model = new QStandardItemModel(14, 2);
-
-    //Dict dict;
-    //dict.load();
-    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+    DictLoader* dictloader = new DictLoader();
+    ocr = new Ocr();
     
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     OCRBtn->setCheckable(true);
     table->verticalHeader()->setVisible(false);
-    
-    DictLoader* dictloader = new DictLoader();
-    table->setModel(dictloader->getModel());
     dictloader->start();
-    
+    dictmodel = dictloader->getModel();
+    table->setModel(dictmodel);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-
-    ocr = new Ocr();
     connect(OCRBtn, SIGNAL(clicked()), this, SLOT(hideFrame()));
+    connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
 }
 
 
@@ -58,10 +54,16 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
     }
 }
 
-void MainWindow::hideFrame() {
+void MainWindow::hideFrame() { frame->hide(); }
 
-    frame->hide();
-    
+void MainWindow::search() {
+    dictmodel->clear();
+    //QString searchString = textbox->text();
+    //QList<QStandardItem*> list = dictmodel->findItems(searchString, Qt::MatchContains, 0);
+    //
+    //for (int i = 0; i < list.size(); i++) {
+    //    textbox->setText(list.at(i)->text());
+
+    //}
+
 }
-
-

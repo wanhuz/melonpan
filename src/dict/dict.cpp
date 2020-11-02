@@ -38,6 +38,7 @@ void Dict::parse(QByteArray* data) {
     QString kanji;
     QString readings = "";
     QString line;
+    QStandardItem* test;
 
     //This code below takes ~40 seconds
     while (!out.atEnd()) {
@@ -58,9 +59,9 @@ void Dict::parse(QByteArray* data) {
         }
         else if (line.contains("</entry>")) {
             //Memory allocation here is high, but this is not why it takes long to load
-            dictmodel->setItem(rowCount, 0, new QStandardItem(kanji));
-            dictmodel->setItem(rowCount, 1, new QStandardItem(readings));
-            dictmodel->setItem(rowCount, 2, new QStandardItem(meanings));
+            //dictmodel->setItem(rowCount, 0, new QStandardItem(kanji));
+            //dictmodel->setItem(rowCount, 1, new QStandardItem(readings));
+            //dictmodel->setItem(rowCount, 2, new QStandardItem(meanings));
             rowCount++;
             meanings = "";
             kanji = "";
