@@ -7,9 +7,11 @@ public:
 	Dict();
 	void load();
 	QStandardItemModel* getModel();
+	QStringList search(QString searchString);
 
 private:
 	void parse(QByteArray* line);
 	QStandardItemModel* dictmodel;
+	QList <QStringList> dictlist;
 
 };

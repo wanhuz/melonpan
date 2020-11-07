@@ -3,11 +3,15 @@
 #include "DictLoader.h"
 
 DictLoader::DictLoader() {
-	dict = new Dict();
+	
 }
 
 void DictLoader::run() {
 	dict->load();
+}
+
+void DictLoader::setDict(Dict* dict) {
+	this->dict = dict;
 }
 
 QStandardItemModel* DictLoader::getModel() {

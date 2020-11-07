@@ -7,12 +7,20 @@
 #include <qeventloop.h>
 
 Dict::Dict() {
-    dictmodel = new QStandardItemModel(185000,3);
+ /*   dictmodel = new QStandardItemModel(185000,3);
     QStringList labels;
     labels.insert(0, QString("Kanji"));
     labels.insert(1, QString("Kana"));
     labels.insert(2, QString("Meaning"));
-    dictmodel->setHorizontalHeaderLabels(labels);
+    dictmodel->setHorizontalHeaderLabels(labels);*/
+    QStringList meaning_list;
+    QStringList kanji_list;
+    QStringList reading_list;
+    dictlist.append(kanji_list);
+    dictlist.append(reading_list);
+    dictlist.append(meaning_list);
+    
+
 }
 
 /*Load file into qstandarditemmodel*/
@@ -38,9 +46,9 @@ void Dict::parse(QByteArray* data) {
     QString kanji;
     QString readings = "";
     QString line;
-    QStandardItem* test;
 
-    //This code below takes ~40 seconds
+
+    //This code below takes ~40 seconds without threading
     while (!out.atEnd()) {
         line = out.readLine(); 
 
@@ -59,9 +67,9 @@ void Dict::parse(QByteArray* data) {
         }
         else if (line.contains("</entry>")) {
             //Memory allocation here is high, but this is not why it takes long to load
-            //dictmodel->setItem(rowCount, 0, new QStandardItem(kanji));
-            //dictmodel->setItem(rowCount, 1, new QStandardItem(readings));
-            //dictmodel->setItem(rowCount, 2, new QStandardItem(meanings));
+            dictlist[1].append(readings);
+            dictlist[0].append(kanji);
+            dictlist[2].append(meanings);
             rowCount++;
             meanings = "";
             kanji = "";
@@ -70,9 +78,14 @@ void Dict::parse(QByteArray* data) {
         
     }
 
-
 }
 
 QStandardItemModel* Dict::getModel() {
     return dictmodel;
+}
+
+QStringList Dict::search(QString searchString) {
+    QStringList searchResult = dictlist[0].filter(searchString);
+    
+    return searchResult;
 }

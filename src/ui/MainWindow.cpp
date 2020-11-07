@@ -27,9 +27,10 @@ MainWindow::MainWindow(QWidget* parent)
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     OCRBtn->setCheckable(true);
     table->verticalHeader()->setVisible(false);
+    dictloader->setDict(&dict);
     dictloader->start();
-    dictmodel = dictloader->getModel();
-    table->setModel(dictmodel);
+
+    table->setModel(&dictmodel);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     connect(OCRBtn, SIGNAL(clicked()), this, SLOT(hideFrame()));
     connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
@@ -57,7 +58,18 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 void MainWindow::hideFrame() { frame->hide(); }
 
 void MainWindow::search() {
-    dictmodel->clear();
+    QString searchText = textbox->text();
+    QStringList searchResult = dict.search(searchText);
+    if (searchResult.isEmpty()) {
+        qDebug() << "No result found";
+    }
+    else {
+        
+        for (int i = 0; i < searchResult.size(); i++) {
+            dictmodel.setItem(i, new QStandardItem(searchResult.at(i).toLocal8Bit().constData()));
+        }
+    }
+
     //QString searchString = textbox->text();
     //QList<QStandardItem*> list = dictmodel->findItems(searchString, Qt::MatchContains, 0);
     //

@@ -5,6 +5,7 @@
 #include "frame.h"
 #include "../ocr/ocr.h"
 #include <qstandarditemmodel.h>
+#include "../dict/dict.h"
 
 class MainWindow : public QMainWindow
 {
@@ -23,6 +24,7 @@ public slots:
     void search();
 
 private:
+    Dict dict;
     Frame* frame;
     QPushButton* OCRBtn;
     Ui::MainWindow ui;
@@ -30,5 +32,5 @@ private:
     QTableView* table;
     Ocr* ocr;
     QString string;
-    QStandardItemModel* dictmodel;
+    QStandardItemModel dictmodel;
 };
