@@ -9,7 +9,6 @@ class DictLoader : public QThread {
 public:
 	DictLoader();
 	void run() override;
-	QStandardItemModel* getModel();
 	void setDict(Dict* dict);
 
 private:

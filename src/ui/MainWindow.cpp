@@ -1,7 +1,6 @@
 #include "MainWindow.h"
 #include <QtWidgets/qlineedit.h>
 #include <qstandarditemmodel.h>
-#include <qstring.h>
 #include <qmainwindow.h>
 #include <QKeyEvent>
 #include "../util/util.h"
@@ -10,7 +9,7 @@
 #include "../dict/dict.h"
 #include "../dict/DictLoader.h"
 #include <qdebug.h>
-#include <qstandarditemmodel.h>
+
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -23,6 +22,11 @@ MainWindow::MainWindow(QWidget* parent)
     frame = new Frame();
     DictLoader* dictloader = new DictLoader();
     ocr = new Ocr();
+    QStringList labels;
+    labels.insert(0, QString("Kanji"));
+    labels.insert(1, QString("Kana"));
+    labels.insert(2, QString("Meaning"));
+    dictmodel.setHorizontalHeaderLabels(labels);
     
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     OCRBtn->setCheckable(true);
@@ -58,24 +62,23 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 void MainWindow::hideFrame() { frame->hide(); }
 
 void MainWindow::search() {
+    dictmodel.clear();
     QString searchText = textbox->text();
-    QStringList searchResult = dict.search(searchText);
-    if (searchResult.isEmpty()) {
+    QVector<QStringList> searchResult = dict.search(searchText);
+    if (searchResult[0].size() == 0) {
         qDebug() << "No result found";
     }
+    else if (searchResult[0].at(0).isEmpty()) {
+        qDebug() << "No kanji found";
+        dictmodel.clear();
+    }
     else {
-        
-        for (int i = 0; i < searchResult.size(); i++) {
-            dictmodel.setItem(i, new QStandardItem(searchResult.at(i).toLocal8Bit().constData()));
+        for (int i = 0; i < searchResult[0].size(); i++) {
+            dictmodel.setItem(i, 0, new QStandardItem(searchResult[0].at(i).toLocal8Bit().constData()));
+            dictmodel.setItem(i, 1, new QStandardItem(searchResult[1].at(i).toLocal8Bit().constData()));
+            dictmodel.setItem(i, 2, new QStandardItem(searchResult[2].at(i).toLocal8Bit().constData()));
         }
     }
 
-    //QString searchString = textbox->text();
-    //QList<QStandardItem*> list = dictmodel->findItems(searchString, Qt::MatchContains, 0);
-    //
-    //for (int i = 0; i < list.size(); i++) {
-    //    textbox->setText(list.at(i)->text());
-
-    //}
 
 }

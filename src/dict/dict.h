@@ -1,17 +1,15 @@
 #pragma once
 #include <qstring.h>
-#include <qstandarditemmodel.h>
+#include <qvector.h>
 
 class Dict {
 public:
 	Dict();
 	void load();
-	QStandardItemModel* getModel();
-	QStringList search(QString searchString);
+	QVector<QStringList> search(QString searchString);
 
 private:
 	void parse(QByteArray* line);
-	QStandardItemModel* dictmodel;
-	QList <QStringList> dictlist;
+	QVector<QStringList> dictlist;
 
 };

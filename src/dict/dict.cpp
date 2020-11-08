@@ -7,23 +7,15 @@
 #include <qeventloop.h>
 
 Dict::Dict() {
- /*   dictmodel = new QStandardItemModel(185000,3);
-    QStringList labels;
-    labels.insert(0, QString("Kanji"));
-    labels.insert(1, QString("Kana"));
-    labels.insert(2, QString("Meaning"));
-    dictmodel->setHorizontalHeaderLabels(labels);*/
     QStringList meaning_list;
     QStringList kanji_list;
     QStringList reading_list;
     dictlist.append(kanji_list);
     dictlist.append(reading_list);
     dictlist.append(meaning_list);
-    
-
 }
 
-/*Load file into qstandarditemmodel*/
+/*Load file into QList*/
 void Dict::load() {
 	QFile dictFile("../res/JMdict_e");
     if (!dictFile.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -80,12 +72,22 @@ void Dict::parse(QByteArray* data) {
 
 }
 
-QStandardItemModel* Dict::getModel() {
-    return dictmodel;
-}
+QVector<QStringList> Dict::search(QString searchString) {
+    QVector<QStringList> searchResult;
+    QStringList search_meaning_list;
+    QStringList search_kanji_list;
+    QStringList search_reading_list;
+    searchResult.append(search_kanji_list);
+    searchResult.append(search_reading_list);
+    searchResult.append(search_meaning_list);
 
-QStringList Dict::search(QString searchString) {
-    QStringList searchResult = dictlist[0].filter(searchString);
-    
+    for (int i = 0; i < dictlist[0].size(); i++) {
+        if (dictlist[0][i].contains(searchString)) {
+            searchResult[0].append(dictlist[0].at(i));
+            searchResult[1].append(dictlist[1].at(i));
+            searchResult[2].append(dictlist[2].at(i));
+        }
+    }
+
     return searchResult;
 }
