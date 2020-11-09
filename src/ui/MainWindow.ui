@@ -162,6 +162,9 @@
         <property name="showGrid">
          <bool>false</bool>
         </property>
+        <attribute name="horizontalHeaderHighlightSections">
+         <bool>false</bool>
+        </attribute>
        </widget>
       </item>
      </layout>

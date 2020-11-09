@@ -9,6 +9,8 @@
 #include "../dict/dict.h"
 #include "../dict/DictLoader.h"
 #include <qdebug.h>
+#include <qclipboard.h>
+#include <Windows.h>
 
 
 
@@ -34,9 +36,11 @@ MainWindow::MainWindow(QWidget* parent)
     dictloader->setDict(&dict);
     dictloader->start();
 
+
     table->setModel(&dictmodel);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    connect(OCRBtn, SIGNAL(clicked()), this, SLOT(hideFrame()));
+    connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(hideFrame(bool)));
+    connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
 }
 
@@ -44,7 +48,7 @@ MainWindow::MainWindow(QWidget* parent)
 void MainWindow::keyPressEvent(QKeyEvent* event)
 {
     if (OCRBtn->isChecked()) {
-        
+
         if (event->key() == Qt::Key_F2) {
             frame->hide();
             frame->setBoxSize();
@@ -56,10 +60,19 @@ void MainWindow::keyPressEvent(QKeyEvent* event)
 
             this->activateWindow();
         }
+        else if (event->key() == Qt::Key_F4) {
+            QClipboard *clipboard = QApplication::clipboard();
+            QString clipText = clipboard->text();
+            textbox->setText(clipText);
+        }
     }
 }
 
-void MainWindow::hideFrame() { frame->hide(); }
+void MainWindow::hideFrame(bool enabled) {
+    if (!enabled) {
+        frame->hide();
+    }
+}
 
 void MainWindow::search() {
     dictmodel.clear();
@@ -80,5 +93,22 @@ void MainWindow::search() {
         }
     }
 
+    QStringList labels;
+    labels.insert(0, QString("Kanji"));
+    labels.insert(1, QString("Kana"));
+    labels.insert(2, QString("Meaning"));
+    dictmodel.setHorizontalHeaderLabels(labels);
 
+
+}
+
+void MainWindow::alwaysOnTop(bool enabled) {
+    this->showNormal();
+    HWND hwnd = (HWND)this->winId();
+    if (enabled) {
+        SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
+    }
+    else {
+        SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
+    }
 }

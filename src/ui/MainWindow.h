@@ -18,7 +18,8 @@ protected:
     void keyPressEvent(QKeyEvent* event);
 
 private slots:
-    void hideFrame();
+    void hideFrame(bool enabled);
+    void alwaysOnTop(bool enabled);
 
 public slots:
     void search();

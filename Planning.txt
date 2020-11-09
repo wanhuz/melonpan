@@ -26,6 +26,11 @@ Utilizing OCR for language learning
 	- What don't I need to know for now? 
 	- What tool is the best for the task?
 	- What is my schedule?
+3. New Question
+	- How to branding my application?
+	- How do I get around Qt UI limitation? -alw on top -sidebar
+	- How do I provide minimalist UI?
+	- Is JMDict best dictionary? X -No other alternative -other alternative can be done via send to link
 	
 Project purpose:
 	- To create a better Japanese Recognition software than KanjiTomo

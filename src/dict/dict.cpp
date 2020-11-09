@@ -24,7 +24,6 @@ void Dict::load() {
     QByteArray data = dictFile.readAll();
     this->parse(&data);
 
-
 }
 
 void Dict::parse(QByteArray* data) {
@@ -40,7 +39,7 @@ void Dict::parse(QByteArray* data) {
     QString line;
 
 
-    //This code below takes ~40 seconds without threading
+    //This code below takes ~40 seconds without thread
     while (!out.atEnd()) {
         line = out.readLine(); 
 
@@ -55,10 +54,10 @@ void Dict::parse(QByteArray* data) {
         }
         else if (line.contains("<reb>")) {
             line.remove(QRegExp("<...>|<\/...>"));
-            readings = readings + line;
+            readings = readings + line + "\n";
         }
         else if (line.contains("</entry>")) {
-            //Memory allocation here is high, but this is not why it takes long to load
+            //Memory allocation here is 200MB~ give or take
             dictlist[1].append(readings);
             dictlist[0].append(kanji);
             dictlist[2].append(meanings);
