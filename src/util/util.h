@@ -1,7 +1,10 @@
 #pragma once
+#include <leptonica/allheaders.h>
+#include <qpixmap.h>
 
 class Util
 {
-	static int calculateArea();
+public:
+	static Pix* qPixMap2PIX(QPixmap* pixmap);
 
 };
