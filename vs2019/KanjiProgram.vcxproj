@@ -89,6 +89,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\capturekey\captureEvent.cpp" />
+    <ClCompile Include="..\src\capturekey\capturekey.cpp" />
     <ClCompile Include="..\src\dict\dict.cpp" />
     <ClCompile Include="..\src\dict\DictLoader.cpp" />
     <ClCompile Include="..\src\main.cpp" />
@@ -98,6 +100,8 @@
     <ClCompile Include="..\src\util\util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="..\src\capturekey\capturekey.h" />
+    <QtMoc Include="..\src\capturekey\captureEvent.h" />
     <ClInclude Include="..\src\dict\dict.h" />
     <QtMoc Include="..\src\dict\DictLoader.h" />
     <ClInclude Include="..\src\ocr\ocr.h" />

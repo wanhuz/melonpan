@@ -2,10 +2,9 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_MainWindow.h"
-#include "frame.h"
-#include "../ocr/ocr.h"
 #include <qstandarditemmodel.h>
 #include "../dict/dict.h"
+#include "../capturekey/captureEvent.h"
 
 class MainWindow : public QMainWindow
 {
@@ -14,24 +13,19 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget* parent = Q_NULLPTR);
 
-protected:
-    void keyPressEvent(QKeyEvent* event);
-
 private slots:
-    void hideFrame(bool enabled);
     void alwaysOnTop(bool enabled);
+    void startCapture(bool enable);
 
 public slots:
     void search();
 
 private:
+    captureEvent* captureevent;
     Dict dict;
-    Frame* frame;
     QPushButton* OCRBtn;
     Ui::MainWindow ui;
     QLineEdit* textbox;
     QTableView* table;
-    Ocr* ocr;
-    QString string;
     QStandardItemModel dictmodel;
 };

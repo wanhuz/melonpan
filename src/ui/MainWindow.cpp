@@ -11,19 +11,20 @@
 #include <qdebug.h>
 #include <qclipboard.h>
 #include <Windows.h>
-
+#include "../capturekey/captureEvent.h"
+#include "../ui/frame.h"
 
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
 {
     ui.setupUi(this);
+    
     OCRBtn = ui.ocrBtn;
     textbox = ui.textLine;
     table = ui.dictView;
-    frame = new Frame();
     DictLoader* dictloader = new DictLoader();
-    ocr = new Ocr();
+    captureevent = new captureEvent();
     QStringList labels;
     labels.insert(0, QString("Kanji"));
     labels.insert(1, QString("Kana"));
@@ -36,43 +37,20 @@ MainWindow::MainWindow(QWidget* parent)
     dictloader->setDict(&dict);
     dictloader->start();
 
-
     table->setModel(&dictmodel);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(hideFrame(bool)));
+    connect(captureevent, SIGNAL(OcrResult(QString)), textbox, SLOT(setText(QString)));
+    connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(startCapture(bool)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
 }
 
+//void MainWindow::captureText() {
+//    QClipboard* clipboard = QApplication::clipboard();
+//    QString clipText = clipboard->text();
+//    textbox->setText(clipText);
+//}
 
-void MainWindow::keyPressEvent(QKeyEvent* event)
-{
-    if (OCRBtn->isChecked()) {
-
-        if (event->key() == Qt::Key_F2) {
-            frame->hide();
-            frame->setBoxSize();
-            QPixmap screenshot = frame->shootScreenshot();
-            Pix* pix = Util::qPixMap2PIX(&screenshot);
-            QString text = ocr->recognize(pix);
-            textbox->setText(text);
-            frame->show();
-
-            this->activateWindow();
-        }
-        else if (event->key() == Qt::Key_F4) {
-            QClipboard *clipboard = QApplication::clipboard();
-            QString clipText = clipboard->text();
-            textbox->setText(clipText);
-        }
-    }
-}
-
-void MainWindow::hideFrame(bool enabled) {
-    if (!enabled) {
-        frame->hide();
-    }
-}
 
 void MainWindow::search() {
     dictmodel.clear();
@@ -102,6 +80,17 @@ void MainWindow::search() {
 
 }
 
+void MainWindow::startCapture(bool enable) {
+    if (!enable) {
+        captureevent->stop();
+    }
+    else {
+        captureevent->start();
+    }
+    
+    
+}
+
 void MainWindow::alwaysOnTop(bool enabled) {
     this->showNormal();
     HWND hwnd = (HWND)this->winId();
@@ -111,4 +100,5 @@ void MainWindow::alwaysOnTop(bool enabled) {
     else {
         SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
     }
+
 }
