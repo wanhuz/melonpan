@@ -42,7 +42,7 @@
     <ClCompile Include="..\src\capturekey\capturekey.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\capturekey\captureEvent.cpp">
+    <ClCompile Include="..\src\capturekey\maincontroller.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -78,7 +78,7 @@
     <QtMoc Include="..\src\capturekey\capturekey.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="..\src\capturekey\captureEvent.h">
+    <QtMoc Include="..\src\capturekey\maincontroller.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

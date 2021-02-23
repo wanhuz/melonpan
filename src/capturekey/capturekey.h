@@ -1,5 +1,4 @@
 #pragma once
-//#include <qobject.h>
 #include <qthread.h>
 
 class capturekey : public QThread {

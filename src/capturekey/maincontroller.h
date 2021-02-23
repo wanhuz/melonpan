@@ -1,27 +1,27 @@
 #pragma once
 #include <qobject.h>
-#include <qthread.h>
 #include "../ui/frame.h"
 #include "../ocr/ocr.h"
-#include "../util/util.h"
-#include <qstring.h>
 #include "../capturekey/capturekey.h"
+#include "../dict/dict.h"
 
-class captureEvent : public QObject
+class MainController : public QObject
 {
-	Q_OBJECT
-	QThread captureThread;
+	Q_OBJECT;
 
 public:
-	captureEvent();
-	~captureEvent();
-	void start();
-	void stop();
+	MainController();
+	void killCaptureKey();
+	void startCaptureKey();
+	void stopCaptureKey();
+	QVector<QStringList> searchDict(QString searchStr);
 
 private:
 	Frame* frame;
 	Ocr* ocr;
 	capturekey *capturekeypress;
+	Dict* dict;
+	
 
 private slots:
 	void captureOCR();

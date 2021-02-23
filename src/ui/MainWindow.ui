@@ -44,14 +44,14 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>25</width>
-            <height>0</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>50</width>
-            <height>50</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
           <property name="text">
@@ -103,8 +103,8 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>25</width>
-            <height>25</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -120,7 +120,7 @@
            </size>
           </property>
           <property name="text">
-           <string>F</string>
+           <string>Text</string>
           </property>
          </widget>
         </item>
@@ -184,6 +184,43 @@
     </item>
    </layout>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>497</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #FFF;
+border-bottom:  1px solid #828790;</string>
+   </property>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionChange_Orientation"/>
+    <addaction name="actionOption"/>
+   </widget>
+   <addaction name="menuSettings"/>
+  </widget>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionChange_Orientation">
+   <property name="text">
+    <string>Change Orientation</string>
+   </property>
+  </action>
+  <action name="actionOption">
+   <property name="text">
+    <string>Option</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

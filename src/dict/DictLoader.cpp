@@ -1,10 +1,5 @@
-#include <qthread.h>
 #include "dict.h"
 #include "DictLoader.h"
-
-DictLoader::DictLoader() {
-	
-}
 
 void DictLoader::run() {
 	dict->load();

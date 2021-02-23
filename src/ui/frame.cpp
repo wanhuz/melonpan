@@ -6,7 +6,6 @@
 #include <qscreen.h>
 #include <qapplication.h>
 #include <qpixmap.h>
-#include <qdebug.h>
 
 
 Frame::Frame(QWidget* parent)

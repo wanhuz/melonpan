@@ -1,6 +1,4 @@
 #include "capturekey.h"
-#include <qeventloop.h>
-#include <qdebug.h>
 #include <Windows.h>
 #include <WinUser.h>
 

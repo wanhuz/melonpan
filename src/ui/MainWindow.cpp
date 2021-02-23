@@ -2,17 +2,10 @@
 #include <QtWidgets/qlineedit.h>
 #include <qstandarditemmodel.h>
 #include <qmainwindow.h>
-#include <QKeyEvent>
-#include "../util/util.h"
-#include "../ocr/ocr.h"
 #include <qtextcodec.h>
-#include "../dict/dict.h"
-#include "../dict/DictLoader.h"
-#include <qdebug.h>
-#include <qclipboard.h>
 #include <Windows.h>
-#include "../capturekey/captureEvent.h"
-#include "../ui/frame.h"
+#include "../capturekey/maincontroller.h"
+
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -23,8 +16,8 @@ MainWindow::MainWindow(QWidget* parent)
     OCRBtn = ui.ocrBtn;
     textbox = ui.textLine;
     table = ui.dictView;
-    DictLoader* dictloader = new DictLoader();
-    captureevent = new captureEvent();
+    
+    MainControl = new MainController();
     QStringList labels;
     labels.insert(0, QString("Kanji"));
     labels.insert(1, QString("Kana"));
@@ -34,33 +27,26 @@ MainWindow::MainWindow(QWidget* parent)
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     OCRBtn->setCheckable(true);
     table->verticalHeader()->setVisible(false);
-    dictloader->setDict(&dict);
-    dictloader->start();
+
 
     table->setModel(&dictmodel);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    connect(captureevent, SIGNAL(OcrResult(QString)), textbox, SLOT(setText(QString)));
+    connect(MainControl, SIGNAL(OcrResult(QString)), textbox, SLOT(setText(QString)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(startCapture(bool)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
 }
 
-//void MainWindow::captureText() {
-//    QClipboard* clipboard = QApplication::clipboard();
-//    QString clipText = clipboard->text();
-//    textbox->setText(clipText);
-//}
-
 
 void MainWindow::search() {
     dictmodel.clear();
     QString searchText = textbox->text();
-    QVector<QStringList> searchResult = dict.search(searchText);
+    QVector<QStringList> searchResult = MainControl->searchDict(searchText);
     if (searchResult[0].size() == 0) {
-        qDebug() << "No result found";
+       //No result found
     }
     else if (searchResult[0].at(0).isEmpty()) {
-        qDebug() << "No kanji found";
+        //No kanji found
         dictmodel.clear();
     }
     else {
@@ -82,12 +68,11 @@ void MainWindow::search() {
 
 void MainWindow::startCapture(bool enable) {
     if (!enable) {
-        captureevent->stop();
+        MainControl->stopCaptureKey();
     }
     else {
-        captureevent->start();
+        MainControl->startCaptureKey();
     }
-    
     
 }
 

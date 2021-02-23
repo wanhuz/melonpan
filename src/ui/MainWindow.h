@@ -3,8 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_MainWindow.h"
 #include <qstandarditemmodel.h>
-#include "../dict/dict.h"
-#include "../capturekey/captureEvent.h"
+#include "../capturekey/maincontroller.h"
 
 class MainWindow : public QMainWindow
 {
@@ -21,8 +20,7 @@ public slots:
     void search();
 
 private:
-    captureEvent* captureevent;
-    Dict dict;
+    MainController* MainControl;
     QPushButton* OCRBtn;
     Ui::MainWindow ui;
     QLineEdit* textbox;

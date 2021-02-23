@@ -49,6 +49,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalOptions>-static -static-libgcc -static-libstdc++ %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>5.15.1</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
@@ -89,7 +94,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\capturekey\captureEvent.cpp" />
+    <ClCompile Include="..\src\capturekey\maincontroller.cpp" />
     <ClCompile Include="..\src\capturekey\capturekey.cpp" />
     <ClCompile Include="..\src\dict\dict.cpp" />
     <ClCompile Include="..\src\dict\DictLoader.cpp" />
@@ -101,7 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\src\capturekey\capturekey.h" />
-    <QtMoc Include="..\src\capturekey\captureEvent.h" />
+    <QtMoc Include="..\src\capturekey\maincontroller.h" />
     <ClInclude Include="..\src\dict\dict.h" />
     <QtMoc Include="..\src\dict\DictLoader.h" />
     <ClInclude Include="..\src\ocr\ocr.h" />
