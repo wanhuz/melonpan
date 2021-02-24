@@ -102,6 +102,7 @@
     <ClCompile Include="..\src\ocr\ocr.cpp" />
     <ClCompile Include="..\src\ui\frame.cpp" />
     <ClCompile Include="..\src\ui\MainWindow.cpp" />
+    <ClCompile Include="..\src\ui\SettingsWindow.cpp" />
     <ClCompile Include="..\src\util\util.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -110,12 +111,14 @@
     <ClInclude Include="..\src\dict\dict.h" />
     <QtMoc Include="..\src\dict\DictLoader.h" />
     <ClInclude Include="..\src\ocr\ocr.h" />
+    <QtMoc Include="..\src\ui\SettingsWindow.h" />
     <ClInclude Include="..\src\util\util.h" />
     <QtMoc Include="..\src\ui\frame.h" />
     <QtMoc Include="..\src\ui\MainWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="..\src\ui\MainWindow.ui" />
+    <QtUic Include="..\src\ui\SettingsWindow.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="..\src\ui\MainWindow.qrc" />
