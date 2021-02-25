@@ -4,6 +4,10 @@
 #include "../util/util.h"
 #include "../dict/DictLoader.h"
 #include "../dict/dict.h"
+#include <qtimer.h>
+#include <qdebug.h>
+#include <qclipboard.h>
+#include <qapplication.h>
 
 
 MainController::MainController() {
@@ -12,30 +16,45 @@ MainController::MainController() {
 	frame = new Frame();
 	ocr = new Ocr();
 	capturekeypress = new capturekey();
+	clipboard = QApplication::clipboard();
 
 	dictloader->setDict(dict);
 	dictloader->start();
 
-	connect(capturekeypress, SIGNAL(keyStateChanged()), this, SLOT(captureOCR()));
+	connect(clipboard, SIGNAL(dataChanged()), this, SLOT(setSearchBox()));
+	connect(capturekeypress, SIGNAL(OCRkeyStateChanged()), this, SLOT(captureOCR()));
+	connect(capturekeypress, SIGNAL(TextkeyStateChanged()), this, SLOT(captureTextGeneric()));
 }
 
 void MainController::killCaptureKey() {
-	capturekeypress->disable();
+	capturekeypress->stopCapture(capturekeypress->OCR);
+	capturekeypress->stopCapture(capturekeypress->TEXT_GENERIC);
 	capturekeypress->quit();
 	capturekeypress->wait();
 }
 
 void MainController::stopCaptureKey() {
-	capturekeypress->disable();
+	capturekeypress->stopCapture(capturekeypress->OCR);
+	capturekeypress->stopCapture(capturekeypress->TEXT_GENERIC);
 }
 
-void MainController::startCaptureKey() {
-	capturekeypress->setEnable();
+void MainController::startCaptureKeyOCR() {
+	this->stopCaptureKey();
+	capturekeypress->startCapture(capturekeypress->OCR);
 
 	if (!capturekeypress->isRunning()) {
 		capturekeypress->start();
 	}
 
+}
+
+void MainController::startCaptureKeyTextGeneric() {
+	this->stopCaptureKey();
+	capturekeypress->startCapture(capturekeypress->TEXT_GENERIC);
+
+	if (!capturekeypress->isRunning()) {
+		capturekeypress->start();
+	}
 }
 
 QVector<QStringList> MainController::searchDict(QString searchStr) {
@@ -52,8 +71,15 @@ void MainController::captureOCR() {
 	emit OcrResult(text);
 }
 
-//void MainWindow::captureText() {
-//    QClipboard* clipboard = QApplication::clipboard();
-//    QString clipText = clipboard->text();
-//    textbox->setText(clipText);
-//}
+
+/*Capture digital text by sending CTRL+C as input to Windows
+It is a hacky solution, but it is the most optimal way to get text from different application types in Windows*/
+void MainController::captureTextGeneric() {
+	Util::sendKeyInput();
+}
+
+/*If text data changed in clipboard, send it to MainWindow's textbox*/
+void MainController::setSearchBox() {
+	QString clipText = clipboard->text();
+	emit OcrResult(clipText);
+}

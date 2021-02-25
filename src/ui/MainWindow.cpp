@@ -14,6 +14,7 @@ MainWindow::MainWindow(QWidget* parent)
     ui.setupUi(this);
     
     OCRBtn = ui.ocrBtn;
+    textBtn = ui.textBtn;
     textbox = ui.textLine;
     table = ui.dictView;
     
@@ -26,14 +27,16 @@ MainWindow::MainWindow(QWidget* parent)
     
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     OCRBtn->setCheckable(true);
+    textBtn->setCheckable(true);
     table->verticalHeader()->setVisible(false);
 
 
     table->setModel(&dictmodel);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     connect(MainControl, SIGNAL(OcrResult(QString)), textbox, SLOT(setText(QString)));
-    connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(startCapture(bool)));
+    connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureOCR(bool)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
+    connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureText(bool)));
     connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
 }
 
@@ -66,14 +69,23 @@ void MainWindow::search() {
 
 }
 
-void MainWindow::startCapture(bool enable) {
-    if (!enable) {
+void MainWindow::startCaptureOCR(bool enableOCR) {
+    if (!enableOCR) {
         MainControl->stopCaptureKey();
     }
     else {
-        MainControl->startCaptureKey();
+        MainControl->startCaptureKeyOCR();
     }
     
+}
+
+void MainWindow::startCaptureText(bool enableText){
+    if (!enableText) {
+        MainControl->stopCaptureKey();
+    }
+    else {
+        MainControl->startCaptureKeyTextGeneric();
+    }
 }
 
 void MainWindow::alwaysOnTop(bool enabled) {

@@ -14,7 +14,8 @@ public:
 
 private slots:
     void alwaysOnTop(bool enabled);
-    void startCapture(bool enable);
+    void startCaptureOCR(bool enable);
+    void startCaptureText(bool enable);
 
 public slots:
     void search();
@@ -22,6 +23,7 @@ public slots:
 private:
     MainController* MainControl;
     QPushButton* OCRBtn;
+    QPushButton* textBtn;
     Ui::MainWindow ui;
     QLineEdit* textbox;
     QTableView* table;

@@ -6,20 +6,40 @@ capturekey::capturekey() {
 	this->setKey();
 }
 
-int capturekey::setEnable() {
-	this->enable = true;
+int capturekey::startCapture(int captureType) {
+	if (captureType == 0) {
+		this->enableOCR = true;
+		this->enableTextGeneric = false;
+	}
+	else if (captureType == 1) {
+		this->enableTextGeneric = true;
+		this->enableOCR = false;
+	}
+	
 	return 0;
 }
 
-int capturekey::disable() {
-	this->enable = false;
+int capturekey::stopCapture(int captureType) {
+	if (captureType == 0) {
+		this->enableOCR = false;
+	}
+	else if (captureType == 1) {
+		this->enableTextGeneric = false;
+	}
+	
 	return 0;
 }
+
 
 void capturekey::run() {
-	while (enable) {
-		if (keyPressed(key)) {
-			emit keyStateChanged();
+	while (enableOCR) {
+		if (keyPressed(keyOCR)) {
+			emit OCRkeyStateChanged();
+		}
+	}
+	while (enableTextGeneric) {
+		if (keyPressed(keyTextGeneric)) {
+			emit TextkeyStateChanged();
 		}
 	}
 }
@@ -29,6 +49,7 @@ bool capturekey::keyPressed(int key) {
 }
 
 int capturekey::setKey() {
-	key = VK_CONTROL;
+	keyOCR = VK_LCONTROL;
+	keyTextGeneric = VK_LCONTROL;
 	return 0;
 }

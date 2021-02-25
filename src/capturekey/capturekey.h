@@ -6,18 +6,24 @@ class capturekey : public QThread {
 
 public:
 	capturekey();
-	int setEnable();
-	int disable();
+	int startCapture(int captureType);
+	int stopCapture(int captureType);
 	int setKey();
+	const int OCR = 0;
+	const int TEXT_GENERIC = 1;
 	
 
 private:
-	bool enable;
-	int key;
+	bool enableOCR;
+	bool enableTextGeneric;
+	int keyOCR;
+	int keyTextGeneric;
 	bool keyPressed(int key);
 	void run() override;
 
+
 signals:
-	void keyStateChanged();
+	void OCRkeyStateChanged();
+	void TextkeyStateChanged();
 
 };
