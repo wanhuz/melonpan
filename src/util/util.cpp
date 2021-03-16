@@ -39,6 +39,7 @@ Pix* Util::qPixMap2PIX(QPixmap* pixmap) {
 	return pixEndianByteSwapNew(pix);
 }
 
+/*Send CTRL+C key input to Windows*/
 int Util::sendKeyInput() {
 	INPUT inputs[4];
 	ZeroMemory(inputs, sizeof(inputs));

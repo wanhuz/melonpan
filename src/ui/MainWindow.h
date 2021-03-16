@@ -5,6 +5,8 @@
 #include <qstandarditemmodel.h>
 #include "../capturekey/maincontroller.h"
 
+
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -21,6 +23,7 @@ public slots:
     void search();
 
 private:
+
     MainController* MainControl;
     QPushButton* OCRBtn;
     QPushButton* textBtn;

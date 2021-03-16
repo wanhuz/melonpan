@@ -8,6 +8,9 @@
 #include <qdebug.h>
 #include <qclipboard.h>
 #include <qapplication.h>
+#include "../settings/config.h"
+
+
 
 
 MainController::MainController() {
@@ -17,11 +20,11 @@ MainController::MainController() {
 	ocr = new Ocr();
 	capturekeypress = new capturekey();
 	clipboard = QApplication::clipboard();
-
+	Config::getInstance().setFrame(frame);
 	dictloader->setDict(dict);
 	dictloader->start();
 
-	connect(clipboard, SIGNAL(dataChanged()), this, SLOT(setSearchBox()));
+	
 	connect(capturekeypress, SIGNAL(OCRkeyStateChanged()), this, SLOT(captureOCR()));
 	connect(capturekeypress, SIGNAL(TextkeyStateChanged()), this, SLOT(captureTextGeneric()));
 }
@@ -34,6 +37,7 @@ void MainController::killCaptureKey() {
 }
 
 void MainController::stopCaptureKey() {
+	disconnect(clipboard, SIGNAL(dataChanged()), this, SLOT(setSearchBox()));
 	capturekeypress->stopCapture(capturekeypress->OCR);
 	capturekeypress->stopCapture(capturekeypress->TEXT_GENERIC);
 }
@@ -50,11 +54,13 @@ void MainController::startCaptureKeyOCR() {
 
 void MainController::startCaptureKeyTextGeneric() {
 	this->stopCaptureKey();
+	connect(clipboard, SIGNAL(dataChanged()), this, SLOT(setSearchBox()));
 	capturekeypress->startCapture(capturekeypress->TEXT_GENERIC);
 
 	if (!capturekeypress->isRunning()) {
 		capturekeypress->start();
 	}
+	
 }
 
 QVector<QStringList> MainController::searchDict(QString searchStr) {

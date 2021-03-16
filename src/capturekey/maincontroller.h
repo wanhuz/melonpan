@@ -6,6 +6,7 @@
 #include "../dict/dict.h"
 #include <qclipboard.h>
 
+
 class MainController : public QObject
 {
 	Q_OBJECT;
@@ -24,7 +25,7 @@ private:
 	capturekey *capturekeypress;
 	Dict* dict;
 	QClipboard* clipboard;
-	
+
 
 private slots:
 	void captureOCR();

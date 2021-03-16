@@ -5,7 +5,10 @@
 #include <qtextcodec.h>
 #include <Windows.h>
 #include "../capturekey/maincontroller.h"
-
+#include <qaction.h>
+#include <qdebug.h>
+#include "../settings/config.h"
+#include "../ui/SettingsWindow.h";
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -17,8 +20,17 @@ MainWindow::MainWindow(QWidget* parent)
     textBtn = ui.textBtn;
     textbox = ui.textLine;
     table = ui.dictView;
-    
+    QAction* font10 = ui.f10;
+    QAction* font11 = ui.f11;
+    QAction* font12 = ui.f12;
+    QAction* font13 = ui.f13;
+    QAction* font14 = ui.f14;
+    QAction* frameVert = ui.actionVertical;
+    QAction* frameHort = ui.actionHorizontal;
+    QAction* settingsWindow = ui.Settings;
     MainControl = new MainController();
+
+    //UI customization
     QStringList labels;
     labels.insert(0, QString("Kanji"));
     labels.insert(1, QString("Kana"));
@@ -29,14 +41,42 @@ MainWindow::MainWindow(QWidget* parent)
     OCRBtn->setCheckable(true);
     textBtn->setCheckable(true);
     table->verticalHeader()->setVisible(false);
-
-
     table->setModel(&dictmodel);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    //Connect menu bar button
+    connect(font10, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameSize(10);
+        });
+    connect(font11, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameSize(11);
+        });
+    connect(font12, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameSize(12);
+        });
+    connect(font13, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameSize(13);
+        });
+    connect(font14, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameSize(14);
+        });
+    connect(frameVert, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameOrientation(true);
+        });
+    connect(frameHort, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameOrientation(false);
+        });
+    connect(settingsWindow, &QAction::triggered, this, [=]() {
+            SettingsWindow* settings = new SettingsWindow();;
+            settings->show();
+        });
+
+    //Connect buttons to respective function
     connect(MainControl, SIGNAL(OcrResult(QString)), textbox, SLOT(setText(QString)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureOCR(bool)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureText(bool)));
+    connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
 }
 

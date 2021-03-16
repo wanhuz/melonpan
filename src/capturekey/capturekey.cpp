@@ -44,6 +44,7 @@ void capturekey::run() {
 	}
 }
 
+/*If a particular key is pressed, return true*/
 bool capturekey::keyPressed(int key) {
 	return (GetAsyncKeyState(key) & (0x8000 != 0)); //Why does this work? I dont know
 }
