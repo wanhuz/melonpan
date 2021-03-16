@@ -2,7 +2,9 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LocalDebuggerEnvironment>TESSDATA_PREFIX=C:\Users\WanHuz\Documents\Shanachan\res\tessdata
-PATH=%PATH%;$(QtDllPath)</LocalDebuggerEnvironment>
+PATH=%PATH%;$(QtDllPath);C:\Users\WanHuz\AppData\Local\Programs\Python\Python37
+PYTHONPATH="C:\Users\WanHuz\AppData\Local\Programs\Python\Python37\DLLs;C:\Users\WanHuz\AppData\Local\Programs\Python\Python37\Lib"
+PYTHONHOME=C:\Users\WanHuz\AppData\Local\Programs\Python\Python37</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

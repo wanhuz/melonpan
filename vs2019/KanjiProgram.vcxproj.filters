@@ -39,6 +39,18 @@
     <ClCompile Include="..\src\dict\DictLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\capturekey\capturekey.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\capturekey\maincontroller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ui\SettingsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\settings\config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ocr\ocr.h">
@@ -48,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\dict\dict.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\settings\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -69,8 +84,20 @@
     <QtMoc Include="..\src\dict\DictLoader.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="..\src\capturekey\capturekey.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\src\ui\SettingsWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\src\capturekey\maincontroller.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="..\src\ui\SettingsWindow.ui">
+      <Filter>Resource Files</Filter>
+    </QtUic>
     <QtUic Include="..\src\ui\MainWindow.ui">
       <Filter>Resource Files</Filter>
     </QtUic>

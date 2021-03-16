@@ -1,5 +1,7 @@
 #include "util.h"
 #include <qimage.h>
+#include <Windows.h>
+#include <qdebug.h>
 
 
 
@@ -37,3 +39,29 @@ Pix* Util::qPixMap2PIX(QPixmap* pixmap) {
 	return pixEndianByteSwapNew(pix);
 }
 
+/*Send CTRL+C key input to Windows*/
+int Util::sendKeyInput() {
+	INPUT inputs[4];
+	ZeroMemory(inputs, sizeof(inputs));
+
+	inputs[0].type = INPUT_KEYBOARD;
+	inputs[0].ki.wVk = VK_RCONTROL;
+
+	inputs[1].type = INPUT_KEYBOARD;
+	inputs[1].ki.wVk = 0x43;
+
+	inputs[2].type = INPUT_KEYBOARD;
+	inputs[2].ki.wVk = VK_RCONTROL;
+	inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+
+	inputs[3].type = INPUT_KEYBOARD;
+	inputs[3].ki.wVk = 0x43;
+	inputs[3].ki.dwFlags = KEYEVENTF_KEYUP;
+
+	UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
+	if (uSent != ARRAYSIZE(inputs)) {
+		qDebug() << "Sendinput failed" << endl;
+		return 4;
+	}
+	return 0;
+}

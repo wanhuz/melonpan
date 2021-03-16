@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>MelonPan</string>
   </property>
   <property name="styleSheet">
    <string notr="true"/>
@@ -44,14 +44,14 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>25</width>
-            <height>0</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>50</width>
-            <height>50</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
           <property name="text">
@@ -94,7 +94,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="searchBtn">
+         <widget class="QPushButton" name="textBtn">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
             <horstretch>0</horstretch>
@@ -103,8 +103,8 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>25</width>
-            <height>25</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -120,7 +120,7 @@
            </size>
           </property>
           <property name="text">
-           <string>F</string>
+           <string>Text</string>
           </property>
          </widget>
         </item>
@@ -147,6 +147,18 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="styleSheet">
+         <string notr="true">selection-background-color: #CDE8FF;
+selection-color: #000;
+
+QScrollBar {
+	color: red;
+	border-left: 0px;
+}</string>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Plain</enum>
+        </property>
         <property name="sizeAdjustPolicy">
          <enum>QAbstractScrollArea::AdjustIgnored</enum>
         </property>
@@ -156,14 +168,32 @@
         <property name="editTriggers">
          <set>QAbstractItemView::NoEditTriggers</set>
         </property>
+        <property name="showDropIndicator" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="dragDropOverwriteMode">
+         <bool>false</bool>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionMode">
+         <enum>QAbstractItemView::SingleSelection</enum>
+        </property>
         <property name="selectionBehavior">
          <enum>QAbstractItemView::SelectRows</enum>
         </property>
         <property name="showGrid">
+         <bool>true</bool>
+        </property>
+        <property name="cornerButtonEnabled">
          <bool>false</bool>
         </property>
         <attribute name="horizontalHeaderHighlightSections">
          <bool>false</bool>
+        </attribute>
+        <attribute name="verticalHeaderVisible">
+         <bool>true</bool>
         </attribute>
        </widget>
       </item>
@@ -184,6 +214,98 @@
     </item>
    </layout>
   </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>497</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: #FFF;
+border-bottom:  1px solid #828790;</string>
+   </property>
+   <widget class="QMenu" name="menuSettings">
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(242,242,242);
+selection-background-color: rgb(145,201,247);
+selection-color: #000;
+</string>
+    </property>
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <widget class="QMenu" name="Change_Orientation">
+     <property name="title">
+      <string>Orientation</string>
+     </property>
+     <addaction name="actionVertical"/>
+     <addaction name="actionHorizontal"/>
+    </widget>
+    <widget class="QMenu" name="menuFont_size">
+     <property name="title">
+      <string>Font size</string>
+     </property>
+     <addaction name="f10"/>
+     <addaction name="f11"/>
+     <addaction name="f12"/>
+     <addaction name="f13"/>
+     <addaction name="f14"/>
+    </widget>
+    <addaction name="Change_Orientation"/>
+    <addaction name="menuFont_size"/>
+    <addaction name="separator"/>
+    <addaction name="Settings"/>
+   </widget>
+   <addaction name="menuSettings"/>
+  </widget>
+  <action name="actionSettings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="Settings">
+   <property name="text">
+    <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionVertical">
+   <property name="text">
+    <string>Vertical</string>
+   </property>
+  </action>
+  <action name="actionHorizontal">
+   <property name="text">
+    <string>Horizontal</string>
+   </property>
+  </action>
+  <action name="f10">
+   <property name="text">
+    <string>10</string>
+   </property>
+  </action>
+  <action name="f11">
+   <property name="text">
+    <string>11</string>
+   </property>
+  </action>
+  <action name="f12">
+   <property name="text">
+    <string>12</string>
+   </property>
+  </action>
+  <action name="f13">
+   <property name="text">
+    <string>13</string>
+   </property>
+  </action>
+  <action name="f14">
+   <property name="text">
+    <string>14</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

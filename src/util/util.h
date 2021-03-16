@@ -6,5 +6,6 @@ class Util
 {
 public:
 	static Pix* qPixMap2PIX(QPixmap* pixmap);
+	static int sendKeyInput();
 
 };
