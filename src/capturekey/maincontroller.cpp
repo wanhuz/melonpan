@@ -23,7 +23,7 @@ MainController::MainController() {
 	Config::getInstance().setFrame(frame);
 	dictloader->setDict(dict);
 	dictloader->start();
-
+	
 	
 	connect(capturekeypress, SIGNAL(OCRkeyStateChanged()), this, SLOT(captureOCR()));
 	connect(capturekeypress, SIGNAL(TextkeyStateChanged()), this, SLOT(captureTextGeneric()));
@@ -74,6 +74,11 @@ void MainController::captureOCR() {
 	frame->activateWindow();
 	Pix* pix = Util::qPixMap2PIX(&screenshot);
 	QString text = ocr->recognize(pix);
+
+	//DUMB WORD PROCESSING TO REMOVE SPACE GET CORRECT RESULT, MAKE PROPER FUNCTION LATER
+	text = text.simplified();
+	text = text.replace(" ", "");
+
 	emit OcrResult(text);
 }
 

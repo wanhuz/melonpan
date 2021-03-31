@@ -9,6 +9,8 @@
 #include <qdebug.h>
 #include "../settings/config.h"
 #include "../ui/SettingsWindow.h";
+#include <qfontdatabase.h>
+#include <qdir.h>
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -20,17 +22,31 @@ MainWindow::MainWindow(QWidget* parent)
     textBtn = ui.textBtn;
     textbox = ui.textLine;
     table = ui.dictView;
-    QAction* font10 = ui.f10;
-    QAction* font11 = ui.f11;
-    QAction* font12 = ui.f12;
-    QAction* font13 = ui.f13;
-    QAction* font14 = ui.f14;
+    QAction* fsSmall = ui.fs_small;
+    QAction* fsNormal = ui.fs_normal;
+    QAction* fsLarge = ui.fs_large;
+    QAction * fsvLarge = ui.fs_verylarge;
     QAction* frameVert = ui.actionVertical;
     QAction* frameHort = ui.actionHorizontal;
     QAction* settingsWindow = ui.Settings;
     MainControl = new MainController();
 
+    QString fontPath = QDir::currentPath();
+    fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\";
+    fontPath = fontPath + "NotoSansMonoCJKjp-Regular.otf";
+    int id = QFontDatabase::addApplicationFont(fontPath);
+    
+    if (id < 0) {
+        qDebug() << "Failed to load Sans Mono JK font at " << fontPath;
+    }
+    else {
+        QString NotoJK = QFontDatabase::applicationFontFamilies(id).at(0);
+        sansMonoJK = new QFont(NotoJK, 12);
+    }
+
+
     //UI customization
+    
     QStringList labels;
     labels.insert(0, QString("Kanji"));
     labels.insert(1, QString("Kana"));
@@ -43,22 +59,20 @@ MainWindow::MainWindow(QWidget* parent)
     table->verticalHeader()->setVisible(false);
     table->setModel(&dictmodel);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     //Connect menu bar button
-    connect(font10, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(10);
+    connect(fsSmall, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameSize(15);
         });
-    connect(font11, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(11);
+    connect(fsNormal, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameSize(30);
         });
-    connect(font12, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(12);
+    connect(fsLarge, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameSize(45);
         });
-    connect(font13, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(13);
-        });
-    connect(font14, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(14);
+    connect(fsvLarge, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameSize(60);
         });
     connect(frameVert, &QAction::triggered, this, [=]() {
             Config::getInstance().setFrameOrientation(true);
@@ -70,6 +84,7 @@ MainWindow::MainWindow(QWidget* parent)
             SettingsWindow* settings = new SettingsWindow();;
             settings->show();
         });
+
 
     //Connect buttons to respective function
     connect(MainControl, SIGNAL(OcrResult(QString)), textbox, SLOT(setText(QString)));
@@ -92,19 +107,33 @@ void MainWindow::search() {
         //No kanji found
         dictmodel.clear();
     }
-    else {
+    else if (searchResult[0].size() > 0) {
+
         for (int i = 0; i < searchResult[0].size(); i++) {
+            qDebug() << searchResult[0].at(i).toLocal8Bit().constData() << endl;
             dictmodel.setItem(i, 0, new QStandardItem(searchResult[0].at(i).toLocal8Bit().constData()));
             dictmodel.setItem(i, 1, new QStandardItem(searchResult[1].at(i).toLocal8Bit().constData()));
             dictmodel.setItem(i, 2, new QStandardItem(searchResult[2].at(i).toLocal8Bit().constData()));
         }
+
+        //If font is found, set the font to Sans Mono JK
+        if (sansMonoJK != NULL) {
+            for (int i = 0; i < dictmodel.rowCount(); i++) {
+                dictmodel.item(i, 0)->setFont(*sansMonoJK);
+                dictmodel.item(i, 1)->setFont(*sansMonoJK);
+            }
+        }
+
+
     }
 
+    //Refresh UI
     QStringList labels;
     labels.insert(0, QString("Kanji"));
     labels.insert(1, QString("Kana"));
     labels.insert(2, QString("Meaning"));
     dictmodel.setHorizontalHeaderLabels(labels);
+    
 
 
 }

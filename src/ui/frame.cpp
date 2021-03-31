@@ -6,6 +6,7 @@
 #include <qscreen.h>
 #include <qapplication.h>
 #include <qpixmap.h>
+#include <qdebug.h>
 
 
 Frame::Frame(QWidget* parent)
@@ -49,7 +50,7 @@ void Frame::setOrientation(bool orienVal) {
 
 /*Setter for font size*/
 void Frame::setFontSize(int size) {
-	if (size > 5 && size < 30) {
+	if (size > 5 && size < 100) {
 		fontsize = size;
 	}
 }

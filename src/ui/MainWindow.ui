@@ -246,13 +246,12 @@ selection-color: #000;
     </widget>
     <widget class="QMenu" name="menuFont_size">
      <property name="title">
-      <string>Font size</string>
+      <string>OCR Frame size</string>
      </property>
-     <addaction name="f10"/>
-     <addaction name="f11"/>
-     <addaction name="f12"/>
-     <addaction name="f13"/>
-     <addaction name="f14"/>
+     <addaction name="fs_small"/>
+     <addaction name="fs_normal"/>
+     <addaction name="fs_large"/>
+     <addaction name="fs_verylarge"/>
     </widget>
     <addaction name="Change_Orientation"/>
     <addaction name="menuFont_size"/>
@@ -281,24 +280,24 @@ selection-color: #000;
     <string>Horizontal</string>
    </property>
   </action>
-  <action name="f10">
+  <action name="fs_small">
    <property name="text">
-    <string>10</string>
+    <string>Small</string>
    </property>
   </action>
-  <action name="f11">
+  <action name="fs_normal">
    <property name="text">
-    <string>11</string>
+    <string>Normal</string>
    </property>
   </action>
-  <action name="f12">
+  <action name="fs_large">
    <property name="text">
-    <string>12</string>
+    <string>Large</string>
    </property>
   </action>
-  <action name="f13">
+  <action name="fs_verylarge">
    <property name="text">
-    <string>13</string>
+    <string>Very Large</string>
    </property>
   </action>
   <action name="f14">

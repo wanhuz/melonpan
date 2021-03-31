@@ -5,6 +5,7 @@
 #include <qstring.h>
 #include <QBuffer>
 #include <qeventloop.h>
+#include <qdir.h>
 
 Dict::Dict() {
     QStringList meaning_list;
@@ -17,9 +18,15 @@ Dict::Dict() {
 
 /*Load file into QList*/
 void Dict::load() {
-	QFile dictFile("../res/JMdict_e");
+    QString dictPath = QDir::currentPath();
+    dictPath = dictPath + "/res/JMdict_e";
+    dictPath = "C://Users//WanHuz//Documents//Shanachan//res//JMdict_e"; //Debug Mode
+    QFile dictFile(dictPath);
     if (!dictFile.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug() << "Could not open dictionary file " + dictPath;
         return;
+    }
 
     QByteArray data = dictFile.readAll();
     this->parse(&data);
@@ -58,6 +65,7 @@ void Dict::parse(QByteArray* data) {
         }
         else if (line.contains("</entry>")) {
             //Memory allocation here is 200MB~ give or take
+            readings = readings.trimmed();
             dictlist[1].append(readings);
             dictlist[0].append(kanji);
             dictlist[2].append(meanings);
@@ -90,3 +98,4 @@ QVector<QStringList> Dict::search(QString searchString) {
 
     return searchResult;
 }
+

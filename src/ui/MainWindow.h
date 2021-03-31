@@ -23,7 +23,7 @@ public slots:
     void search();
 
 private:
-
+    QFont* sansMonoJK;
     MainController* MainControl;
     QPushButton* OCRBtn;
     QPushButton* textBtn;
