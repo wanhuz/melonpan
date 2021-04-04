@@ -11,6 +11,7 @@
 #include "../ui/SettingsWindow.h";
 #include <qfontdatabase.h>
 #include <qdir.h>
+#include <qfile.h>
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -108,9 +109,17 @@ void MainWindow::search() {
         dictmodel.clear();
     }
     else if (searchResult[0].size() > 0) {
+        QFile file("exampledebug.txt");
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            qDebug() << "No file found";
+            return;
+        }
+            
+
+        QTextStream out(&file);
 
         for (int i = 0; i < searchResult[0].size(); i++) {
-            qDebug() << searchResult[0].at(i).toLocal8Bit().constData() << endl;
+            out << searchResult[0].at(i) << endl;
             dictmodel.setItem(i, 0, new QStandardItem(searchResult[0].at(i).toLocal8Bit().constData()));
             dictmodel.setItem(i, 1, new QStandardItem(searchResult[1].at(i).toLocal8Bit().constData()));
             dictmodel.setItem(i, 2, new QStandardItem(searchResult[2].at(i).toLocal8Bit().constData()));

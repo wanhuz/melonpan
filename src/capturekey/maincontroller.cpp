@@ -70,9 +70,11 @@ QVector<QStringList> MainController::searchDict(QString searchStr) {
 void MainController::captureOCR() {
 	frame->setBoxSize();
 	QPixmap screenshot = frame->shootScreenshot();
+	QTimer *timer = new QTimer();
+	timer->start(2000);
 	frame->show();
 	frame->activateWindow();
-	Pix* pix = Util::qPixMap2PIX(&screenshot);
+	Pix *pix = Util::qPixMap2PIX(&screenshot);
 	QString text = ocr->recognize(pix);
 
 	//DUMB WORD PROCESSING TO REMOVE SPACE GET CORRECT RESULT, MAKE PROPER FUNCTION LATER
@@ -80,6 +82,9 @@ void MainController::captureOCR() {
 	text = text.replace(" ", "");
 
 	emit OcrResult(text);
+
+	connect(timer, &QTimer::timeout, frame, &Frame::hide);
+	connect(timer, &QTimer::timeout, timer, &QTimer::deleteLater);
 }
 
 
