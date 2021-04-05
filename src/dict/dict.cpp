@@ -19,7 +19,7 @@ Dict::Dict() {
 /*Load file into QList*/
 void Dict::load() {
     QString dictPath = QDir::currentPath();
-    dictPath = dictPath + "/res/JMdict_e";
+    //dictPath = dictPath + "/res/JMdict_e";
     dictPath = "C://Users//WanHuz//Documents//Shanachan//res//JMdict_e"; //Debug Mode
     QFile dictFile(dictPath);
     if (!dictFile.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -40,42 +40,47 @@ void Dict::parse(QByteArray* data) {
     out.setCodec("UTF-8");
     int rowCount = 0;
 
-    QString meanings = "";
+    const QString clrTxt = "";
+    QString meanings = clrTxt;
     QString kanji;
-    QString readings = "";
+    QString readings = clrTxt;
     QString line;
+    
 
-
-    //This code below takes ~40 seconds without thread
+    //This code below takes ~15s using different threads; ~40s without thread
     while (!out.atEnd()) {
         line = out.readLine(); 
 
-        if (line.contains("<keb>")) {
-            line.remove(QRegExp("<...>|<\/...>"));
+        if (line.startsWith("<keb>")) {
+            line.remove(0,5);
+            line.remove("</keb>");
             kanji = line;
         }
-        else if (line.contains("<gloss>")) {
-            line.remove(QRegExp("<.....>"));
-            line.replace("</gloss>", "; ");
+        else if (line.startsWith("<gloss>")) {
+            line.remove(0, 7);
+            line.remove("</gloss>");
+            line = line + ";";
             meanings = meanings + line;
         }
-        else if (line.contains("<reb>")) {
-            line.remove(QRegExp("<...>|<\/...>"));
+        else if (line.startsWith("<reb>")) {
+            line.remove(0, 5);
+            line.remove("</reb>");
             readings = readings + line + "\n";
         }
-        else if (line.contains("</entry>")) {
-            //Memory allocation here is 200MB~ give or take
+        else if (line.startsWith("</ent")) {
+            //Memory allocation here is 130MB~ give or take
             readings = readings.trimmed();
-            dictlist[1].append(readings);
-            dictlist[0].append(kanji);
-            dictlist[2].append(meanings);
+            dictlist[1].append(readings.toLocal8Bit().constData());
+            dictlist[0].append(kanji.toLocal8Bit().constData());
+            dictlist[2].append(meanings.toLocal8Bit().constData());
             rowCount++;
-            meanings = "";
-            kanji = "";
-            readings = "";
+            meanings = clrTxt;
+            kanji = clrTxt;
+            readings = clrTxt;
         }
         
     }
+
 
 }
 

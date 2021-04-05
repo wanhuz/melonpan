@@ -12,6 +12,7 @@
 #include <qfontdatabase.h>
 #include <qdir.h>
 #include <qfile.h>
+#include <qmessagebox.h>
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -23,6 +24,7 @@ MainWindow::MainWindow(QWidget* parent)
     textBtn = ui.textBtn;
     textbox = ui.textLine;
     table = ui.dictView;
+    sansMonoJK = NULL;
     QAction* fsSmall = ui.fs_small;
     QAction* fsNormal = ui.fs_normal;
     QAction* fsLarge = ui.fs_large;
@@ -33,12 +35,16 @@ MainWindow::MainWindow(QWidget* parent)
     MainControl = new MainController();
 
     QString fontPath = QDir::currentPath();
-    fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\";
-    fontPath = fontPath + "NotoSansMonoCJKjp-Regular.otf";
+    fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
+    //fontPath = fontPath + "//res//NotoSansMonoCJKjp-Regular.otf";
     int id = QFontDatabase::addApplicationFont(fontPath);
     
     if (id < 0) {
         qDebug() << "Failed to load Sans Mono JK font at " << fontPath;
+        QMessageBox err;
+        err.setText("Failed to load Sans Mono JK font at " + fontPath);
+        err.setIcon(QMessageBox::Warning);
+        err.exec();
     }
     else {
         QString NotoJK = QFontDatabase::applicationFontFamilies(id).at(0);
@@ -109,17 +115,19 @@ void MainWindow::search() {
         dictmodel.clear();
     }
     else if (searchResult[0].size() > 0) {
-        QFile file("exampledebug.txt");
-        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-            qDebug() << "No file found";
-            return;
-        }
+
+        //For debugging purpose
+        //QFile file("exampledebug.txt");
+        //if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        //    qDebug() << "No file found";
+        //    return;
+        //}
             
 
-        QTextStream out(&file);
+        //QTextStream out(&file);
 
         for (int i = 0; i < searchResult[0].size(); i++) {
-            out << searchResult[0].at(i) << endl;
+            //out << searchResult[0].at(i) << endl;
             dictmodel.setItem(i, 0, new QStandardItem(searchResult[0].at(i).toLocal8Bit().constData()));
             dictmodel.setItem(i, 1, new QStandardItem(searchResult[1].at(i).toLocal8Bit().constData()));
             dictmodel.setItem(i, 2, new QStandardItem(searchResult[2].at(i).toLocal8Bit().constData()));

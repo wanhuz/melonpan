@@ -14,9 +14,9 @@ Ocr::Ocr() {
     api = new tesseract::TessBaseAPI();
     //Path to tesseract Data
     QString resPath = QDir::currentPath();
-    resPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\tessdata\\";
     //resPath = resPath.replace("/", "\\");
     //resPath = resPath + "\\res\\tessdata\\";
+    resPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\tessdata\\"; //Debug Mode
     QByteArray resPath_char = resPath.toLocal8Bit();
     const char* resPath_char2 = resPath_char.data();
     qDebug() << resPath;
