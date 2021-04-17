@@ -13,6 +13,7 @@
 
 
 
+
 MainController::MainController() {
 	DictLoader* dictloader = new DictLoader();
 	dict = new Dict();
@@ -63,8 +64,10 @@ void MainController::startCaptureKeyTextGeneric() {
 	
 }
 
-QVector<QStringList> MainController::searchDict(QString searchStr) {
-	return dict->search(searchStr);
+QVector<entry> MainController::searchDict(QString searchStr) {
+	QVector<entry> searchResult = dict->search(searchStr);
+	searchResult = dict->sort(searchResult, searchStr);
+	return searchResult;
 }
 
 void MainController::captureOCR() {
@@ -89,7 +92,7 @@ void MainController::captureOCR() {
 
 
 /*Capture digital text by sending CTRL+C as input to Windows
-It is a hacky solution, but it is the most optimal way to get text from different application types in Windows*/
+It is a hacky solution, but it is the most optimal way to get text from different application types in Microsoft Windows*/
 void MainController::captureTextGeneric() {
 	Util::sendKeyInput();
 }

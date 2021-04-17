@@ -13,6 +13,7 @@
 #include <qdir.h>
 #include <qfile.h>
 #include <qmessagebox.h>
+#include "../data/entry.h"
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -106,31 +107,36 @@ MainWindow::MainWindow(QWidget* parent)
 void MainWindow::search() {
     dictmodel.clear();
     QString searchText = textbox->text();
-    QVector<QStringList> searchResult = MainControl->searchDict(searchText);
-    if (searchResult[0].size() == 0) {
-       //No result found
+
+    if (searchText.isEmpty()) { 
+        QStringList labels;
+        labels.insert(0, QString("Kanji"));
+        labels.insert(1, QString("Kana"));
+        labels.insert(2, QString("Meaning"));
+        dictmodel.setHorizontalHeaderLabels(labels);
+        return; 
     }
-    else if (searchResult[0].at(0).isEmpty()) {
-        //No kanji found
+
+    QVector<entry> searchResult = MainControl->searchDict(searchText);
+    if (searchResult.size() == 0) {
+       //No result found
         dictmodel.clear();
     }
-    else if (searchResult[0].size() > 0) {
+    else if ((searchResult.size()) > 0) {
+        int size;
 
-        //For debugging purpose
-        //QFile file("exampledebug.txt");
-        //if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        //    qDebug() << "No file found";
-        //    return;
-        //}
-            
+        /*Limit search result to 100 entries only. Also, improve responsiveness*/
+        if (searchResult.size() > 100) {
+            size = 100;
+        }
+        else {
+            size = searchResult.size();
+        }
 
-        //QTextStream out(&file);
-
-        for (int i = 0; i < searchResult[0].size(); i++) {
-            //out << searchResult[0].at(i) << endl;
-            dictmodel.setItem(i, 0, new QStandardItem(searchResult[0].at(i).toLocal8Bit().constData()));
-            dictmodel.setItem(i, 1, new QStandardItem(searchResult[1].at(i).toLocal8Bit().constData()));
-            dictmodel.setItem(i, 2, new QStandardItem(searchResult[2].at(i).toLocal8Bit().constData()));
+        for (int i = 0; i < size; i++) {
+            dictmodel.setItem(i, 0, new QStandardItem(searchResult[i].getKanji().toLocal8Bit().constData()));
+            dictmodel.setItem(i, 1, new QStandardItem(searchResult[i].getReading().toLocal8Bit().constData()));
+            dictmodel.setItem(i, 2, new QStandardItem(searchResult[i].getGloss().toLocal8Bit().constData()));
         }
 
         //If font is found, set the font to Sans Mono JK
