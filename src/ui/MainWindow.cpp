@@ -118,11 +118,11 @@ void MainWindow::search() {
     }
 
     QVector<entry> searchResult = MainControl->searchDict(searchText);
-    if (searchResult.size() == 0) {
+    if (searchResult.size() < 1) {
        //No result found
         dictmodel.clear();
     }
-    else if ((searchResult.size()) > 0) {
+    else if (searchResult.size() > 0) {
         int size;
 
         /*Limit search result to 100 entries only. Also, improve responsiveness*/

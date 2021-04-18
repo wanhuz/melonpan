@@ -13,22 +13,40 @@
 
 Dict::Dict() {
     // Hard mapping of word frequency line in Japanese Dictionary file to number
-    freqMap.insert("<re_pri>news1</re_pri>", 1);
-    freqMap.insert("<re_pri>news2</re_pri>", 2);
-    freqMap.insert("<re_pri>ichi1</re_pri>", 3);
-    freqMap.insert("<re_pri>ichi2</re_pri>", 4);
-    freqMap.insert("<re_pri>spec1</re_pri>", 5);
-    freqMap.insert("<re_pri>spec2</re_pri>", 6);
-    freqMap.insert("<re_pri>gai1</re_pri>", 7);
-    freqMap.insert("<re_pri>gai2</re_pri>", 8);
-    freqMap.insert("<ke_pri>news1</ke_pri>", 1);
-    freqMap.insert("<ke_pri>news2</ke_pri>", 2);
-    freqMap.insert("<ke_pri>ichi1</ke_pri>", 3);
-    freqMap.insert("<ke_pri>ichi2</ke_pri>", 4);
-    freqMap.insert("<ke_pri>spec1</ke_pri>", 5);
-    freqMap.insert("<ke_pri>spec2</ke_pri>", 6);
-    freqMap.insert("<ke_pri>gai1</ke_pri>", 7);
-    freqMap.insert("<ke_pri>gai2</ke_pri>", 8);
+    QString line;
+    for (int i = 1; i < 49; i++) {
+        
+        if (i < 10) { 
+            line = "<ke_pri>nf";
+            line = line + "0" + QString::number(i);
+            line = line + "</ke_pri>";
+            freqMap.insert(line, i); 
+        }
+        else {
+            line = "<ke_pri>nf";
+            line = line + QString::number(i);
+            line = line + "</ke_pri>";
+            freqMap.insert(line, i);
+        }
+        
+    }
+
+    freqMap.insert("<re_pri>news1</re_pri>", 49);
+    freqMap.insert("<re_pri>news2</re_pri>", 50);
+    freqMap.insert("<re_pri>ichi1</re_pri>", 51);
+    freqMap.insert("<re_pri>ichi2</re_pri>", 52);
+    freqMap.insert("<re_pri>spec1</re_pri>", 53);
+    freqMap.insert("<re_pri>spec2</re_pri>", 54);
+    freqMap.insert("<re_pri>gai1</re_pri>", 55);
+    freqMap.insert("<re_pri>gai2</re_pri>", 56);
+    freqMap.insert("<ke_pri>news1</ke_pri>", 57);
+    freqMap.insert("<ke_pri>news2</ke_pri>", 58);
+    freqMap.insert("<ke_pri>ichi1</ke_pri>", 59);
+    freqMap.insert("<ke_pri>ichi2</ke_pri>", 60);
+    freqMap.insert("<ke_pri>spec1</ke_pri>", 61);
+    freqMap.insert("<ke_pri>spec2</ke_pri>", 62);
+    freqMap.insert("<ke_pri>gai1</ke_pri>", 63);
+    freqMap.insert("<ke_pri>gai2</ke_pri>", 64);
 }
 
 /*Load file into QList*/
@@ -56,8 +74,9 @@ void Dict::parse(QByteArray* data) {
 
     const int MAX_PRIORITY = 100;
     const QString CLRTXT = "";
+    QVector<QString> kanji;
+    kanji.append(CLRTXT);
     QString meanings = CLRTXT;
-    QString kanji = CLRTXT;
     QString readings = CLRTXT;
     QString line = CLRTXT;
     int wordFreq = MAX_PRIORITY;
@@ -69,12 +88,12 @@ void Dict::parse(QByteArray* data) {
         if (line.startsWith("<keb>")) {
             line.remove(0,5);
             line.remove("</keb>");
-            kanji = line;
+            kanji.append(line);
         }
         else if (line.startsWith("<gloss>")) {
             line.remove(0, 7);
             line.remove("</gloss>");
-            line = line + "\n";
+            line = line + " / ";
             meanings = meanings + line;
         }
         else if (line.startsWith("<reb>")) {
@@ -87,9 +106,10 @@ void Dict::parse(QByteArray* data) {
 
             //If line is not in Map, skip
             if (!tempFreq) { continue; }
-            
+
             if (tempFreq < wordFreq) {
                 wordFreq = tempFreq;
+                
             } 
 
             
@@ -97,27 +117,36 @@ void Dict::parse(QByteArray* data) {
         else if (line.startsWith("</ent")) {
             //Memory allocation here is 130MB~ give or take
             readings = readings.trimmed();
-            meanings.chop(1);
-            entry tempEntry = entry(kanji, readings, meanings, wordFreq);
-            dictlist.append(tempEntry);
+            meanings.chop(2);
 
+            if (kanji.size() > 1) { kanji.removeFirst(); }
+
+            for (int i = 0; i < kanji.size(); i++) {
+                entry tempEntry = entry(kanji.at(i), readings, meanings, wordFreq);
+                dictlist.append(tempEntry);
+            }
+            
             meanings = CLRTXT;
-            kanji = CLRTXT;
+            kanji.clear();
+            kanji.append(CLRTXT);
             readings = CLRTXT;
             wordFreq = MAX_PRIORITY;
         }
         
     }
-
-   
+    
 }
 
 /*Search Kanji or Kana and return result if the entry starts with target Kana or Kanji*/
 QVector<entry> Dict::search(QString searchString) {
     QVector<entry> searchResult;
+    QRegExp wordBound("\\b(" + searchString + ")\\b");
 
+    /*Make responsiveness slow. Responsiveness bottleneck. Worst case of input of each character k = O(n^k)*/
     for (int i = 0; i < dictlist.size(); i++) {
-        if (dictlist[i].getKanji().startsWith(searchString) || dictlist[i].getReading().startsWith(searchString)) {
+        if (dictlist[i].getKanji().startsWith(searchString) || 
+            dictlist[i].getReading().startsWith(searchString) || 
+            dictlist[i].getGloss().contains(wordBound)){
             entry tempEntry = entry(
                 dictlist[i].getKanji(),
                 dictlist[i].getReading(),
