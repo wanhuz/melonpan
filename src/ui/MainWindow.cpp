@@ -14,6 +14,7 @@
 #include <qfile.h>
 #include <qmessagebox.h>
 #include "../data/entry.h"
+#include "../util/util.h"
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -69,7 +70,7 @@ MainWindow::MainWindow(QWidget* parent)
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-    //Connect menu bar button
+    //Connect menu bar button, this is redundant, may change it later
     connect(fsSmall, &QAction::triggered, this, [=]() {
             Config::getInstance().setFrameSize(15);
         });
@@ -107,6 +108,7 @@ MainWindow::MainWindow(QWidget* parent)
 void MainWindow::search() {
     dictmodel.clear();
     QString searchText = textbox->text();
+    QString stemmedText = Util::getWordStem(searchText);
 
     if (searchText.isEmpty()) { 
         QStringList labels;

@@ -2,9 +2,18 @@
 #include <qimage.h>
 #include <Windows.h>
 #include <qdebug.h>
-
-
-
+#include <iostream>
+#include <mecab.h>
+#include <locale>
+#pragma comment(lib, "libmecab.lib")
+#pragma QT_NO_CAST_FROM_ASCII
+#pragma QT_NO_CAST_TO_ASCII
+#pragma QT_NO_CAST_FROM_BYTEARRAY
+#define CHECK(eval) if (! eval) { \
+   const char *e = tagger ? tagger->what() : MeCab::getTaggerError(); \
+   std::cerr << "Exception:" << e << std::endl; \
+   delete tagger; \
+   return -1; }
 
 /*QPixmap to Leptonica's Pix conversion*/
 Pix* Util::qPixMap2PIX(QPixmap* pixmap) {
@@ -64,4 +73,27 @@ int Util::sendKeyInput() {
 		return 4;
 	}
 	return 0;
+}
+
+QString Util::getWordStem(QString targetWord) {
+	/*char input[1024] = "ジョニーは戦場へ行った";*/
+
+	QByteArray array = targetWord.toLocal8Bit();
+	const char* data = array.constData();
+	int stringlen = targetWord.length();
+	MeCab::Model *model = MeCab::createModel("");
+	MeCab::Tagger* tagger = model->createTagger();
+	CHECK(tagger);
+	MeCab::Lattice* lattice = model->createLattice();
+	lattice->set_sentence(data);
+	CHECK(tagger->parse(lattice));
+	//MeCab::Tagger* tagger = MeCab::createTagger("");
+	//const char* result = tagger->parse(data, stringlen);
+
+	//printf(data);
+
+	std::cout << lattice << std::endl;
+	//printf(result);
+	//delete tagger;
+	return "o";
 }
