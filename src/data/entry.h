@@ -1,7 +1,7 @@
 #pragma once
 #include <qstring.h>
 
-/*Data type for dictionary entry. Each entry will have a kanji, readings and glossary*/
+/*Data type for dictionary entry. Each entry will have a kanji, readings, glossary and how common it is in real-life (frequency)*/
 class entry {
 private:
     QString kanji;
@@ -10,7 +10,7 @@ private:
     int freq;
 
 public:
-    entry( QString kanji,  QString reading,  QString gloss, int freq) { 
+    entry(const QString kanji,  const QString reading,  const QString gloss, const int freq) { 
         this->kanji = kanji; 
         this->reading = reading; 
         this->gloss = gloss; 

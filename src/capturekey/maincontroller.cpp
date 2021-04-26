@@ -74,7 +74,7 @@ void MainController::captureOCR() {
 	frame->setBoxSize();
 	QPixmap screenshot = frame->shootScreenshot();
 	QTimer *timer = new QTimer();
-	timer->start(2000);
+	timer->start(2500);
 	frame->show();
 	frame->activateWindow();
 	Pix *pix = Util::qPixMap2PIX(&screenshot);

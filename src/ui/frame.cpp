@@ -15,6 +15,7 @@ Frame::Frame(QWidget* parent)
 	QFrame* border = new QFrame();
 	QLayout* lay = new QVBoxLayout();
 
+	border->setWindowFlag(Qt::Tool);
 	this->setLayout(lay);
 	lay->addWidget(border);
 	lay->setContentsMargins(0, 0, 0, 0);

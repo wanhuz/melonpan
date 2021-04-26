@@ -14,6 +14,8 @@
 Dict::Dict() {
     // Hard mapping of word frequency line in Japanese Dictionary file to number
     QString line;
+
+    /*Insert word frequency nf01 to nf48. lower is more common*/
     for (int i = 1; i < 49; i++) {
         
         if (i < 10) { 
