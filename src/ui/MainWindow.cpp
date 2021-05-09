@@ -14,6 +14,7 @@
 #include <qfile.h>
 #include <qmessagebox.h>
 #include "../data/entry.h"
+#include "../ui/popup.h"
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -23,6 +24,7 @@ MainWindow::MainWindow(QWidget* parent)
     
     OCRBtn = ui.ocrBtn;
     textBtn = ui.textBtn;
+    minBtn = ui.minBtn;
     textbox = ui.textLine;
     table = ui.dictView;
     sansMonoJK = NULL;
@@ -100,6 +102,7 @@ MainWindow::MainWindow(QWidget* parent)
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureText(bool)));
     connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
+    connect(minBtn, &QPushButton::toggled, this, [=](const bool tempbool) {minMode = tempbool;});
     connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
 }
 
@@ -146,6 +149,22 @@ void MainWindow::search() {
                 dictmodel.item(i, 1)->setFont(*sansMonoJK);
             }
         }
+
+        //Spawn minimalism mode if enabled
+        if (minMode) {
+            if(minUi == NULL) { minUi = new popup(this); }
+
+            minUi->clearEntry();
+
+            for (int i = 0; i < 5; i++) {
+                if (i > searchResult.size()-1) break;
+                minUi->addEntry(searchResult.at(i));
+            }
+
+            minUi->shows();
+            
+        }
+
 
 
     }

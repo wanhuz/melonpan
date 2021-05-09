@@ -35,7 +35,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QPushButton" name="ocrBtn">
+         <widget class="QPushButton" name="minBtn">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
             <horstretch>0</horstretch>
@@ -55,7 +55,7 @@
            </size>
           </property>
           <property name="text">
-           <string>OCR</string>
+           <string>Min</string>
           </property>
           <property name="checkable">
            <bool>true</bool>
@@ -90,6 +90,34 @@
             <family>Noto Sans Mono CJK JP Regular</family>
             <pointsize>22</pointsize>
            </font>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="ocrBtn">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>40</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>40</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>OCR</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>

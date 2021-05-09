@@ -51,6 +51,9 @@
     <ClCompile Include="..\src\settings\config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ui\popup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\ocr\ocr.h">
@@ -94,6 +97,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="..\src\capturekey\maincontroller.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="..\src\ui\popup.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

@@ -144,7 +144,7 @@ QVector<entry> Dict::search(QString searchString) {
     QVector<entry> searchResult;
     QRegExp wordBound("\\b(" + searchString + ")\\b");
 
-    /*Make responsiveness slow. Responsiveness bottleneck. Worst case of input of each character k = O(n^k)*/
+    /*Make responsiveness slow. Responsiveness bottleneck. Worst case of input of each character k = O(n^k) for alphabet*/
     for (int i = 0; i < dictlist.size(); i++) {
         if (dictlist[i].getKanji().startsWith(searchString) || 
             dictlist[i].getReading().startsWith(searchString) || 

@@ -123,6 +123,7 @@
     <ClCompile Include="..\src\settings\config.cpp" />
     <ClCompile Include="..\src\ui\frame.cpp" />
     <ClCompile Include="..\src\ui\MainWindow.cpp" />
+    <ClCompile Include="..\src\ui\popup.cpp" />
     <ClCompile Include="..\src\ui\SettingsWindow.cpp" />
     <ClCompile Include="..\src\util\util.cpp" />
   </ItemGroup>
@@ -135,6 +136,7 @@
     <ClInclude Include="..\src\ocr\ocr.h" />
     <QtMoc Include="..\src\ui\SettingsWindow.h" />
     <ClInclude Include="..\src\settings\config.h" />
+    <QtMoc Include="..\src\ui\popup.h" />
     <ClInclude Include="..\src\util\util.h" />
     <QtMoc Include="..\src\ui\frame.h" />
     <QtMoc Include="..\src\ui\MainWindow.h" />

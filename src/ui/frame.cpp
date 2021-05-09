@@ -29,7 +29,7 @@ Frame::Frame(QWidget* parent)
 	this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 	this->setContentsMargins(0, 0, 0, 0);
 	this->setAttribute(Qt::WA_TranslucentBackground);
-	
+
 	this->setOrientation(1);
 	this->setFontSize(12);
 	this->setBoxSize();
