@@ -29,9 +29,8 @@ popup::popup(QWidget* parent)
 	this->setLayout(vlayout);
 	this->setWindowFlags(Qt::NoDropShadowWindowHint	| Qt::FramelessWindowHint | Qt::Popup);
 	gloss->setWordWrap(true);
-	//this->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	//gloss->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-	//vlayout->setSizeConstraint(QLayout::SetFixedSize);
+	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+	gloss->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	this->setMinimumHeight(140);
 
 	//Set layout properties
@@ -86,36 +85,15 @@ void popup::selectEntry() {
 	kanji->setText(topEntry[ind].getKanji());
 	kana->setText(topEntry[ind].getReading());
 	gloss->setText(topEntry[ind].getGloss());
-	
-	int dd = gloss->sizeHint().height();
-	int ddd = dd * 3;
-	if (ddd < 100) {
-		ddd = ddd * 1.5;
-	}
-	if (ddd < 150) {
-		ddd = ddd * 1.5;
-	}
-	
-	qDebug() << dd;
-	qDebug() << "3x: " << ddd;
-	//qDebug() << "Gloss size: " << dd << endl;
-	//this->adjustSize();
-	//int h = this->size().height();
-	//qDebug() << "Frame size: " << h;
-	int j = y - (ddd + 10);
-	this->setGeometry(x, j, 224, ddd);
-	ddd = 0;
-	this->show();
-	
-	
 
+	this->setGeometry(x, y, 224, 200);
 }
 
 //Select the first entry before showing the widget
 void popup::shows() {
 	QPoint curCurPos = QCursor::pos();
 	x = curCurPos.x() + 10;
-	y = curCurPos.y();
+	y = curCurPos.y() - 210;
 
 
 	this->selectEntry();
