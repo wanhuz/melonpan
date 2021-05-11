@@ -11,9 +11,6 @@
 #include "../settings/config.h"
 
 
-
-
-
 MainController::MainController() {
 	DictLoader* dictloader = new DictLoader();
 	dict = new Dict();
@@ -24,7 +21,6 @@ MainController::MainController() {
 	Config::getInstance().setFrame(frame);
 	dictloader->setDict(dict);
 	dictloader->start();
-	
 	
 	connect(capturekeypress, SIGNAL(OCRkeyStateChanged()), this, SLOT(captureOCR()));
 	connect(capturekeypress, SIGNAL(TextkeyStateChanged()), this, SLOT(captureTextGeneric()));
@@ -80,7 +76,7 @@ void MainController::captureOCR() {
 	Pix *pix = Util::qPixMap2PIX(&screenshot);
 	QString text = ocr->recognize(pix);
 
-	//DUMB WORD PROCESSING TO REMOVE SPACE GET CORRECT RESULT, MAKE PROPER FUNCTION LATER
+	//Dumb word processing to only remove space get correct result, make proper processing function later
 	text = text.simplified();
 	text = text.replace(" ", "");
 

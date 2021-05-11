@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget* parent)
     QAction* frameVert = ui.actionVertical;
     QAction* frameHort = ui.actionHorizontal;
     QAction* settingsWindow = ui.Settings;
+
+    //This is not supposed to be at this class, but it is easier than refactoring everything
     MainControl = new MainController();
 
     QString fontPath = QDir::currentPath();
@@ -43,7 +45,6 @@ MainWindow::MainWindow(QWidget* parent)
     int id = QFontDatabase::addApplicationFont(fontPath);
     
     if (id < 0) {
-        qDebug() << "Failed to load Sans Mono JK font at " << fontPath;
         QMessageBox err;
         err.setText("Failed to load Sans Mono JK font at " + fontPath);
         err.setIcon(QMessageBox::Warning);
@@ -56,7 +57,6 @@ MainWindow::MainWindow(QWidget* parent)
 
 
     //UI customization
-    
     QStringList labels;
     labels.insert(0, QString("Kanji"));
     labels.insert(1, QString("Kana"));
@@ -106,7 +106,7 @@ MainWindow::MainWindow(QWidget* parent)
     connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
 }
 
-
+//Search from user-given string and display it either in normal mode or minimal mode, result are limited to 100 entry.
 void MainWindow::search() {
     dictmodel.clear();
     QString searchText = textbox->text();
@@ -162,10 +162,7 @@ void MainWindow::search() {
             }
 
             minUi->shows();
-            
         }
-
-
 
     }
 
@@ -175,8 +172,6 @@ void MainWindow::search() {
     labels.insert(1, QString("Kana"));
     labels.insert(2, QString("Meaning"));
     dictmodel.setHorizontalHeaderLabels(labels);
-    
-
 
 }
 

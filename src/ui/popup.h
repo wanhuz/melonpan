@@ -16,7 +16,6 @@ public:
 	void shows();
 
 private:
-	bool hasEntry = false;
 	int ind = 0;
 	int entsize = 0;
 	int x, y;
@@ -25,7 +24,6 @@ private:
 	QLabel* kana = new QLabel("kana");
 	QLabel* gloss = new QLabel("gloss");
 	QVector<entry> topEntry;
-	QBoxLayout* vlayout;
 	entry processEnt(entry ent);
 	void setTheme();
 	

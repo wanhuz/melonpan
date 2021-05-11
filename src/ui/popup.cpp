@@ -20,15 +20,17 @@ popup::popup(QWidget* parent)
 	QBoxLayout* hlayoutbottom = new QHBoxLayout;
 	QPushButton* btnPrev = new QPushButton("^");
 	QPushButton* btnNext = new QPushButton("v");
+	QBoxLayout* vlayout = new QVBoxLayout;
 
-	//Set theme
+	//Init theme
 	this->setTheme();
-	vlayout = new QVBoxLayout;
+	
 	//Set widget properties
+	this->setWindowFlags(Qt::NoDropShadowWindowHint | Qt::FramelessWindowHint | Qt::Popup);
 	this->setContentsMargins(0, 0, 0, 0);
 	this->setLayout(vlayout);
-	this->setWindowFlags(Qt::NoDropShadowWindowHint	| Qt::FramelessWindowHint | Qt::Popup);
 	gloss->setWordWrap(true);
+	gloss->setAlignment(Qt::AlignJustify);
 	this->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	gloss->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 	this->setMinimumHeight(140);
@@ -61,7 +63,6 @@ void popup::addEntry(entry ent) {
 		return;
 	}
 
-	hasEntry = true;
 	entsize++;
 	entry newEnt = this->processEnt(ent);
 	topEntry.append(newEnt);
@@ -93,7 +94,7 @@ void popup::selectEntry() {
 void popup::shows() {
 	QPoint curCurPos = QCursor::pos();
 	x = curCurPos.x() + 10;
-	y = curCurPos.y() - 210;
+	y = curCurPos.y() - (200 + 10);
 
 
 	this->selectEntry();
@@ -101,7 +102,9 @@ void popup::shows() {
 }
 
 void popup::setTheme() {
-	const QString style = "QDialog {background-color: white; border: 1px solid black;} QPushButton {border:none; background-color: #3f87f5; color: white;} QPushButton:hover {background-color: #3867db}";
+	const QString style("QDialog {background-color: white; border: 1px solid black;}"
+						"QPushButton {border:none; background-color: #3f87f5; color: white;}" 
+						"QPushButton:hover {background-color: #3867db}");
 
 	QString fontPath = QDir::currentPath();
 	fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
@@ -123,13 +126,14 @@ void popup::setTheme() {
 
 	kanji->setContentsMargins(11, 5, 5, 5);
 	kana->setContentsMargins(11, 5, 5, 5);
-	gloss->setContentsMargins(11, 5, 5, 5);
+	gloss->setContentsMargins(11, 11, 11, 11);
 
 	kanji->setStyleSheet("font-size: 20px; font-weight: bold; background-color: #3867db; color: white;");
 	kana->setStyleSheet("font-size: 15px; font-weight: bold; background-color: #3f87f5; color: white;");
 	this->setStyleSheet(style);
 }
 
+//Process entry
 entry popup::processEnt(entry ent) {
 
 	//Only take one kana reading
@@ -146,9 +150,16 @@ entry popup::processEnt(entry ent) {
 		gloss.remove(n, gloss.size());
 		gloss.append(" ... (more)");
 	}
+
+	//If there is no kanji entry, put kana in kanji
+	QString kanji = ent.getKanji();
+	if (kanji.isEmpty()) {
+		kanji = kana;
+		kana = "";
+	}
 	
 	entry tempEnt(
-		ent.getKanji(),
+		kanji,
 		kana,
 		gloss,
 		ent.getFreq()
