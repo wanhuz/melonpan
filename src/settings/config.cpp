@@ -19,6 +19,7 @@ void Config::setFrameSize(int fontsize) {
 		return;
 	}
 	this->frame->setFontSize(fontsize);
+	this->frame->setBoxSize();
 }
 
 void Config::setFrame(Frame* frames) {

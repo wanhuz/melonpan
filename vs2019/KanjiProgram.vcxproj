@@ -46,14 +46,30 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <OutDir>..\build\Debug</OutDir>
     <IntDir>..\build\Debug</IntDir>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <IncludePath>C:\Program Files %28x86%29\MeCab\sdk;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Program Files %28x86%29\MeCab\sdk;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalOptions>-static -static-libgcc -static-libstdc++ %(AdditionalOptions)</AdditionalOptions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
+    <Link />
+    <CustomBuildStep>
+      <Command>mecab-config --libs</Command>
+    </CustomBuildStep>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+    <Link>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>5.15.1_msvc2019_64</QtInstall>
@@ -64,6 +80,7 @@
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
     <QtInstall>5.15.1_msvc2019_64</QtInstall>
+    <QtDeploy>false</QtDeploy>
   </PropertyGroup>
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.props')">
     <Import Project="$(QtMsBuild)\qt.props" />
@@ -106,17 +123,20 @@
     <ClCompile Include="..\src\settings\config.cpp" />
     <ClCompile Include="..\src\ui\frame.cpp" />
     <ClCompile Include="..\src\ui\MainWindow.cpp" />
+    <ClCompile Include="..\src\ui\popup.cpp" />
     <ClCompile Include="..\src\ui\SettingsWindow.cpp" />
     <ClCompile Include="..\src\util\util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="..\src\capturekey\capturekey.h" />
     <QtMoc Include="..\src\capturekey\maincontroller.h" />
+    <ClInclude Include="..\src\data\entry.h" />
     <ClInclude Include="..\src\dict\dict.h" />
     <QtMoc Include="..\src\dict\DictLoader.h" />
     <ClInclude Include="..\src\ocr\ocr.h" />
     <QtMoc Include="..\src\ui\SettingsWindow.h" />
     <ClInclude Include="..\src\settings\config.h" />
+    <QtMoc Include="..\src\ui\popup.h" />
     <ClInclude Include="..\src\util\util.h" />
     <QtMoc Include="..\src\ui\frame.h" />
     <QtMoc Include="..\src\ui\MainWindow.h" />

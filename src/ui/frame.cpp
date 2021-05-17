@@ -6,6 +6,7 @@
 #include <qscreen.h>
 #include <qapplication.h>
 #include <qpixmap.h>
+#include <qdebug.h>
 
 
 Frame::Frame(QWidget* parent)
@@ -14,6 +15,7 @@ Frame::Frame(QWidget* parent)
 	QFrame* border = new QFrame();
 	QLayout* lay = new QVBoxLayout();
 
+	border->setWindowFlag(Qt::Tool);
 	this->setLayout(lay);
 	lay->addWidget(border);
 	lay->setContentsMargins(0, 0, 0, 0);
@@ -27,7 +29,7 @@ Frame::Frame(QWidget* parent)
 	this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
 	this->setContentsMargins(0, 0, 0, 0);
 	this->setAttribute(Qt::WA_TranslucentBackground);
-	
+
 	this->setOrientation(1);
 	this->setFontSize(12);
 	this->setBoxSize();
@@ -49,7 +51,7 @@ void Frame::setOrientation(bool orienVal) {
 
 /*Setter for font size*/
 void Frame::setFontSize(int size) {
-	if (size > 5 && size < 30) {
+	if (size > 5 && size < 100) {
 		fontsize = size;
 	}
 }

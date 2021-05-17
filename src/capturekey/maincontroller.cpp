@@ -11,8 +11,6 @@
 #include "../settings/config.h"
 
 
-
-
 MainController::MainController() {
 	DictLoader* dictloader = new DictLoader();
 	dict = new Dict();
@@ -23,7 +21,6 @@ MainController::MainController() {
 	Config::getInstance().setFrame(frame);
 	dictloader->setDict(dict);
 	dictloader->start();
-
 	
 	connect(capturekeypress, SIGNAL(OCRkeyStateChanged()), this, SLOT(captureOCR()));
 	connect(capturekeypress, SIGNAL(TextkeyStateChanged()), this, SLOT(captureTextGeneric()));
@@ -63,23 +60,35 @@ void MainController::startCaptureKeyTextGeneric() {
 	
 }
 
-QVector<QStringList> MainController::searchDict(QString searchStr) {
-	return dict->search(searchStr);
+QVector<entry> MainController::searchDict(QString searchStr) {
+	QVector<entry> searchResult = dict->search(searchStr);
+	searchResult = dict->sort(searchResult, searchStr);
+	return searchResult;
 }
 
 void MainController::captureOCR() {
 	frame->setBoxSize();
 	QPixmap screenshot = frame->shootScreenshot();
+	QTimer *timer = new QTimer();
+	timer->start(2500);
 	frame->show();
 	frame->activateWindow();
-	Pix* pix = Util::qPixMap2PIX(&screenshot);
+	Pix *pix = Util::qPixMap2PIX(&screenshot);
 	QString text = ocr->recognize(pix);
+
+	//Dumb word processing to only remove space get correct result, make proper processing function later
+	text = text.simplified();
+	text = text.replace(" ", "");
+
 	emit OcrResult(text);
+
+	connect(timer, &QTimer::timeout, frame, &Frame::hide);
+	connect(timer, &QTimer::timeout, timer, &QTimer::deleteLater);
 }
 
 
 /*Capture digital text by sending CTRL+C as input to Windows
-It is a hacky solution, but it is the most optimal way to get text from different application types in Windows*/
+It is a hacky solution, but it is the most optimal way to get text from different application types in Microsoft Windows*/
 void MainController::captureTextGeneric() {
 	Util::sendKeyInput();
 }

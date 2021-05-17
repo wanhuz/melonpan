@@ -9,6 +9,12 @@
 #include <qdebug.h>
 #include "../settings/config.h"
 #include "../ui/SettingsWindow.h";
+#include <qfontdatabase.h>
+#include <qdir.h>
+#include <qfile.h>
+#include <qmessagebox.h>
+#include "../data/entry.h"
+#include "../ui/popup.h"
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -18,17 +24,37 @@ MainWindow::MainWindow(QWidget* parent)
     
     OCRBtn = ui.ocrBtn;
     textBtn = ui.textBtn;
+    minBtn = ui.minBtn;
     textbox = ui.textLine;
     table = ui.dictView;
-    QAction* font10 = ui.f10;
-    QAction* font11 = ui.f11;
-    QAction* font12 = ui.f12;
-    QAction* font13 = ui.f13;
-    QAction* font14 = ui.f14;
+    sansMonoJK = NULL;
+    QAction* fsSmall = ui.fs_small;
+    QAction* fsNormal = ui.fs_normal;
+    QAction* fsLarge = ui.fs_large;
+    QAction * fsvLarge = ui.fs_verylarge;
     QAction* frameVert = ui.actionVertical;
     QAction* frameHort = ui.actionHorizontal;
     QAction* settingsWindow = ui.Settings;
+
+    //This is not supposed to be at this class, but it is easier than refactoring everything
     MainControl = new MainController();
+
+    QString fontPath = QDir::currentPath();
+    fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
+    //fontPath = fontPath + "//res//NotoSansMonoCJKjp-Regular.otf";
+    int id = QFontDatabase::addApplicationFont(fontPath);
+    
+    if (id < 0) {
+        QMessageBox err;
+        err.setText("Failed to load Sans Mono JK font at " + fontPath);
+        err.setIcon(QMessageBox::Warning);
+        err.exec();
+    }
+    else {
+        QString NotoJK = QFontDatabase::applicationFontFamilies(id).at(0);
+        sansMonoJK = new QFont(NotoJK, 12);
+    }
+
 
     //UI customization
     QStringList labels;
@@ -43,22 +69,20 @@ MainWindow::MainWindow(QWidget* parent)
     table->verticalHeader()->setVisible(false);
     table->setModel(&dictmodel);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     //Connect menu bar button
-    connect(font10, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(10);
+    connect(fsSmall, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameSize(15);
         });
-    connect(font11, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(11);
+    connect(fsNormal, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameSize(30);
         });
-    connect(font12, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(12);
+    connect(fsLarge, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameSize(45);
         });
-    connect(font13, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(13);
-        });
-    connect(font14, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(14);
+    connect(fsvLarge, &QAction::triggered, this, [=]() {
+            Config::getInstance().setFrameSize(60);
         });
     connect(frameVert, &QAction::triggered, this, [=]() {
             Config::getInstance().setFrameOrientation(true);
@@ -71,41 +95,83 @@ MainWindow::MainWindow(QWidget* parent)
             settings->show();
         });
 
+
     //Connect buttons to respective function
     connect(MainControl, SIGNAL(OcrResult(QString)), textbox, SLOT(setText(QString)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureOCR(bool)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureText(bool)));
     connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
+    connect(minBtn, &QPushButton::toggled, this, [=](const bool tempbool) {minMode = tempbool;});
     connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
 }
 
-
+//Search from user-given string and display it either in normal mode or minimal mode, result are limited to 100 entry.
 void MainWindow::search() {
     dictmodel.clear();
     QString searchText = textbox->text();
-    QVector<QStringList> searchResult = MainControl->searchDict(searchText);
-    if (searchResult[0].size() == 0) {
-       //No result found
-    }
-    else if (searchResult[0].at(0).isEmpty()) {
-        //No kanji found
-        dictmodel.clear();
-    }
-    else {
-        for (int i = 0; i < searchResult[0].size(); i++) {
-            dictmodel.setItem(i, 0, new QStandardItem(searchResult[0].at(i).toLocal8Bit().constData()));
-            dictmodel.setItem(i, 1, new QStandardItem(searchResult[1].at(i).toLocal8Bit().constData()));
-            dictmodel.setItem(i, 2, new QStandardItem(searchResult[2].at(i).toLocal8Bit().constData()));
-        }
+
+    if (searchText.isEmpty()) { 
+        QStringList labels;
+        labels.insert(0, QString("Kanji"));
+        labels.insert(1, QString("Kana"));
+        labels.insert(2, QString("Meaning"));
+        dictmodel.setHorizontalHeaderLabels(labels);
+        return; 
     }
 
+    QVector<entry> searchResult = MainControl->searchDict(searchText);
+    if (searchResult.size() < 1) {
+       //No result found
+        dictmodel.clear();
+    }
+    else if (searchResult.size() > 0) {
+        int size;
+
+        /*Limit search result to 100 entries only. Also, improve responsiveness*/
+        if (searchResult.size() > 100) {
+            size = 100;
+        }
+        else {
+            size = searchResult.size();
+        }
+
+        for (int i = 0; i < size; i++) {
+            dictmodel.setItem(i, 0, new QStandardItem(searchResult[i].getKanji().toLocal8Bit().constData()));
+            dictmodel.setItem(i, 1, new QStandardItem(searchResult[i].getReading().toLocal8Bit().constData()));
+            dictmodel.setItem(i, 2, new QStandardItem(searchResult[i].getGloss().toLocal8Bit().constData()));
+        }
+
+        //If font is found, set the font to Sans Mono JK
+        if (sansMonoJK != NULL) {
+            for (int i = 0; i < dictmodel.rowCount(); i++) {
+                dictmodel.item(i, 0)->setFont(*sansMonoJK);
+                dictmodel.item(i, 1)->setFont(*sansMonoJK);
+            }
+        }
+
+        //Spawn minimalism mode if enabled
+        if (minMode) {
+            if(minUi == NULL) { minUi = new popup(this); }
+
+            minUi->clearEntry();
+
+            for (int i = 0; i < 5; i++) {
+                if (i > searchResult.size()-1) break;
+                minUi->addEntry(searchResult.at(i));
+            }
+
+            minUi->shows();
+        }
+
+    }
+
+    //Refresh UI
     QStringList labels;
     labels.insert(0, QString("Kanji"));
     labels.insert(1, QString("Kana"));
     labels.insert(2, QString("Meaning"));
     dictmodel.setHorizontalHeaderLabels(labels);
-
 
 }
 

@@ -5,7 +5,7 @@
 #include "../capturekey/capturekey.h"
 #include "../dict/dict.h"
 #include <qclipboard.h>
-
+#include "../data/entry.h"
 
 class MainController : public QObject
 {
@@ -17,7 +17,7 @@ public:
 	void startCaptureKeyOCR();
 	void startCaptureKeyTextGeneric();
 	void stopCaptureKey();
-	QVector<QStringList> searchDict(QString searchStr);
+	QVector<entry> searchDict(QString searchStr);
 
 private:
 	Frame* frame;

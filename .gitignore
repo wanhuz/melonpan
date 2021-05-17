@@ -1,6 +1,8 @@
 build/
 vs2019/.vs/
 .git/
+vs2019/x86/
+vs2019/x64/
 
 # Prerequisites
 *.d
