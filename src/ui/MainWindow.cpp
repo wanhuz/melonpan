@@ -111,7 +111,8 @@ MainWindow::MainWindow(QWidget* parent)
 void MainWindow::search() {
     dictmodel.clear();
     QString searchText = textbox->text();
-    QString stemmedText = Util::getWordStem(searchText);
+    QString rootWord = Util::getRootWord(searchText);
+    qDebug() << rootWord;
 
     if (searchText.isEmpty()) { 
         QStringList labels;
