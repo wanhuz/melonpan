@@ -3,12 +3,14 @@
 #include <Windows.h>
 #include <qdebug.h>
 #include <iostream>
-#include <mecab.h>
 #include <locale>
+#include <qtextcodec.h>
+#include "mecab/mecab.h"
 #pragma comment(lib, "libmecab.lib")
 #pragma QT_NO_CAST_FROM_ASCII
 #pragma QT_NO_CAST_TO_ASCII
 #pragma QT_NO_CAST_FROM_BYTEARRAY
+
 #define CHECK(eval) if (! eval) { \
    const char *e = tagger ? tagger->what() : MeCab::getTaggerError(); \
    std::cerr << "Exception:" << e << std::endl; \
@@ -75,25 +77,21 @@ int Util::sendKeyInput() {
 	return 0;
 }
 
-QString Util::getWordStem(QString targetWord) {
-	/*char input[1024] = "ジョニーは戦場へ行った";*/
+QString Util::getRootWord(QString targetWord) {
 
+	//QString to const char conversion
 	QByteArray array = targetWord.toLocal8Bit();
 	const char* data = array.constData();
-	int stringlen = targetWord.length();
-	MeCab::Model *model = MeCab::createModel("");
+
+	//Init MeCab
+	MeCab::Model* model = MeCab::createModel("");
 	MeCab::Tagger* tagger = model->createTagger();
 	CHECK(tagger);
-	MeCab::Lattice* lattice = model->createLattice();
-	lattice->set_sentence(data);
-	CHECK(tagger->parse(lattice));
-	//MeCab::Tagger* tagger = MeCab::createTagger("");
-	//const char* result = tagger->parse(data, stringlen);
+	const char* result = tagger->parse(data);
+	CHECK(result);
 
-	//printf(data);
-
-	std::cout << lattice << std::endl;
-	//printf(result);
-	//delete tagger;
-	return "o";
+	//Get first root word
+	QString qresult(result);
+	QStringList fresult = qresult.split("\t");
+	return fresult[0];
 }

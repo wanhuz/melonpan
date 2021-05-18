@@ -73,6 +73,13 @@
     <ClCompile>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
+    <Bscmake>
+      <AdditionalOptions>./configure --with-charset=utf8 --enable-utf8-only %(AdditionalOptions)</AdditionalOptions>
+    </Bscmake>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>5.15.1_msvc2019_64</QtInstall>
