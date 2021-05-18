@@ -2,9 +2,20 @@
 #include <qimage.h>
 #include <Windows.h>
 #include <qdebug.h>
+#include <iostream>
+#include <locale>
+#include <qtextcodec.h>
+#include "mecab/mecab.h"
+#pragma comment(lib, "libmecab.lib")
+#pragma QT_NO_CAST_FROM_ASCII
+#pragma QT_NO_CAST_TO_ASCII
+#pragma QT_NO_CAST_FROM_BYTEARRAY
 
-
-
+#define CHECK(eval) if (! eval) { \
+   const char *e = tagger ? tagger->what() : MeCab::getTaggerError(); \
+   std::cerr << "Exception:" << e << std::endl; \
+   delete tagger; \
+   return -1; }
 
 /*QPixmap to Leptonica's Pix conversion*/
 Pix* Util::qPixMap2PIX(QPixmap* pixmap) {
@@ -64,4 +75,23 @@ int Util::sendKeyInput() {
 		return 4;
 	}
 	return 0;
+}
+
+QString Util::getRootWord(QString targetWord) {
+
+	//QString to const char conversion
+	QByteArray array = targetWord.toLocal8Bit();
+	const char* data = array.constData();
+
+	//Init MeCab
+	MeCab::Model* model = MeCab::createModel("");
+	MeCab::Tagger* tagger = model->createTagger();
+	CHECK(tagger);
+	const char* result = tagger->parse(data);
+	CHECK(result);
+
+	//Get first root word
+	QString qresult(result);
+	QStringList fresult = qresult.split("\t");
+	return fresult[0];
 }
