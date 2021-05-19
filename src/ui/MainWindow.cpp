@@ -110,9 +110,8 @@ MainWindow::MainWindow(QWidget* parent)
 //Search from user-given string and display it either in normal mode or minimal mode, result are limited to 100 entry.
 void MainWindow::search() {
     dictmodel.clear();
+    QVector<entry> searchResult;
     QString searchText = textbox->text();
-    QString rootWord = Util::getRootWord(searchText);
-    qDebug() << rootWord;
 
     if (searchText.isEmpty()) { 
         QStringList labels;
@@ -123,7 +122,8 @@ void MainWindow::search() {
         return; 
     }
 
-    QVector<entry> searchResult = MainControl->searchDict(searchText);
+    searchResult = MainControl->searchDict(searchText);
+
     if (searchResult.size() < 1) {
        //No result found
         dictmodel.clear();

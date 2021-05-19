@@ -9,6 +9,7 @@
 #include <qclipboard.h>
 #include <qapplication.h>
 #include "../settings/config.h"
+#include "../util/util.h"
 
 
 MainController::MainController() {
@@ -61,8 +62,19 @@ void MainController::startCaptureKeyTextGeneric() {
 }
 
 QVector<entry> MainController::searchDict(QString searchStr) {
-	QVector<entry> searchResult = dict->search(searchStr);
-	searchResult = dict->sort(searchResult, searchStr);
+	QVector<entry> searchResult;
+	QString rootWord = Util::getRootWord(searchStr);
+
+	if ( (rootWord.isEmpty()) || (rootWord == searchStr) ) {
+		searchResult = dict->search(searchStr);
+		searchResult = dict->sort(searchResult, searchStr);
+	}
+	else {
+		searchResult = dict->searchWithRoot(searchStr, rootWord);
+		searchResult = dict->sortWithRoot(searchResult, searchStr, rootWord);
+	}
+	
+	
 	return searchResult;
 }
 

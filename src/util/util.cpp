@@ -77,28 +77,29 @@ int Util::sendKeyInput() {
 	return 0;
 }
 
+/*Extract and return root word from Japanese sentence. Only return first word in a given string*/
 QString Util::getRootWord(QString targetWord) {
 
 	//QString to const char conversion
 	QByteArray array = targetWord.toLocal8Bit();
 	const char* data = array.constData();
-	std::cout << "data: " << data;
 
 	//Init MeCab
 	MeCab::Model* model = MeCab::createModel("");
-	const MeCab::DictionaryInfo* dictinf = model->dictionary_info();
-	qDebug() << dictinf->charset << endl;
 	MeCab::Tagger* tagger = model->createTagger();
 	CHECK(tagger);
 	const char* result = tagger->parse(data);
 	CHECK(result);
 
-	qDebug() << result;
-
 	//Get root word of first word in the sentence
 	QString qresult(result);
 	QStringList fresult = qresult.split("\t");
-	fresult = fresult[1].split(",");
 
-	return fresult[6];
+	if (!(fresult.at(0).contains("EOS"))) {
+		fresult = fresult[1].split(",");
+		return fresult[6];
+	}
+
+	return "";
+	
 }

@@ -163,6 +163,8 @@ QVector<entry> Dict::search(QString searchString) {
     return searchResult;
 }
 
+
+
 /*Sort from highest word frequency to lowest word frequency. If there is an exact match to search string, place it at the highest frequency*/
 QVector<entry> Dict::sort(QVector<entry> searchedWord, QString targetString) {
     int size = searchedWord.size();
@@ -178,6 +180,33 @@ QVector<entry> Dict::sort(QVector<entry> searchedWord, QString targetString) {
         { return searchedWord.getFreq() < searchedWordNext.getFreq();});
 
     return searchedWord;
+}
+
+/*Search two different word from dictionary, one is presumely root word*/
+QVector<entry> Dict::searchWithRoot(QString fSearchStr, QString sSearchStr) {
+    QVector<entry> fSearchResult = search(fSearchStr);
+    QVector<entry> sSearchResult = search(sSearchStr);
+
+    for (int i = 0; i < sSearchResult.size(); i++) {
+        fSearchResult.append(sSearchResult.at(i));
+    }
+
+    return fSearchResult;
+}
+
+/*Search vector with from root word search*/
+QVector<entry> Dict::sortWithRoot(QVector<entry> searchedWord, QString targetString, QString rootString) {
+    int size = searchedWord.size();
+
+    for (int i = 0; i < size; i++) {
+        if ((searchedWord[i].getKanji() == rootString) || (searchedWord[i].getReading() == rootString)) {
+            searchedWord[i].setFreq(1);
+        }
+    }
+
+    QVector<entry> sortedList = sort(searchedWord, targetString);
+
+    return sortedList;
 }
 
 
