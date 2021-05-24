@@ -88,7 +88,7 @@ void MainController::captureOCR() {
 	Pix *pix = Util::qPixMap2PIX(&screenshot);
 	QString text = ocr->recognize(pix);
 
-	//Dumb word processing to only remove space get correct result, make proper processing function later
+	//Remove space get correct result
 	text = text.simplified();
 	text = text.replace(" ", "");
 

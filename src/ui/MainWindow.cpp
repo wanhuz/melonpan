@@ -74,16 +74,16 @@ MainWindow::MainWindow(QWidget* parent)
 
     //Connect menu bar button, this is redundant, may change it later
     connect(fsSmall, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(15);
+            Config::getInstance().setFrameSize(10);
         });
     connect(fsNormal, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(30);
+            Config::getInstance().setFrameSize(12);
         });
     connect(fsLarge, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(45);
+            Config::getInstance().setFrameSize(24);
         });
     connect(fsvLarge, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(60);
+            Config::getInstance().setFrameSize(48);
         });
     connect(frameVert, &QAction::triggered, this, [=]() {
             Config::getInstance().setFrameOrientation(true);
