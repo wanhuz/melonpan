@@ -5,7 +5,8 @@
 #include <iostream>
 #include <locale>
 #include <qtextcodec.h>
-#include "mecab/mecab.h"
+#include <mecab.h>
+#include <qmessagebox.h>
 #pragma comment(lib, "libmecab.lib")
 #pragma QT_NO_CAST_FROM_ASCII
 #pragma QT_NO_CAST_TO_ASCII
@@ -80,18 +81,22 @@ int Util::sendKeyInput() {
 /*Extract and return root word from Japanese sentence. Only return first word in a given string*/
 QString Util::getRootWord(QString targetWord) {
 
+
 	//QString to const char conversion
 	QByteArray array = targetWord.toLocal8Bit();
 	const char* data = array.constData();
 
 	//Init MeCab
 	MeCab::Model* model = MeCab::createModel("");
+
 	MeCab::Tagger* tagger = model->createTagger();
+
 	CHECK(tagger);
+
 	const char* result = tagger->parse(data);
 	CHECK(result);
 
-	//Get root word of first word in the sentence
+	////Get root word of first word in the sentence
 	QString qresult(result);
 	QStringList fresult = qresult.split("\t");
 

@@ -126,7 +126,7 @@
            <string/>
           </property>
           <property name="placeholderText">
-           <string>Search Eng-Japanese</string>
+           <string/>
           </property>
          </widget>
         </item>
@@ -187,6 +187,7 @@ selection-color: #000;
 
 QScrollBar {
 	color: red;
+    background-color: red;
 	border-left: 0px;
 }</string>
         </property>
@@ -216,6 +217,12 @@ QScrollBar {
         </property>
         <property name="selectionBehavior">
          <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <property name="verticalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
+        </property>
+        <property name="horizontalScrollMode">
+         <enum>QAbstractItemView::ScrollPerPixel</enum>
         </property>
         <property name="showGrid">
          <bool>true</bool>

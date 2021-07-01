@@ -1,0 +1,1 @@
+﻿C:\Users\WanHuz\AppData\Local\QtMsBuild\qt_vars.targets(68,5): error : There's no Qt version assigned to project KanjiProgram.vcxproj for configuration Debug/Win32. Please assign a Qt installation in 'Qt Project Settings'.
