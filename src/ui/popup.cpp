@@ -107,7 +107,7 @@ void popup::setTheme() {
 						"QPushButton:hover {background-color: #3867db}");
 
 	QString fontPath = QDir::currentPath();
-	fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
+	fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
 	//fontPath = fontPath + "//res//NotoSansMonoCJKjp-Regular.otf";
 	int id = QFontDatabase::addApplicationFont(fontPath);
 
