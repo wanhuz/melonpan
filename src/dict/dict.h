@@ -10,7 +10,9 @@ public:
 	Dict();
 	void load();
 	QVector<entry> search(QString searchString);
+	QVector<entry> searchWithRoot(QString fSearchStr, QString sSearchStr);
 	QVector<entry> sort(QVector<entry> searchedWord, QString targetString);
+	QVector<entry> sortWithRoot(QVector<entry> searchedWord, QString targetString, QString rootString);
 
 private:
 	void parse(QByteArray* line);

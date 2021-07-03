@@ -6,5 +6,7 @@ PATH=%PATH%;$(QtDllPath);C:\Users\WanHuz\AppData\Local\Programs\Python\Python37
 PYTHONPATH="C:\Users\WanHuz\AppData\Local\Programs\Python\Python37\DLLs;C:\Users\WanHuz\AppData\Local\Programs\Python\Python37\Lib"
 PYTHONHOME=C:\Users\WanHuz\AppData\Local\Programs\Python\Python37</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>
+    <LocalDebuggerCommandArguments>$(QmlDebug)  </LocalDebuggerCommandArguments>
   </PropertyGroup>
 </Project>

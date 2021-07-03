@@ -14,6 +14,7 @@
 #include <qfile.h>
 #include <qmessagebox.h>
 #include "../data/entry.h"
+#include "../util/util.h"
 #include "../ui/popup.h"
 
 
@@ -40,7 +41,7 @@ MainWindow::MainWindow(QWidget* parent)
     MainControl = new MainController();
 
     QString fontPath = QDir::currentPath();
-    fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
+    fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
     //fontPath = fontPath + "//res//NotoSansMonoCJKjp-Regular.otf";
     int id = QFontDatabase::addApplicationFont(fontPath);
     
@@ -71,18 +72,18 @@ MainWindow::MainWindow(QWidget* parent)
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
-    //Connect menu bar button
+    //Connect menu bar button, this is redundant, may change it later
     connect(fsSmall, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(15);
+            Config::getInstance().setFrameSize(10);
         });
     connect(fsNormal, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(30);
+            Config::getInstance().setFrameSize(12);
         });
     connect(fsLarge, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(45);
+            Config::getInstance().setFrameSize(24);
         });
     connect(fsvLarge, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameSize(60);
+            Config::getInstance().setFrameSize(48);
         });
     connect(frameVert, &QAction::triggered, this, [=]() {
             Config::getInstance().setFrameOrientation(true);
@@ -109,6 +110,7 @@ MainWindow::MainWindow(QWidget* parent)
 //Search from user-given string and display it either in normal mode or minimal mode, result are limited to 100 entry.
 void MainWindow::search() {
     dictmodel.clear();
+    QVector<entry> searchResult;
     QString searchText = textbox->text();
 
     if (searchText.isEmpty()) { 
@@ -120,7 +122,8 @@ void MainWindow::search() {
         return; 
     }
 
-    QVector<entry> searchResult = MainControl->searchDict(searchText);
+    searchResult = MainControl->searchDict(searchText);
+
     if (searchResult.size() < 1) {
        //No result found
         dictmodel.clear();

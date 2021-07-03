@@ -64,8 +64,9 @@ void Frame::setBoxSize() {
 		return;
 	}
 
-	y = (fontsize + 20);
-	x = y * 3;
+	//X and Y are the opposite! Mistakes were made
+	y = (fontsize + 15);
+	x = y * 4;
 	curCurPos = QCursor::pos();
 	curX = curCurPos.x() - (y / 2);
 	curY = curCurPos.y() - (y / 2);

@@ -9,6 +9,7 @@
 #include <qclipboard.h>
 #include <qapplication.h>
 #include "../settings/config.h"
+#include "../util/util.h"
 
 
 MainController::MainController() {
@@ -61,8 +62,19 @@ void MainController::startCaptureKeyTextGeneric() {
 }
 
 QVector<entry> MainController::searchDict(QString searchStr) {
-	QVector<entry> searchResult = dict->search(searchStr);
-	searchResult = dict->sort(searchResult, searchStr);
+	QVector<entry> searchResult;
+	QString rootWord = Util::getRootWord(searchStr);
+
+	if ( (rootWord.isEmpty()) || (rootWord == searchStr) ) {
+		searchResult = dict->search(searchStr);
+		searchResult = dict->sort(searchResult, searchStr);
+	}
+	else {
+		searchResult = dict->searchWithRoot(searchStr, rootWord);
+		searchResult = dict->sortWithRoot(searchResult, searchStr, rootWord);
+	}
+	
+	
 	return searchResult;
 }
 
@@ -76,7 +88,7 @@ void MainController::captureOCR() {
 	Pix *pix = Util::qPixMap2PIX(&screenshot);
 	QString text = ocr->recognize(pix);
 
-	//Dumb word processing to only remove space get correct result, make proper processing function later
+	//Remove space get correct result
 	text = text.simplified();
 	text = text.replace(" ", "");
 

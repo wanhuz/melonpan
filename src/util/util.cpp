@@ -2,9 +2,21 @@
 #include <qimage.h>
 #include <Windows.h>
 #include <qdebug.h>
+#include <iostream>
+#include <locale>
+#include <qtextcodec.h>
+#include <mecab.h>
+#include <qmessagebox.h>
+#pragma comment(lib, "libmecab.lib")
+#pragma QT_NO_CAST_FROM_ASCII
+#pragma QT_NO_CAST_TO_ASCII
+#pragma QT_NO_CAST_FROM_BYTEARRAY
 
-
-
+#define CHECK(eval) if (! eval) { \
+   const char *e = tagger ? tagger->what() : MeCab::getTaggerError(); \
+   std::cerr << "Exception:" << e << std::endl; \
+   delete tagger; \
+   return -1; }
 
 /*QPixmap to Leptonica's Pix conversion*/
 Pix* Util::qPixMap2PIX(QPixmap* pixmap) {
@@ -64,4 +76,35 @@ int Util::sendKeyInput() {
 		return 4;
 	}
 	return 0;
+}
+
+/*Extract and return root word from Japanese sentence. Only return first word in a given string*/
+QString Util::getRootWord(QString targetWord) {
+
+
+	//QString to const char conversion
+	QByteArray array = targetWord.toLocal8Bit();
+	const char* data = array.constData();
+
+	//Init MeCab
+	MeCab::Model* model = MeCab::createModel("");
+
+	MeCab::Tagger* tagger = model->createTagger();
+
+	CHECK(tagger);
+
+	const char* result = tagger->parse(data);
+	CHECK(result);
+
+	////Get root word of first word in the sentence
+	QString qresult(result);
+	QStringList fresult = qresult.split("\t");
+
+	if (!(fresult.at(0).contains("EOS"))) {
+		fresult = fresult[1].split(",");
+		return fresult[6];
+	}
+
+	return "";
+	
 }

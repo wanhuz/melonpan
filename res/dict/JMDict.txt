@@ -1,0 +1,4 @@
+This project uses the JMdict/EDICT dictionary files. These files are the property of the Electronic Dictionary Research and Development Group, and are used in conformance with the Group's licence.
+
+JMdict/EDICT: http://www.edrdg.org/wiki/index.php/JMdict-EDICT_Dictionary_Project
+Licence information: http://www.edrdg.org/edrdg/licence.html
