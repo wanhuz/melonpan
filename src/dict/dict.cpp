@@ -54,7 +54,7 @@ Dict::Dict() {
 /*Load file into QList*/
 void Dict::load() {
     QString dictPath = QDir::currentPath();
-    //dictPath = dictPath + "/res/JMdict_e"; //Deployment
+    dictPath = dictPath + "/res/dict/JMdict_e"; //Deployment
     dictPath = "C://Users//WanHuz//Documents//Shanachan//res//dict//JMdict_e"; //Debug Mode
     QFile dictFile(dictPath);
     if (!dictFile.open(QIODevice::ReadOnly | QIODevice::Text))

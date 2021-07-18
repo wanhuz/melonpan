@@ -5,9 +5,8 @@
 #include <iostream>
 #include <locale>
 #include <qtextcodec.h>
-#include <mecab.h>
+#include "mecab/mecab.h"
 #include <qmessagebox.h>
-#pragma comment(lib, "libmecab.lib")
 #pragma QT_NO_CAST_FROM_ASCII
 #pragma QT_NO_CAST_TO_ASCII
 #pragma QT_NO_CAST_FROM_BYTEARRAY

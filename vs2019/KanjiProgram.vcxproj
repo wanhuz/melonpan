@@ -34,6 +34,7 @@
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)'=='x86|x64'">10.0.18362.0</WindowsTargetPlatformVersion>
     <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
     <ProjectName>Shanachan</ProjectName>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -80,8 +81,8 @@
     <OutDir>..\build\Debug</OutDir>
     <IntDir>..\build\Debug</IntDir>
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
-    <IncludePath>C:\Program Files %28x86%29\MeCab\sdk;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Program Files %28x86%29\MeCab\sdk;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
@@ -93,6 +94,7 @@
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <AdditionalIncludeDirectories>C:\Users\WanHuz\Documents\Shanachan\lib\mecab\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link />
     <CustomBuildStep>
@@ -123,6 +125,7 @@
     </Link>
     <ClCompile>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Bscmake>
       <AdditionalOptions>./configure --with-charset=utf8 --enable-utf8-only %(AdditionalOptions)</AdditionalOptions>
@@ -131,6 +134,11 @@
       <Command>
       </Command>
     </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
   </ItemDefinitionGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>5.15.1_msvc2019_64</QtInstall>
@@ -202,6 +210,7 @@
     <ClCompile Include="..\src\main.cpp" />
     <ClCompile Include="..\src\ocr\ocr.cpp" />
     <ClCompile Include="..\src\settings\config.cpp" />
+    <ClCompile Include="..\src\settings\mecabKey.cpp" />
     <ClCompile Include="..\src\ui\frame.cpp" />
     <ClCompile Include="..\src\ui\MainWindow.cpp" />
     <ClCompile Include="..\src\ui\popup.cpp" />
@@ -218,6 +227,7 @@
     <QtMoc Include="..\src\ui\SettingsWindow.h" />
     <ClInclude Include="..\src\settings\config.h" />
     <QtMoc Include="..\src\ui\popup.h" />
+    <ClInclude Include="..\src\settings\mecabKey.h" />
     <ClInclude Include="..\src\util\util.h" />
     <QtMoc Include="..\src\ui\frame.h" />
     <QtMoc Include="..\src\ui\MainWindow.h" />

@@ -16,6 +16,7 @@
 #include "../data/entry.h"
 #include "../util/util.h"
 #include "../ui/popup.h"
+#include "../settings/mecabKey.h"
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -37,12 +38,21 @@ MainWindow::MainWindow(QWidget* parent)
     QAction* frameHort = ui.actionHorizontal;
     QAction* settingsWindow = ui.Settings;
 
-    //This is not supposed to be at this class, but it is easier than refactoring everything
+    MeCabKey key; //Mecab library need to set registry in Regedit so that the library can load dictionary globally, exit if this obj fail to set
+    if (!(key.init())) {
+        QMessageBox err;
+        err.setText("Failed to set registry key for MeCab");
+        err.setIcon(QMessageBox::Critical);
+        err.exec();
+        exit(11);
+    }
+
+    //This is not supposed to be at this class because it breaks MVC architecture, but it is easier than refactoring everything
     MainControl = new MainController();
 
     QString fontPath = QDir::currentPath();
     fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
-    //fontPath = fontPath + "//res//NotoSansMonoCJKjp-Regular.otf";
+    //fontPath = fontPath + "/res/font/NotoSansMonoCJKjp-Regular.otf";
     int id = QFontDatabase::addApplicationFont(fontPath);
     
     if (id < 0) {
