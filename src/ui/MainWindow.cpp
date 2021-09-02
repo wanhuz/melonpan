@@ -17,6 +17,7 @@
 #include "../util/util.h"
 #include "../ui/popup.h"
 #include "../settings/mecabKey.h"
+#include <qevent.h>
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -38,7 +39,8 @@ MainWindow::MainWindow(QWidget* parent)
     QAction* frameHort = ui.actionHorizontal;
     QAction* settingsWindow = ui.Settings;
 
-    MeCabKey key; //Mecab library need to set registry in Regedit so that the library can load dictionary globally, exit if this obj fail to set
+    //Mecab library need to set registry in Regedit so that the library can load dictionary globally, Exit if registry fail to set
+    MeCabKey key; 
     if (!(key.init())) {
         QMessageBox err;
         err.setText("Failed to set registry key for MeCab");
@@ -64,6 +66,7 @@ MainWindow::MainWindow(QWidget* parent)
     else {
         QString NotoJK = QFontDatabase::applicationFontFamilies(id).at(0);
         sansMonoJK = new QFont(NotoJK, 12);
+        textbox->setFont(QFont(NotoJK, 22)); //default to Helvetica if failed
     }
 
 
@@ -81,6 +84,14 @@ MainWindow::MainWindow(QWidget* parent)
     table->setModel(&dictmodel);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+    QIcon TrayIconPath = QIcon("C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\ui\\melonpan.ico");
+    trayIcon = new QSystemTrayIcon(TrayIconPath, this);
+    QMenu* traymenu = new QMenu(this);
+    QAction* exit = new QAction("Exit");
+    traymenu->addAction(exit);
+    trayIcon->setContextMenu(traymenu);
+    trayIcon->setVisible(true);
 
     //Connect menu bar button, this is redundant, may change it later
     connect(fsSmall, &QAction::triggered, this, [=]() {
@@ -107,7 +118,6 @@ MainWindow::MainWindow(QWidget* parent)
         });
 
 
-    //Connect buttons to respective function
     connect(MainControl, SIGNAL(OcrResult(QString)), textbox, SLOT(setText(QString)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureOCR(bool)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
@@ -115,6 +125,8 @@ MainWindow::MainWindow(QWidget* parent)
     connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(minBtn, &QPushButton::toggled, this, [=](const bool tempbool) {minMode = tempbool;});
     connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
+    connect(trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
+    connect(exit, &QAction::triggered, this, &QApplication::quit);
 }
 
 //Search from user-given string and display it either in normal mode or minimal mode, result are limited to 100 entry.
@@ -135,13 +147,12 @@ void MainWindow::search() {
     searchResult = MainControl->searchDict(searchText);
 
     if (searchResult.size() < 1) {
-       //No result found
         dictmodel.clear();
     }
     else if (searchResult.size() > 0) {
         int size;
 
-        /*Limit search result to 100 entries only. Also, improve responsiveness*/
+        /*Limit search result to 100 entries only. Also improve responsiveness*/
         if (searchResult.size() > 100) {
             size = 100;
         }
@@ -217,4 +228,24 @@ void MainWindow::alwaysOnTop(bool enabled) {
         SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
     }
 
+}
+
+void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason) {
+    if (reason == QSystemTrayIcon::Trigger) {
+        show();
+        this->setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+        this->activateWindow();
+    }
+    
+}
+
+void MainWindow::changeEvent(QEvent* event) {
+    if (event->type() == QEvent::WindowStateChange) {
+        if (isMinimized()) {
+            hide();
+            event->ignore();
+        }
+    }
+
+    return QMainWindow::changeEvent(event);
 }

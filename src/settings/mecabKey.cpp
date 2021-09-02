@@ -56,7 +56,7 @@ bool MeCabKey::verifyMeCabKey(std::string usid) {
 
     RegKey key{ HKEY_USERS, keyPath };
 
-    if (auto result = key.TryGetStringValue(mecab)) { //Check if Key exist
+    if (auto result = key.TryGetStringValue(mecab)) { //Validate if key exist
 
         QString pathToMecabrc = QDir::currentPath();
         pathToMecabrc.replace("/", "\\");
@@ -64,8 +64,7 @@ bool MeCabKey::verifyMeCabKey(std::string usid) {
         pathToMecabrc = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\mecab\\etc\\mecabrc"; //debug mode
         std::wstring pathToMecabrcstr = StringToWString(pathToMecabrc.toStdString());
 
-        if (key.GetStringValue(mecab) == pathToMecabrc) { //Check if Key correct
-            qDebug() << "Key is correct";
+        if (key.GetStringValue(mecab) == pathToMecabrc) { //Validate key correctness
             key.Close();
             return true;
         }
