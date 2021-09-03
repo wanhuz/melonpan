@@ -13,7 +13,6 @@ class MainController : public QObject
 
 public:
 	MainController();
-	void killCaptureKey();
 	void startCaptureKeyOCR();
 	void startCaptureKeyTextGeneric();
 	void stopCaptureKey();

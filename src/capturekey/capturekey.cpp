@@ -6,12 +6,12 @@ capturekey::capturekey() {
 	this->setKey();
 }
 
-int capturekey::startCapture(int captureType) {
-	if (captureType == 0) {
+int capturekey::startCapture(CaptureType captureType) {
+	if (captureType == OCR) {
 		this->enableOCR = true;
 		this->enableTextGeneric = false;
 	}
-	else if (captureType == 1) {
+	else if (captureType == TEXT_GENERIC) {
 		this->enableTextGeneric = true;
 		this->enableOCR = false;
 	}
@@ -19,11 +19,11 @@ int capturekey::startCapture(int captureType) {
 	return 0;
 }
 
-int capturekey::stopCapture(int captureType) {
-	if (captureType == 0) {
+int capturekey::stopCapture(CaptureType captureType) {
+	if (captureType == OCR) {
 		this->enableOCR = false;
 	}
-	else if (captureType == 1) {
+	else if (captureType == TEXT_GENERIC) {
 		this->enableTextGeneric = false;
 	}
 	

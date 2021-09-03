@@ -4,20 +4,21 @@
 #include <qmainwindow.h>
 #include <qtextcodec.h>
 #include <Windows.h>
-#include "../capturekey/maincontroller.h"
 #include <qaction.h>
 #include <qdebug.h>
-#include "../settings/config.h"
-#include "../ui/SettingsWindow.h";
+#include <qevent.h>
 #include <qfontdatabase.h>
 #include <qdir.h>
 #include <qfile.h>
 #include <qmessagebox.h>
+#include "../settings/config.h"
+#include "../ui/SettingsWindow.h";
 #include "../data/entry.h"
 #include "../util/util.h"
 #include "../ui/popup.h"
 #include "../settings/mecabKey.h"
-#include <qevent.h>
+#include "../capturekey/maincontroller.h"
+
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -31,6 +32,7 @@ MainWindow::MainWindow(QWidget* parent)
     textbox = ui.textLine;
     table = ui.dictView;
     sansMonoJK = NULL;
+
     QAction* fsSmall = ui.fs_small;
     QAction* fsNormal = ui.fs_normal;
     QAction* fsLarge = ui.fs_large;
@@ -46,7 +48,7 @@ MainWindow::MainWindow(QWidget* parent)
         err.setText("Failed to set registry key for MeCab");
         err.setIcon(QMessageBox::Critical);
         err.exec();
-        exit(11);
+        exit(2);
     }
 
     //This is not supposed to be at this class because it breaks MVC architecture, but it is easier than refactoring everything
@@ -71,6 +73,7 @@ MainWindow::MainWindow(QWidget* parent)
 
 
     //UI customization
+
     QStringList labels;
     labels.insert(0, QString("Kanji"));
     labels.insert(1, QString("Kana"));
@@ -153,12 +156,8 @@ void MainWindow::search() {
         int size;
 
         /*Limit search result to 100 entries only. Also improve responsiveness*/
-        if (searchResult.size() > 100) {
-            size = 100;
-        }
-        else {
-            size = searchResult.size();
-        }
+        if (searchResult.size() > 100) { size = 100; }
+        else { size = searchResult.size(); }
 
         for (int i = 0; i < size; i++) {
             dictmodel.setItem(i, 0, new QStandardItem(searchResult[i].getKanji().toLocal8Bit().constData()));
@@ -200,22 +199,14 @@ void MainWindow::search() {
 }
 
 void MainWindow::startCaptureOCR(bool enableOCR) {
-    if (!enableOCR) {
-        MainControl->stopCaptureKey();
-    }
-    else {
-        MainControl->startCaptureKeyOCR();
-    }
-    
+    if (!enableOCR) { MainControl->stopCaptureKey(); }
+    else { MainControl->startCaptureKeyOCR(); }
+
 }
 
 void MainWindow::startCaptureText(bool enableText){
-    if (!enableText) {
-        MainControl->stopCaptureKey();
-    }
-    else {
-        MainControl->startCaptureKeyTextGeneric();
-    }
+    if (!enableText) { MainControl->stopCaptureKey(); }
+    else { MainControl->startCaptureKeyTextGeneric(); }
 }
 
 void MainWindow::alwaysOnTop(bool enabled) {

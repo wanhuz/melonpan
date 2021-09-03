@@ -5,13 +5,11 @@ class capturekey : public QThread {
 	Q_OBJECT;
 
 public:
+	enum CaptureType {OCR, TEXT_GENERIC};
 	capturekey();
-	int startCapture(int captureType);
-	int stopCapture(int captureType);
+	int startCapture(CaptureType captureType);
+	int stopCapture(CaptureType captureType);
 	int setKey();
-	const int OCR = 0;
-	const int TEXT_GENERIC = 1;
-	
 
 private:
 	bool enableOCR;

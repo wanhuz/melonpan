@@ -1,13 +1,13 @@
 #include "../capturekey/maincontroller.h"
+#include <qtimer.h>
+#include <qdebug.h>
+#include <qclipboard.h>
+#include <qapplication.h>
 #include "../capturekey/capturekey.h"
 #include "../ui/frame.h"
 #include "../util/util.h"
 #include "../dict/DictLoader.h"
 #include "../dict/dict.h"
-#include <qtimer.h>
-#include <qdebug.h>
-#include <qclipboard.h>
-#include <qapplication.h>
 #include "../settings/config.h"
 #include "../util/util.h"
 
@@ -19,19 +19,13 @@ MainController::MainController() {
 	ocr = new Ocr();
 	capturekeypress = new capturekey();
 	clipboard = QApplication::clipboard();
+
 	Config::getInstance().setFrame(frame);
 	dictloader->setDict(dict);
 	dictloader->start();
 	
 	connect(capturekeypress, SIGNAL(OCRkeyStateChanged()), this, SLOT(captureOCR()));
 	connect(capturekeypress, SIGNAL(TextkeyStateChanged()), this, SLOT(captureTextGeneric()));
-}
-
-void MainController::killCaptureKey() {
-	capturekeypress->stopCapture(capturekeypress->OCR);
-	capturekeypress->stopCapture(capturekeypress->TEXT_GENERIC);
-	capturekeypress->quit();
-	capturekeypress->wait();
 }
 
 void MainController::stopCaptureKey() {
