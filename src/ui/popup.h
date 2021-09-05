@@ -16,16 +16,17 @@ public:
 	void shows();
 
 private:
-	int ind = 0;
-	int entsize = 0;
+	int index = 0;
+	int EntrySize = 0;
 	int x, y;
 	QFont* sansMonoJK;
 	QLabel* kanji = new QLabel("kanji");
 	QLabel* kana = new QLabel("kana");
 	QLabel* gloss = new QLabel("gloss");
-	QVector<entry> topEntry;
-	entry processEnt(entry ent);
-	void setTheme();
+	QVector<entry> PopupDict;
+
+	entry sanitizeEntry(entry ent);
+	void initTheme();
 	
 
 private slots:

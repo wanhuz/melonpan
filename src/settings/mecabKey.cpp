@@ -9,7 +9,6 @@
 #include <codecvt>
 #include <qdir.h>
 #include <qstring.h>
-#include <qdebug.h>
 
 using std::optional;
 using std::pair;
@@ -39,9 +38,10 @@ std::string MeCabKey::getUserSID() {
     std::string usid = "";
     ATL::CAccessToken accessToken;
     ATL::CSid currentUserSid;
-    if (accessToken.GetProcessToken(TOKEN_READ | TOKEN_QUERY) &&
-        accessToken.GetUser(&currentUserSid))
+
+    if (accessToken.GetProcessToken(TOKEN_READ | TOKEN_QUERY) && accessToken.GetUser(&currentUserSid))
         usid = MBFromW(currentUserSid.Sid());
+
     return usid;
 }
 
@@ -101,6 +101,7 @@ bool MeCabKey::createMeCabKey(std::string usid) {
     return false;
 }
 
+//Convert string from LPCWSTR to Std::String
 std::string MeCabKey::MBFromW(LPCWSTR pwsz) {
     int cch = WideCharToMultiByte(1, 0, pwsz, -1, 0, 0, NULL, NULL);
     char* psz = new char[cch];
@@ -113,6 +114,7 @@ std::string MeCabKey::MBFromW(LPCWSTR pwsz) {
     return st;
 }
 
+//Convert String to WString
 wstring MeCabKey::StringToWString(const std::string& s)
 {
     std::wstring wsTmp(s.begin(), s.end());

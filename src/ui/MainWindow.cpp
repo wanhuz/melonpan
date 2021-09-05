@@ -68,17 +68,12 @@ MainWindow::MainWindow(QWidget* parent)
     else {
         QString NotoJK = QFontDatabase::applicationFontFamilies(id).at(0);
         sansMonoJK = new QFont(NotoJK, 12);
-        textbox->setFont(QFont(NotoJK, 22)); //default to Helvetica if failed
+        textbox->setFont(QFont(NotoJK, 22)); //default to Calibri if failed
     }
 
 
     //UI customization
-
-    QStringList labels;
-    labels.insert(0, QString("Kanji"));
-    labels.insert(1, QString("Kana"));
-    labels.insert(2, QString("Meaning"));
-    dictmodel.setHorizontalHeaderLabels(labels);
+    this->refreshTable();
     
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     OCRBtn->setCheckable(true);
@@ -88,6 +83,7 @@ MainWindow::MainWindow(QWidget* parent)
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
+    //Set system tray icon
     QIcon TrayIconPath = QIcon("C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\ui\\melonpan.ico");
     trayIcon = new QSystemTrayIcon(TrayIconPath, this);
     QMenu* traymenu = new QMenu(this);
@@ -110,10 +106,10 @@ MainWindow::MainWindow(QWidget* parent)
             Config::getInstance().setFrameSize(48);
         });
     connect(frameVert, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameOrientation(true);
+            Config::getInstance().setFrameOrientation(Frame::Vertical);
         });
     connect(frameHort, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameOrientation(false);
+            Config::getInstance().setFrameOrientation(Frame::Horizontal);
         });
     connect(settingsWindow, &QAction::triggered, this, [=]() {
             SettingsWindow* settings = new SettingsWindow();;
@@ -121,7 +117,7 @@ MainWindow::MainWindow(QWidget* parent)
         });
 
 
-    connect(MainControl, SIGNAL(OcrResult(QString)), textbox, SLOT(setText(QString)));
+    connect(MainControl, SIGNAL(captureResult(QString)), textbox, SLOT(setText(QString)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureOCR(bool)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureText(bool)));
@@ -134,16 +130,14 @@ MainWindow::MainWindow(QWidget* parent)
 
 //Search from user-given string and display it either in normal mode or minimal mode, result are limited to 100 entry.
 void MainWindow::search() {
-    dictmodel.clear();
     QVector<entry> searchResult;
-    QString searchText = textbox->text();
+    QString searchText;
+
+    dictmodel.clear();
+    searchText = textbox->text();
 
     if (searchText.isEmpty()) { 
-        QStringList labels;
-        labels.insert(0, QString("Kanji"));
-        labels.insert(1, QString("Kana"));
-        labels.insert(2, QString("Meaning"));
-        dictmodel.setHorizontalHeaderLabels(labels);
+        this->refreshTable();
         return; 
     }
 
@@ -173,9 +167,10 @@ void MainWindow::search() {
             }
         }
 
-        //Spawn minimalism mode if enabled
+        //Spawn minimalist UI if enabled
         if (minMode) {
-            if(minUi == NULL) { minUi = new popup(this); }
+            if(minUi == NULL) { 
+                minUi = new popup(this); }
 
             minUi->clearEntry();
 
@@ -190,28 +185,28 @@ void MainWindow::search() {
     }
 
     //Refresh UI
-    QStringList labels;
-    labels.insert(0, QString("Kanji"));
-    labels.insert(1, QString("Kana"));
-    labels.insert(2, QString("Meaning"));
-    dictmodel.setHorizontalHeaderLabels(labels);
-
+    this->refreshTable();
 }
 
 void MainWindow::startCaptureOCR(bool enableOCR) {
-    if (!enableOCR) { MainControl->stopCaptureKey(); }
-    else { MainControl->startCaptureKeyOCR(); }
+    if (!enableOCR) { 
+        MainControl->stopCaptureKey(); }
+    else { 
+        MainControl->startCaptureKeyOCR(); }
 
 }
 
 void MainWindow::startCaptureText(bool enableText){
-    if (!enableText) { MainControl->stopCaptureKey(); }
-    else { MainControl->startCaptureKeyTextGeneric(); }
+    if (!enableText) { 
+        MainControl->stopCaptureKey(); }
+    else { 
+        MainControl->startCaptureKeyTextGeneric(); }
 }
 
 void MainWindow::alwaysOnTop(bool enabled) {
     this->showNormal();
     HWND hwnd = (HWND)this->winId();
+
     if (enabled) {
         SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
     }
@@ -221,6 +216,7 @@ void MainWindow::alwaysOnTop(bool enabled) {
 
 }
 
+//Activate window if icon in system tray is clicked
 void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason) {
     if (reason == QSystemTrayIcon::Trigger) {
         show();
@@ -230,6 +226,7 @@ void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason) {
     
 }
 
+//Minimize windows to tray
 void MainWindow::changeEvent(QEvent* event) {
     if (event->type() == QEvent::WindowStateChange) {
         if (isMinimized()) {
@@ -239,4 +236,13 @@ void MainWindow::changeEvent(QEvent* event) {
     }
 
     return QMainWindow::changeEvent(event);
+}
+
+//Set label for table column
+void MainWindow::refreshTable() {
+    QStringList labels;
+    labels.insert(0, QString("Kanji"));
+    labels.insert(1, QString("Kana"));
+    labels.insert(2, QString("Meaning"));
+    dictmodel.setHorizontalHeaderLabels(labels);
 }

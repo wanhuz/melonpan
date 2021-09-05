@@ -71,9 +71,10 @@ int Util::sendKeyInput() {
 
 	UINT uSent = SendInput(ARRAYSIZE(inputs), inputs, sizeof(INPUT));
 	if (uSent != ARRAYSIZE(inputs)) {
-		qDebug() << "Sendinput failed" << endl;
-		return 4;
+		printf("Sendinput failed");
+		return 1;
 	}
+
 	return 0;
 }
 
@@ -87,21 +88,19 @@ QString Util::getRootWord(QString targetWord) {
 
 	//Init MeCab
 	MeCab::Model* model = MeCab::createModel("");
-
 	MeCab::Tagger* tagger = model->createTagger();
-
 	CHECK(tagger);
 
 	const char* result = tagger->parse(data);
 	CHECK(result);
 
-	////Get root word of first word in the sentence
-	QString qresult(result);
-	QStringList fresult = qresult.split("\t");
+	//Get root word of first word in the sentence
+	QString resultQString(result);
+	QStringList resultQStrings = resultQString.split("\t");
 
-	if (!(fresult.at(0).contains("EOS"))) {
-		fresult = fresult[1].split(",");
-		return fresult[6];
+	if (!(resultQStrings.at(0).contains("EOS"))) {
+		resultQStrings = resultQStrings[1].split(",");
+		return resultQStrings[6];
 	}
 
 	return "";

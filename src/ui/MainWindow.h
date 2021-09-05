@@ -41,4 +41,5 @@ private:
     QSystemTrayIcon* trayIcon;
 
     void changeEvent(QEvent* event);
+    void refreshTable();
 };

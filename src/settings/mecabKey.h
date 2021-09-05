@@ -1,10 +1,9 @@
 /*
 	Create a registry key for Mecab library to be able to function normally.
-	Without this, MeCab has to be manually installed by user or it will crash.
+	Without this, MeCab has to be manually installed from their website or it will crash.
 */
 
 #pragma once
-
 #include "../../lib/WinReg/WinReg.hpp"
 #include <exception>
 #include <iostream>

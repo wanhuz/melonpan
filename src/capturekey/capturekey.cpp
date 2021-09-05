@@ -30,7 +30,7 @@ int capturekey::stopCapture(CaptureType captureType) {
 	return 0;
 }
 
-
+//While loop and checking for key press increased CPU usage
 void capturekey::run() {
 	while (enableOCR) {
 		if (keyPressed(keyOCR)) {

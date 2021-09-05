@@ -13,15 +13,17 @@ void Config::save() {
 
 }
 
+//Change size of frame based on given font size
 void Config::setFrameSize(int fontsize) {
 	if (frame == NULL) {
 		printf("Frame is not initialized");
 		return;
 	}
+
 	this->frame->setFontSize(fontsize);
-	this->frame->setBoxSize();
 }
 
+//Init frame
 void Config::setFrame(Frame* frames) {
 	if (frame == NULL) {
 		frame = frames;
@@ -32,10 +34,11 @@ void Config::setFrame(Frame* frames) {
 	
 }
 
-void Config::setFrameOrientation(bool orientation) {
+void Config::setFrameOrientation(Frame::Orientation orientation) {
 	if (frame == NULL) {
 		printf("Frame is not initialized");
 		return;
 	}
+
 	this->frame->setOrientation(orientation);
 }

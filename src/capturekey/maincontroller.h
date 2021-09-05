@@ -32,6 +32,6 @@ private slots:
 	void setSearchBox();
 
 signals:
-	void OcrResult(QString OcrText);
+	void captureResult(QString OcrText);
 
 };

@@ -1,6 +1,7 @@
+#pragma once
+#include "../ui/frame.h"
 #include <iostream>
 #include <fstream>
-#include "../ui/frame.h"
 
 /*
 Global configuration class using Singleton Implementation.
@@ -22,7 +23,7 @@ public:
 	void reset();
 	void load();
 	void save();
-	void setFrameOrientation(bool orientation);
+	void setFrameOrientation(Frame::Orientation orientation);
 	void setFrameSize(int size);
 };
 
