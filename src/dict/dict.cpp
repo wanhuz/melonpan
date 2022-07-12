@@ -20,7 +20,7 @@ void Dict::load() {
     
     dictPath = QDir::currentPath();
     dictPath = dictPath + "/res/dict/JMdict_e"; //Deployment
-    dictPath = "C://Users//WanHuz//Documents//Shanachan//res//dict//JMdict_e"; //Debug Mode
+    //dictPath = "C://Users//WanHuz//source//repos//melonpan//res//dict//JMdict_e"; //Debug Mode
     QFile dictFile(dictPath);
 
     if (!dictFile.open(QIODevice::ReadOnly | QIODevice::Text))

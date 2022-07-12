@@ -55,8 +55,8 @@ MainWindow::MainWindow(QWidget* parent)
     MainControl = new MainController();
 
     QString fontPath = QDir::currentPath();
-    fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
-    //fontPath = fontPath + "/res/font/NotoSansMonoCJKjp-Regular.otf";
+    //fontPath = "C:\\Users\\WanHuz\\source\\repos\\melonpan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
+    fontPath = fontPath + "/res/font/NotoSansMonoCJKjp-Regular.otf";
     int id = QFontDatabase::addApplicationFont(fontPath);
     
     if (id < 0) {
@@ -84,7 +84,10 @@ MainWindow::MainWindow(QWidget* parent)
     table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
     //Set system tray icon
-    QIcon TrayIconPath = QIcon("C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\ui\\melonpan.ico");
+    //QIcon TrayIconPath = QIcon("C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\ui\\melonpan.ico");
+    QString iconPath = QDir::currentPath();
+    iconPath = iconPath + "/res/ui/melonpan.ico";
+    QIcon TrayIconPath = QIcon(iconPath);
     trayIcon = new QSystemTrayIcon(TrayIconPath, this);
     QMenu* traymenu = new QMenu(this);
     QAction* exit = new QAction("Exit");

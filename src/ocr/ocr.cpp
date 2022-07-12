@@ -18,7 +18,7 @@ Ocr::Ocr() {
     tessDataPath = QDir::currentPath();
     tessDataPath = tessDataPath.replace("/", "\\");
     tessDataPath = tessDataPath + "\\res\\tessdata\\";
-    tessDataPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\tessdata\\"; //Debug Mode
+    //tessDataPath = "C:\\Users\\WanHuz\\source\\repos\\melonpan\\res\\tessdata\\"; //Debug Mode
 
     QByteArray tessDataPath_char = tessDataPath.toLocal8Bit();
     const char* tessDataPath_char2 = tessDataPath_char.data();

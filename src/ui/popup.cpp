@@ -109,8 +109,8 @@ void popup::initTheme() {
 
 	//Initialize Font
 	QString fontPath = QDir::currentPath();
-	fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
-	//fontPath = fontPath + "//res//font//NotoSansMonoCJKjp-Regular.otf";
+	//fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
+	fontPath = fontPath + "//res//font//NotoSansMonoCJKjp-Regular.otf";
 
 	int id = QFontDatabase::addApplicationFont(fontPath);
 
