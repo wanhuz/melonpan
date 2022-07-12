@@ -9,7 +9,7 @@ Melonpan is an open-source desktop application for Windows. It is a Japanese-Eng
 ## Inspiration
 
 - [KanjiTomo](https://www.kanjitomo.net): Java-based Japanese-English OCR Dictionary
-- [OCR Manga Reader](https://sourceforge.net/projects/ocrmangareaderforandroid/): Android app
+- [OCR Manga Reader](https://sourceforge.net/projects/ocrmangareaderforandroid/): Japanese-English OCR Dictionary for Android based phone
 
 ## License
 
