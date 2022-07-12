@@ -2,11 +2,8 @@
 #include <qframe.h>
 #include <qlayout.h>
 #include <qguiapplication.h>
-#include <qwindow.h>
 #include <qscreen.h>
-#include <qapplication.h>
 #include <qpixmap.h>
-#include <qdebug.h>
 
 
 Frame::Frame(QWidget* parent)
@@ -30,58 +27,52 @@ Frame::Frame(QWidget* parent)
 	this->setContentsMargins(0, 0, 0, 0);
 	this->setAttribute(Qt::WA_TranslucentBackground);
 
-	this->setOrientation(1);
+	//Set default size and orientation
+	this->setOrientation(Horizontal);
 	this->setFontSize(12);
-	this->setBoxSize();
-	
 }
 
 
 /*Setter for orientation, 1 = vertical, 0 = horizontal */
-void Frame::setOrientation(bool orienVal) {
-
-	if (orienVal == orien) {
-		return;
-	}
-	else {
-		orien = orienVal;
-	}
+void Frame::setOrientation(Orientation newOrient) {
+	if (newOrient == currOrient) { return; }
+	else { currOrient = newOrient; }
 
 }
 
-/*Setter for font size*/
+/*Set font size. Changing font size changes the frame box size*/
 void Frame::setFontSize(int size) {
 	if (size > 5 && size < 100) {
-		fontsize = size;
+		this->setBoxSize(size);
 	}
 }
 
 /* Set the box size of the frame*/
-void Frame::setBoxSize() {
-	QPoint curCurPos;
-	if (fontsize == NULL) {
-		printf("Err: font size is not specified");
-		return;
-	}
+void Frame::setBoxSize(int fontsize) {
+	x = (fontsize + 20);
+	y = x * 4; //Multiple to 4 character
+}
 
-	//X and Y are the opposite! Mistakes were made
-	y = (fontsize + 15);
-	x = y * 4;
-	curCurPos = QCursor::pos();
-	curX = curCurPos.x() - (y / 2);
-	curY = curCurPos.y() - (y / 2);
+// Set the box position so that it spawn around the mouse cursor
+void Frame::initBox() {
+	QPoint cursorPos;
+	
+	cursorPos = QCursor::pos();
+	curX = cursorPos.x() - (x / 2);
+	curY = cursorPos.y() - (x / 2);
 
-	if (orien) {
-		this->setGeometry(curX, curY, y, x);
-	}
-	else {
+	if (currOrient == Horizontal) {
 		this->setGeometry(curX, curY, x, y);
+	}
+	else if (currOrient == Vertical) {
+		this->setGeometry(curX, curY, y, x);
 	}
 }
 
 QPixmap Frame::shootScreenshot() {
 	QScreen* screen = QGuiApplication::primaryScreen();
-	QPixmap desktopPixmap = screen->grabWindow(0, curX, curY, y, x);
+	QPixmap desktopPixmap = screen->grabWindow(0, curX, curY, x, y);
+
 	return desktopPixmap;
 }
 

@@ -23,7 +23,7 @@ popup::popup(QWidget* parent)
 	QBoxLayout* vlayout = new QVBoxLayout;
 
 	//Init theme
-	this->setTheme();
+	this->initTheme();
 	
 	//Set widget properties
 	this->setWindowFlags(Qt::NoDropShadowWindowHint | Qt::FramelessWindowHint | Qt::Popup);
@@ -50,42 +50,42 @@ popup::popup(QWidget* parent)
 	vlayout->addWidget(gloss);
 	vlayout->addLayout(hlayoutbottom);
 	
-	connect(btnNext, &QPushButton::clicked, this, [=]() {if (ind < entsize-1) { ind++; }});
-	connect(btnPrev, &QPushButton::clicked, this, [=]() {if (ind > MIN_ENTRY) { ind--; }});
+	connect(btnNext, &QPushButton::clicked, this, [=]() {if (index < EntrySize-1) { index++; }});
+	connect(btnPrev, &QPushButton::clicked, this, [=]() {if (index > MIN_ENTRY) { index--; }});
 	connect(btnNext, SIGNAL(clicked()), this, SLOT(selectEntry()));
 	connect(btnPrev, SIGNAL(clicked()), this, SLOT(selectEntry()));
 }
 
 
-void popup::addEntry(entry ent) {
-	if (topEntry.size() > MAX_ENTRY) {
+void popup::addEntry(entry Entry) {
+	if (PopupDict.size() > MAX_ENTRY) {
 		printf("Entry is higher than 5. No new entry is added");
 		return;
 	}
 
-	entsize++;
-	entry newEnt = this->processEnt(ent);
-	topEntry.append(newEnt);
+	EntrySize++;
+	entry newEntry = this->sanitizeEntry(Entry);
+	PopupDict.append(newEntry);
 }
 
 void popup::clearEntry() {
-	if (topEntry.size() > 0) {
-		topEntry.clear();
+	if (PopupDict.size() > 0) {
+		PopupDict.clear();
 	}
 
-	entsize = 0;
-	ind = 0;
+	EntrySize = 0;
+	index = 0;
 }
 
 void popup::selectEntry() {
-	if (topEntry.size() == 0 || topEntry.isEmpty()) { 
+	if (PopupDict.size() < 1 || PopupDict.isEmpty()) {
 		printf("No entry"); 
 		return; 
 	}
 
-	kanji->setText(topEntry[ind].getKanji());
-	kana->setText(topEntry[ind].getReading());
-	gloss->setText(topEntry[ind].getGloss());
+	kanji->setText(PopupDict[index].getKanji());
+	kana->setText(PopupDict[index].getReading());
+	gloss->setText(PopupDict[index].getGloss());
 
 	this->setGeometry(x, y, 224, 200);
 }
@@ -101,14 +101,17 @@ void popup::shows() {
 	this->show();
 }
 
-void popup::setTheme() {
-	const QString style("QDialog {background-color: white; border: 1px solid black;}"
-						"QPushButton {border:none; background-color: #3f87f5; color: white;}" 
-						"QPushButton:hover {background-color: #3867db}");
+void popup::initTheme() {
+	const QString style( "QDialog {background-color: white; border: 1px solid black;}"
+						 "QPushButton {border:none; background-color: #3f87f5; color: white;}" 
+						 "QPushButton:hover {background-color: #3867db}"
+						);
 
+	//Initialize Font
 	QString fontPath = QDir::currentPath();
-	fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
-	//fontPath = fontPath + "//res//NotoSansMonoCJKjp-Regular.otf";
+	//fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
+	fontPath = fontPath + "//res//font//NotoSansMonoCJKjp-Regular.otf";
+
 	int id = QFontDatabase::addApplicationFont(fontPath);
 
 	if (id < 0) {
@@ -117,10 +120,12 @@ void popup::setTheme() {
 	else {
 		QString NotoJK = QFontDatabase::applicationFontFamilies(id).at(0);
 		sansMonoJK = new QFont(NotoJK, 12);
+
 		kanji->setFont(*sansMonoJK);
 		kana->setFont(*sansMonoJK);
 	}
 
+	//Set Windows property and style
 	kanji->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 	kana->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
@@ -133,39 +138,46 @@ void popup::setTheme() {
 	this->setStyleSheet(style);
 }
 
-//Process entry
-entry popup::processEnt(entry ent) {
+//Clean and return one entry
+entry popup::sanitizeEntry(entry Entry) {
+	QString cleanKana;
+	QString cleanGloss;
+	QString cleanKanji;
+	int kanaindex, n;
 
 	//Only take one kana reading
-	QString kana = ent.getReading();
-	int kanaind = kana.indexOf("\n");
-	if (kanaind > -1) {
-		kana.remove(kanaind, kana.size());
+	cleanKana = Entry.getReading();
+	kanaindex = cleanKana.indexOf("\n");
+
+	if (kanaindex > -1) {
+		cleanKana.remove(kanaindex, cleanKana.size());
 	}
 
 	//Only take first N string of glossary
-	QString gloss = ent.getGloss();
-	int n = 200;
-	if (gloss.size() > n) {
-		gloss.remove(n, gloss.size());
-		gloss.append(" ... (more)");
+	cleanGloss = Entry.getGloss();
+	n = 200;
+
+	if (cleanGloss.size() > n) {
+		cleanGloss.remove(n, cleanGloss.size());
+		cleanGloss.append(" ... (more)");
 	}
 
 	//If there is no kanji entry, put kana in kanji
-	QString kanji = ent.getKanji();
-	if (kanji.isEmpty()) {
-		kanji = kana;
-		kana = "";
+	cleanKanji = Entry.getKanji();
+
+	if (cleanKanji.isEmpty()) {
+		cleanKanji = cleanKana;
+		cleanKana = "";
 	}
 	
-	entry tempEnt(
-		kanji,
-		kana,
-		gloss,
-		ent.getFreq()
+	entry tempEntry(
+		cleanKanji,
+		cleanKana,
+		cleanGloss,
+		Entry.getFreq()
 	);
 
-	return tempEnt;
+	return tempEntry;
 
 
 }

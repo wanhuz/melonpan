@@ -16,6 +16,7 @@ public:
 
 private:
 	void parse(QByteArray* line);
+	void initFreqMap();
 	QVector<entry> dictlist;
 	QMap<QString, int> freqMap;
 };

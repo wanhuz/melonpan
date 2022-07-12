@@ -7,18 +7,18 @@ class Frame : public QDialog
 	Q_OBJECT;
 
 public:
-	
 	Frame(QWidget* parent = Q_NULLPTR);
-	void setOrientation(bool orientation);
-	void setBoxSize();
+	enum Orientation { Vertical, Horizontal };
+	void setOrientation(Orientation newOrient);
+	void setBoxSize(int fontsize);
 	void setFontSize(int size);
+	void initBox();
 	QPixmap shootScreenshot();
-
+	
 	
 private:
 	int y, x, curX, curY;
-	bool orien;
+	Orientation currOrient;
 	QPoint cursorPos;
-	int fontsize;
 
 };

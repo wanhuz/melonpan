@@ -1,12 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LocalDebuggerEnvironment>TESSDATA_PREFIX=C:\Users\WanHuz\Documents\Shanachan\res\tessdata
+    <LocalDebuggerEnvironment>TESSDATA_PREFIX=C:\Users\WanHuz\source\repos\melonpan\res\tessdata
 PATH=%PATH%;$(QtDllPath);C:\Users\WanHuz\AppData\Local\Programs\Python\Python37
 PYTHONPATH="C:\Users\WanHuz\AppData\Local\Programs\Python\Python37\DLLs;C:\Users\WanHuz\AppData\Local\Programs\Python\Python37\Lib"
 PYTHONHOME=C:\Users\WanHuz\AppData\Local\Programs\Python\Python37</LocalDebuggerEnvironment>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
     <LocalDebuggerCommand>$(TargetPath)</LocalDebuggerCommand>
     <LocalDebuggerCommandArguments>$(QmlDebug)  </LocalDebuggerCommandArguments>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='x86|x64'">
+    <QtLastBackgroundBuild>2022-04-14T08:54:56.2487207Z</QtLastBackgroundBuild>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <QtLastBackgroundBuild>2022-04-14T08:54:59.2696146Z</QtLastBackgroundBuild>
+  </PropertyGroup>
+  <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <QtLastBackgroundBuild>2022-04-14T08:55:00.4046142Z</QtLastBackgroundBuild>
   </PropertyGroup>
 </Project>

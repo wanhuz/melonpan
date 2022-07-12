@@ -13,7 +13,6 @@ class MainController : public QObject
 
 public:
 	MainController();
-	void killCaptureKey();
 	void startCaptureKeyOCR();
 	void startCaptureKeyTextGeneric();
 	void stopCaptureKey();
@@ -33,6 +32,6 @@ private slots:
 	void setSearchBox();
 
 signals:
-	void OcrResult(QString OcrText);
+	void captureResult(QString OcrText);
 
 };

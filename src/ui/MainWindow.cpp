@@ -4,18 +4,21 @@
 #include <qmainwindow.h>
 #include <qtextcodec.h>
 #include <Windows.h>
-#include "../capturekey/maincontroller.h"
 #include <qaction.h>
 #include <qdebug.h>
-#include "../settings/config.h"
-#include "../ui/SettingsWindow.h";
+#include <qevent.h>
 #include <qfontdatabase.h>
 #include <qdir.h>
 #include <qfile.h>
 #include <qmessagebox.h>
+#include "../settings/config.h"
+#include "../ui/SettingsWindow.h";
 #include "../data/entry.h"
 #include "../util/util.h"
 #include "../ui/popup.h"
+#include "../settings/mecabKey.h"
+#include "../capturekey/maincontroller.h"
+
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -29,6 +32,7 @@ MainWindow::MainWindow(QWidget* parent)
     textbox = ui.textLine;
     table = ui.dictView;
     sansMonoJK = NULL;
+
     QAction* fsSmall = ui.fs_small;
     QAction* fsNormal = ui.fs_normal;
     QAction* fsLarge = ui.fs_large;
@@ -37,12 +41,22 @@ MainWindow::MainWindow(QWidget* parent)
     QAction* frameHort = ui.actionHorizontal;
     QAction* settingsWindow = ui.Settings;
 
-    //This is not supposed to be at this class, but it is easier than refactoring everything
+    //Mecab library need to set registry in Regedit so that the library can load dictionary globally, Exit if registry fail to set
+    MeCabKey key; 
+    if (!(key.init())) {
+        QMessageBox err;
+        err.setText("Failed to set registry key for MeCab");
+        err.setIcon(QMessageBox::Critical);
+        err.exec();
+        exit(2);
+    }
+
+    //This is not supposed to be at this class because it breaks MVC architecture, but it is easier than refactoring everything
     MainControl = new MainController();
 
     QString fontPath = QDir::currentPath();
-    fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
-    //fontPath = fontPath + "//res//NotoSansMonoCJKjp-Regular.otf";
+    //fontPath = "C:\\Users\\WanHuz\\source\\repos\\melonpan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
+    fontPath = fontPath + "/res/font/NotoSansMonoCJKjp-Regular.otf";
     int id = QFontDatabase::addApplicationFont(fontPath);
     
     if (id < 0) {
@@ -54,15 +68,12 @@ MainWindow::MainWindow(QWidget* parent)
     else {
         QString NotoJK = QFontDatabase::applicationFontFamilies(id).at(0);
         sansMonoJK = new QFont(NotoJK, 12);
+        textbox->setFont(QFont(NotoJK, 22)); //default to Calibri if failed
     }
 
 
     //UI customization
-    QStringList labels;
-    labels.insert(0, QString("Kanji"));
-    labels.insert(1, QString("Kana"));
-    labels.insert(2, QString("Meaning"));
-    dictmodel.setHorizontalHeaderLabels(labels);
+    this->refreshTable();
     
     QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
     OCRBtn->setCheckable(true);
@@ -71,6 +82,18 @@ MainWindow::MainWindow(QWidget* parent)
     table->setModel(&dictmodel);
     table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     table->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+
+    //Set system tray icon
+    //QIcon TrayIconPath = QIcon("C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\ui\\melonpan.ico");
+    QString iconPath = QDir::currentPath();
+    iconPath = iconPath + "/res/ui/melonpan.ico";
+    QIcon TrayIconPath = QIcon(iconPath);
+    trayIcon = new QSystemTrayIcon(TrayIconPath, this);
+    QMenu* traymenu = new QMenu(this);
+    QAction* exit = new QAction("Exit");
+    traymenu->addAction(exit);
+    trayIcon->setContextMenu(traymenu);
+    trayIcon->setVisible(true);
 
     //Connect menu bar button, this is redundant, may change it later
     connect(fsSmall, &QAction::triggered, this, [=]() {
@@ -86,10 +109,10 @@ MainWindow::MainWindow(QWidget* parent)
             Config::getInstance().setFrameSize(48);
         });
     connect(frameVert, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameOrientation(true);
+            Config::getInstance().setFrameOrientation(Frame::Vertical);
         });
     connect(frameHort, &QAction::triggered, this, [=]() {
-            Config::getInstance().setFrameOrientation(false);
+            Config::getInstance().setFrameOrientation(Frame::Horizontal);
         });
     connect(settingsWindow, &QAction::triggered, this, [=]() {
             SettingsWindow* settings = new SettingsWindow();;
@@ -97,47 +120,41 @@ MainWindow::MainWindow(QWidget* parent)
         });
 
 
-    //Connect buttons to respective function
-    connect(MainControl, SIGNAL(OcrResult(QString)), textbox, SLOT(setText(QString)));
+    connect(MainControl, SIGNAL(captureResult(QString)), textbox, SLOT(setText(QString)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureOCR(bool)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureText(bool)));
     connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(minBtn, &QPushButton::toggled, this, [=](const bool tempbool) {minMode = tempbool;});
     connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
+    connect(trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
+    connect(exit, &QAction::triggered, this, &QApplication::quit);
 }
 
 //Search from user-given string and display it either in normal mode or minimal mode, result are limited to 100 entry.
 void MainWindow::search() {
-    dictmodel.clear();
     QVector<entry> searchResult;
-    QString searchText = textbox->text();
+    QString searchText;
+
+    dictmodel.clear();
+    searchText = textbox->text();
 
     if (searchText.isEmpty()) { 
-        QStringList labels;
-        labels.insert(0, QString("Kanji"));
-        labels.insert(1, QString("Kana"));
-        labels.insert(2, QString("Meaning"));
-        dictmodel.setHorizontalHeaderLabels(labels);
+        this->refreshTable();
         return; 
     }
 
     searchResult = MainControl->searchDict(searchText);
 
     if (searchResult.size() < 1) {
-       //No result found
         dictmodel.clear();
     }
     else if (searchResult.size() > 0) {
         int size;
 
-        /*Limit search result to 100 entries only. Also, improve responsiveness*/
-        if (searchResult.size() > 100) {
-            size = 100;
-        }
-        else {
-            size = searchResult.size();
-        }
+        /*Limit search result to 100 entries only. Also improve responsiveness*/
+        if (searchResult.size() > 100) { size = 100; }
+        else { size = searchResult.size(); }
 
         for (int i = 0; i < size; i++) {
             dictmodel.setItem(i, 0, new QStandardItem(searchResult[i].getKanji().toLocal8Bit().constData()));
@@ -153,9 +170,10 @@ void MainWindow::search() {
             }
         }
 
-        //Spawn minimalism mode if enabled
+        //Spawn minimalist UI if enabled
         if (minMode) {
-            if(minUi == NULL) { minUi = new popup(this); }
+            if(minUi == NULL) { 
+                minUi = new popup(this); }
 
             minUi->clearEntry();
 
@@ -170,36 +188,28 @@ void MainWindow::search() {
     }
 
     //Refresh UI
-    QStringList labels;
-    labels.insert(0, QString("Kanji"));
-    labels.insert(1, QString("Kana"));
-    labels.insert(2, QString("Meaning"));
-    dictmodel.setHorizontalHeaderLabels(labels);
-
+    this->refreshTable();
 }
 
 void MainWindow::startCaptureOCR(bool enableOCR) {
-    if (!enableOCR) {
-        MainControl->stopCaptureKey();
-    }
-    else {
-        MainControl->startCaptureKeyOCR();
-    }
-    
+    if (!enableOCR) { 
+        MainControl->stopCaptureKey(); }
+    else { 
+        MainControl->startCaptureKeyOCR(); }
+
 }
 
 void MainWindow::startCaptureText(bool enableText){
-    if (!enableText) {
-        MainControl->stopCaptureKey();
-    }
-    else {
-        MainControl->startCaptureKeyTextGeneric();
-    }
+    if (!enableText) { 
+        MainControl->stopCaptureKey(); }
+    else { 
+        MainControl->startCaptureKeyTextGeneric(); }
 }
 
 void MainWindow::alwaysOnTop(bool enabled) {
     this->showNormal();
     HWND hwnd = (HWND)this->winId();
+
     if (enabled) {
         SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
     }
@@ -207,4 +217,35 @@ void MainWindow::alwaysOnTop(bool enabled) {
         SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE | SWP_SHOWWINDOW);
     }
 
+}
+
+//Activate window if icon in system tray is clicked
+void MainWindow::iconActivated(QSystemTrayIcon::ActivationReason reason) {
+    if (reason == QSystemTrayIcon::Trigger) {
+        show();
+        this->setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+        this->activateWindow();
+    }
+    
+}
+
+//Minimize windows to tray
+void MainWindow::changeEvent(QEvent* event) {
+    if (event->type() == QEvent::WindowStateChange) {
+        if (isMinimized()) {
+            hide();
+            event->ignore();
+        }
+    }
+
+    return QMainWindow::changeEvent(event);
+}
+
+//Set label for table column
+void MainWindow::refreshTable() {
+    QStringList labels;
+    labels.insert(0, QString("Kanji"));
+    labels.insert(1, QString("Kana"));
+    labels.insert(2, QString("Meaning"));
+    dictmodel.setHorizontalHeaderLabels(labels);
 }

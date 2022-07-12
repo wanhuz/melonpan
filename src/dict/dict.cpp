@@ -1,87 +1,56 @@
 #include "dict.h"
-#include <qstandarditemmodel.h>
+#include "../data/entry.h"
 #include <QtCore\qfile.h>
 #include <QDebug>
 #include <qstring.h>
 #include <QBuffer>
-#include <qeventloop.h>
 #include <qdir.h>
 #include <algorithm>
-#include "../data/entry.h"
 
 
 
 Dict::Dict() {
-    // Hard mapping of word frequency line in Japanese Dictionary file to number
-    QString line;
-
-    /*Insert word frequency nf01 to nf48. lower is more common*/
-    for (int i = 1; i < 49; i++) {
-        
-        if (i < 10) { 
-            line = "<ke_pri>nf";
-            line = line + "0" + QString::number(i);
-            line = line + "</ke_pri>";
-            freqMap.insert(line, i); 
-        }
-        else {
-            line = "<ke_pri>nf";
-            line = line + QString::number(i);
-            line = line + "</ke_pri>";
-            freqMap.insert(line, i);
-        }
-        
-    }
-
-    freqMap.insert("<re_pri>news1</re_pri>", 49);
-    freqMap.insert("<re_pri>news2</re_pri>", 50);
-    freqMap.insert("<re_pri>ichi1</re_pri>", 51);
-    freqMap.insert("<re_pri>ichi2</re_pri>", 52);
-    freqMap.insert("<re_pri>spec1</re_pri>", 53);
-    freqMap.insert("<re_pri>spec2</re_pri>", 54);
-    freqMap.insert("<re_pri>gai1</re_pri>", 55);
-    freqMap.insert("<re_pri>gai2</re_pri>", 56);
-    freqMap.insert("<ke_pri>news1</ke_pri>", 57);
-    freqMap.insert("<ke_pri>news2</ke_pri>", 58);
-    freqMap.insert("<ke_pri>ichi1</ke_pri>", 59);
-    freqMap.insert("<ke_pri>ichi2</ke_pri>", 60);
-    freqMap.insert("<ke_pri>spec1</ke_pri>", 61);
-    freqMap.insert("<ke_pri>spec2</ke_pri>", 62);
-    freqMap.insert("<ke_pri>gai1</ke_pri>", 63);
-    freqMap.insert("<ke_pri>gai2</ke_pri>", 64);
+    this->initFreqMap();
 }
 
-/*Load file into QList*/
+/*Load dictionary file into dictionary object*/
 void Dict::load() {
-    QString dictPath = QDir::currentPath();
-    //dictPath = dictPath + "/res/JMdict_e"; //Deployment
-    dictPath = "C://Users//WanHuz//Documents//Shanachan//res//dict//JMdict_e"; //Debug Mode
+    QString dictPath;
+    QByteArray dictData;
+    
+    dictPath = QDir::currentPath();
+    dictPath = dictPath + "/res/dict/JMdict_e"; //Deployment
+    //dictPath = "C://Users//WanHuz//source//repos//melonpan//res//dict//JMdict_e"; //Debug Mode
     QFile dictFile(dictPath);
+
     if (!dictFile.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         qDebug() << "Could not open dictionary file " + dictPath;
         return;
     }
 
-    QByteArray data = dictFile.readAll();
-    this->parse(&data);
+    dictData = dictFile.readAll();
+    this->parse(&dictData);
     dictFile.close(); 
 }
 
 void Dict::parse(QByteArray* data) {
+    const int MAX_PRIORITY = 100;
+    int wordFreq;
+    const QString CLRTXT = "";
+    QVector<QString> kanji;
+    QString meanings, readings, line;
+
     QBuffer buffer(data);
     buffer.open(QIODevice::ReadOnly);
     QTextStream out(&buffer);
     out.setCodec("UTF-8");
 
-    const int MAX_PRIORITY = 100;
-    const QString CLRTXT = "";
-    QVector<QString> kanji;
     kanji.append(CLRTXT);
-    QString meanings = CLRTXT;
-    QString readings = CLRTXT;
-    QString line = CLRTXT;
-    int wordFreq = MAX_PRIORITY;
+    meanings = CLRTXT;
+    readings = CLRTXT;
+    line = CLRTXT;
+    wordFreq = MAX_PRIORITY;
    
     //This code below takes ~15s using different threads; ~40s without thread
     while (!out.atEnd()) {
@@ -146,15 +115,16 @@ QVector<entry> Dict::search(QString searchString) {
 
     /*Make responsiveness slow. Responsiveness bottleneck. Worst case of input of each character k = O(n^k) for alphabet*/
     for (int i = 0; i < dictlist.size(); i++) {
-        if (dictlist[i].getKanji().startsWith(searchString) || 
-            dictlist[i].getReading().startsWith(searchString) || 
-            dictlist[i].getGloss().contains(wordBound)){
+
+        if (dictlist[i].getKanji().startsWith(searchString) ||  dictlist[i].getReading().startsWith(searchString) ||  dictlist[i].getGloss().contains(wordBound)) {
+
             entry tempEntry = entry(
                 dictlist[i].getKanji(),
                 dictlist[i].getReading(),
                 dictlist[i].getGloss(),
                 dictlist[i].getFreq()
             );
+
             searchResult.append(tempEntry);
         }
 
@@ -165,33 +135,34 @@ QVector<entry> Dict::search(QString searchString) {
 
 
 
-/*Sort from highest word frequency to lowest word frequency. If there is an exact match to search string, place it at the highest frequency*/
+/*Sort from highest word frequency (lowest value) to lowest word frequency (highest value). If there is an exact match to search string, place it at the highest frequency (0)*/
 QVector<entry> Dict::sort(QVector<entry> searchedWord, QString targetString) {
     int size = searchedWord.size();
 
     for (int i = 0; i < size; i++) {
-        if ( (searchedWord[i].getKanji() == targetString) || (searchedWord[i].getReading() == targetString) ) {
+        if ((searchedWord[i].getKanji() == targetString) || (searchedWord[i].getReading() == targetString)) {
             searchedWord[i].setFreq(0);
         }
     }
 
     std::sort(searchedWord.begin(), searchedWord.end(), []
-    (entry searchedWord, entry searchedWordNext)
-        { return searchedWord.getFreq() < searchedWordNext.getFreq();});
+        (entry searchedWord, entry searchedWordNext)
+            {return searchedWord.getFreq() < searchedWordNext.getFreq();});
 
     return searchedWord;
 }
 
 /*Search two different word from dictionary, one is presumely root word*/
 QVector<entry> Dict::searchWithRoot(QString fSearchStr, QString sSearchStr) {
-    QVector<entry> fSearchResult = search(fSearchStr);
-    QVector<entry> sSearchResult = search(sSearchStr);
+    QVector<entry> SearchResult = search(fSearchStr);
+    QVector<entry> rootSearchResult = search(sSearchStr);
 
-    for (int i = 0; i < sSearchResult.size(); i++) {
-        fSearchResult.append(sSearchResult.at(i));
+    //Combine two list
+    for (int i = 0; i < rootSearchResult.size(); i++) {
+        SearchResult.append(rootSearchResult.at(i));
     }
 
-    return fSearchResult;
+    return SearchResult;
 }
 
 /*Search vector with from root word search*/
@@ -209,5 +180,42 @@ QVector<entry> Dict::sortWithRoot(QVector<entry> searchedWord, QString targetStr
     return sortedList;
 }
 
+// Hard mapping of word frequency line in Japanese Dictionary file to number
+void Dict::initFreqMap() {
+    QString line;
 
+    /*Insert word frequency nf01 to nf48. lower is more common*/
+    for (int i = 1; i < 49; i++) {
 
+        if (i < 10) {
+            line = "<ke_pri>nf";
+            line = line + "0" + QString::number(i);
+            line = line + "</ke_pri>";
+            freqMap.insert(line, i);
+        }
+        else {
+            line = "<ke_pri>nf";
+            line = line + QString::number(i);
+            line = line + "</ke_pri>";
+            freqMap.insert(line, i);
+        }
+
+    }
+
+    freqMap.insert("<re_pri>news1</re_pri>", 49);
+    freqMap.insert("<re_pri>news2</re_pri>", 50);
+    freqMap.insert("<re_pri>ichi1</re_pri>", 51);
+    freqMap.insert("<re_pri>ichi2</re_pri>", 52);
+    freqMap.insert("<re_pri>spec1</re_pri>", 53);
+    freqMap.insert("<re_pri>spec2</re_pri>", 54);
+    freqMap.insert("<re_pri>gai1</re_pri>", 55);
+    freqMap.insert("<re_pri>gai2</re_pri>", 56);
+    freqMap.insert("<ke_pri>news1</ke_pri>", 57);
+    freqMap.insert("<ke_pri>news2</ke_pri>", 58);
+    freqMap.insert("<ke_pri>ichi1</ke_pri>", 59);
+    freqMap.insert("<ke_pri>ichi2</ke_pri>", 60);
+    freqMap.insert("<ke_pri>spec1</ke_pri>", 61);
+    freqMap.insert("<ke_pri>spec2</ke_pri>", 62);
+    freqMap.insert("<ke_pri>gai1</ke_pri>", 63);
+    freqMap.insert("<ke_pri>gai2</ke_pri>", 64);
+}

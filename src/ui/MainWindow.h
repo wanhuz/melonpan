@@ -1,10 +1,11 @@
 #pragma once
-
 #include <QtWidgets/QMainWindow>
 #include "ui_MainWindow.h"
 #include <qstandarditemmodel.h>
+#include <QSystemTrayIcon>
 #include "../capturekey/maincontroller.h"
 #include "../ui/popup.h"
+
 
 
 
@@ -22,17 +23,23 @@ private slots:
 
 public slots:
     void search();
+    void iconActivated(QSystemTrayIcon::ActivationReason reason);
 
 private:
+    bool minMode = false;
+    Ui::MainWindow ui;
+
     popup* minUi = NULL;
     QFont* sansMonoJK;
     MainController* MainControl;
     QPushButton* OCRBtn;
     QPushButton* textBtn;
     QPushButton* minBtn;
-    Ui::MainWindow ui;
     QLineEdit* textbox;
     QTableView* table;
     QStandardItemModel dictmodel;
-    bool minMode = false;
+    QSystemTrayIcon* trayIcon;
+
+    void changeEvent(QEvent* event);
+    void refreshTable();
 };

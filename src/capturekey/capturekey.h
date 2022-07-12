@@ -1,26 +1,31 @@
 #pragma once
 #include <qthread.h>
+#include <Windows.h>
 
 class capturekey : public QThread {
 	Q_OBJECT;
 
 public:
+	enum CaptureType {OCR, TEXT_GENERIC};
 	capturekey();
-	int startCapture(int captureType);
-	int stopCapture(int captureType);
+	int startCapture(CaptureType captureType);
+	int stopCapture(CaptureType captureType);
 	int setKey();
-	const int OCR = 0;
-	const int TEXT_GENERIC = 1;
 	
 
+
 private:
-	bool enableOCR;
+	static HHOOK captHook;
+	static capturekey* capturekeys;
 	bool enableTextGeneric;
 	int keyOCR;
 	int keyTextGeneric;
-	bool keyPressed(int key);
+	bool enableOCR;
+	
 	void run() override;
-
+	void startHook();
+	void stopHook();
+	static LRESULT CALLBACK LowLevelKeyBoardProc(int nCode, WPARAM wParam, LPARAM lParam);
 
 signals:
 	void OCRkeyStateChanged();
