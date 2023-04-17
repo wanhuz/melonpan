@@ -3,6 +3,10 @@
 [![](https://img.shields.io/github/license/wanhuz/melonpan)](https://github.com/wanhuz/melonpan/blob/master/LICENSE)
 [![](https://img.shields.io/github/v/release/wanhuz/melonpan)](https://github.com/wanhuz/melonpan/releases)
 
+![image](https://user-images.githubusercontent.com/12682216/232378696-c0da5f97-d24f-4213-b175-ed94b3737b43.png)
+
+# Description
+
 Melonpan is an open-source desktop application for Windows. It is a Japanese-English digital dictionary that allows user to quickly capture Japanese words and perform lookup in the dictionary to find its meaning.
 
 ## Usage
