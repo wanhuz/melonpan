@@ -10,21 +10,21 @@ PYTHONHOME=C:\Users\WanHuz\AppData\Local\Programs\Python\Python37</LocalDebugger
     <LocalDebuggerCommandArguments>$(QmlDebug)  </LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='x86|x64'">
-    <QtLastBackgroundBuild>2023-05-01T09:31:01.4176724Z</QtLastBackgroundBuild>
+    <QtLastBackgroundBuild>2023-05-01T10:22:43.0950918Z</QtLastBackgroundBuild>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <QtLastBackgroundBuild>2023-05-01T09:31:01.7857714Z</QtLastBackgroundBuild>
+    <QtLastBackgroundBuild>2023-05-01T10:22:43.3310925Z</QtLastBackgroundBuild>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <QtLastBackgroundBuild>2023-05-01T09:31:01.9547720Z</QtLastBackgroundBuild>
+    <QtLastBackgroundBuild>2023-05-01T10:22:43.5470918Z</QtLastBackgroundBuild>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <QtLastBackgroundBuild>2023-05-01T09:31:01.4946724Z</QtLastBackgroundBuild>
+    <QtLastBackgroundBuild>2023-05-01T10:22:43.1720946Z</QtLastBackgroundBuild>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='x86|Win32'">
-    <QtLastBackgroundBuild>2023-05-01T09:31:01.6537704Z</QtLastBackgroundBuild>
+    <QtLastBackgroundBuild>2023-05-01T10:22:43.2521243Z</QtLastBackgroundBuild>
   </PropertyGroup>
   <PropertyGroup Label="QtSettings" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <QtLastBackgroundBuild>2023-05-01T09:31:01.8787708Z</QtLastBackgroundBuild>
+    <QtLastBackgroundBuild>2023-05-01T10:22:43.4580916Z</QtLastBackgroundBuild>
   </PropertyGroup>
 </Project>

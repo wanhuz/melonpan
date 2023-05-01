@@ -33,6 +33,7 @@ Change default shortcut x ` or ~
 Candy
 - Good proportion x
 - Icon instead of text x
+- Application icon x
 
 0.6
 Minimize to tray x

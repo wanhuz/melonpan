@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>MelonPan</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../../res/ui/buttonicon.qrc">
+    <normaloff>:/appicon/melonpan.ico</normaloff>:/appicon/melonpan.ico</iconset>
+  </property>
   <property name="styleSheet">
    <string notr="true"/>
   </property>

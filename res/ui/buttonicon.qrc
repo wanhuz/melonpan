@@ -4,4 +4,7 @@
     <file>scanner.png</file>
     <file>screenshot.png</file>
   </qresource>
+  <qresource prefix="appicon">
+    <file>melonpan.ico</file>
+  </qresource>
 </RCC>
