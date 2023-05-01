@@ -126,6 +126,7 @@
     <ClCompile>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <PreprocessorDefinitions>DEBUG_MODE</PreprocessorDefinitions>
     </ClCompile>
     <Bscmake>
       <AdditionalOptions>./configure --with-charset=utf8 --enable-utf8-only %(AdditionalOptions)</AdditionalOptions>

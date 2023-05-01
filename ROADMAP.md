@@ -23,7 +23,7 @@ Basic settings
 0.6.1
 Update to Tess 5 x
 Improve Tess accuracy x
-Debug mode
+Debug mode x
 Bugfix
 - Min UI crash
 - Memory leak

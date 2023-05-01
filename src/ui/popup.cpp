@@ -12,6 +12,12 @@
 #define MAX_ENTRY 5
 #define MIN_ENTRY 0
 
+#ifdef DEBUG_MODE
+#define ABSPATHTOFONT fontPath = "C:\\xxx\\melonpan\\res\\NotoSansMonoCJKjp-Regular.otf"
+#else
+#define ABSPATHTOFONT
+#endif
+
 
 popup::popup(QWidget* parent)
 	: QDialog(parent)
@@ -109,8 +115,9 @@ void popup::initTheme() {
 
 	//Initialize Font
 	QString fontPath = QDir::currentPath();
-	//fontPath = "C:\\Users\\WanHuz\\Documents\\Shanachan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"; //For debugging purpose
 	fontPath = fontPath + "//res//font//NotoSansMonoCJKjp-Regular.otf";
+
+	ABSPATHTOFONT;
 
 	int id = QFontDatabase::addApplicationFont(fontPath);
 
