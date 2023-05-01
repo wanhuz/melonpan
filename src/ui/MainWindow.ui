@@ -54,11 +54,57 @@
             <height>40</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>Capture text from image</string>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+	background-color: rgba(211, 211, 211, 0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+QPushButton:hover {
+	background-color: rgba(0, 191, 255, 0.1);
+    border: 1px solid  rgba(0, 191, 255, 1);
+}
+
+QPushButton:pressed {
+	background-color: rgba(0, 191, 255, 0.2);
+    border: 1px solid  rgba(0, 191, 255, 0.5);
+}
+
+QPushButton:checked {
+	background-color: rgba(0, 191, 255, 0.1);
+    border: 1px solid  rgba(0, 191, 255, 1);
+}</string>
+          </property>
           <property name="text">
-           <string>OCR</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../res/ui/buttonicon.qrc">
+            <normaloff>:/icon/screenshot.png</normaloff>:/icon/screenshot.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="checkable">
            <bool>true</bool>
+          </property>
+          <property name="autoDefault">
+           <bool>false</bool>
+          </property>
+          <property name="default">
+           <bool>false</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -88,8 +134,54 @@
             <height>0</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>Capture text from text</string>
+          </property>
+          <property name="toolTipDuration">
+           <number>-1</number>
+          </property>
+          <property name="statusTip">
+           <string/>
+          </property>
+          <property name="whatsThis">
+           <string/>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+	background-color: rgba(211, 211, 211, 0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+QPushButton:hover {
+	background-color: rgba(0, 191, 255, 0.1);
+    border: 1px solid  rgba(0, 191, 255, 1);
+}
+
+QPushButton:pressed {
+	background-color: rgba(0, 191, 255, 0.2);
+    border: 1px solid  rgba(0, 191, 255, 0.5);
+}
+
+QPushButton:checked {
+	background-color: rgba(0, 191, 255, 0.1);
+    border: 1px solid  rgba(0, 191, 255, 1);
+}</string>
+          </property>
           <property name="text">
-           <string>Text</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../res/ui/buttonicon.qrc">
+            <normaloff>:/icon/scanner.png</normaloff>:/icon/scanner.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -150,11 +242,48 @@
             <height>40</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string>Toggle minimal mode</string>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton {
+	background-color: rgba(211, 211, 211, 0.1);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+QPushButton:hover {
+	background-color: rgba(0, 191, 255, 0.1);
+    border: 1px solid  rgba(0, 191, 255, 1);
+}
+
+QPushButton:pressed {
+	background-color: rgba(0, 191, 255, 0.2);
+    border: 1px solid  rgba(0, 191, 255, 0.5);
+}
+
+QPushButton:checked {
+	background-color: rgba(0, 191, 255, 0.1);
+    border: 1px solid  rgba(0, 191, 255, 1);
+}</string>
+          </property>
           <property name="text">
-           <string>Min</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../res/ui/buttonicon.qrc">
+            <normaloff>:/icon/minimize.png</normaloff>:/icon/minimize.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>30</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="checkable">
            <bool>true</bool>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
           </property>
          </widget>
         </item>
@@ -355,6 +484,8 @@ selection-color: #000;
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../res/ui/buttonicon.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -4,7 +4,7 @@ Rough roadmap
 
 
 0.9
-Modern UI
+Modern UI - theming
 Dictionary lookup time improvement
 Basic OCR Preprocessing? - sharpen image, b/w e,g,
 
@@ -24,6 +24,7 @@ Basic settings
 Update to Tess 5 x
 Improve Tess accuracy x
 Debug mode x
+Change default shortcut
 Bugfix
 - Min UI crash
 - Memory leak

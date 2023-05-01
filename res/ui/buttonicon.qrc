@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="icon">
+    <file>minimize.png</file>
+    <file>scanner.png</file>
+    <file>screenshot.png</file>
+  </qresource>
+</RCC>

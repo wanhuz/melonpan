@@ -1,0 +1,4 @@
+Icon:
+scanner.png: MuhammadAtif@flaticon.com
+screenshot.png: Freepik@flaticon.com
+minimize.png: StockesDesign@flaticon.com

@@ -241,6 +241,7 @@
     <QtUic Include="..\src\ui\SettingsWindow.ui" />
   </ItemGroup>
   <ItemGroup>
+    <QtRcc Include="..\res\ui\buttonicon.qrc" />
     <QtRcc Include="..\src\ui\MainWindow.qrc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

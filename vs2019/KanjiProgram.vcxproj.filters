@@ -121,5 +121,8 @@
     <QtRcc Include="..\src\ui\MainWindow.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+    <QtRcc Include="..\res\ui\buttonicon.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>
