@@ -19,6 +19,9 @@ FIx searching english word sorted by japanese frequency
 Search speed improvement
 Basic settings
 
+0.6.3
+Fix horizontal capture for OCR
+
 0.6.2
 Bugfix
 - Min UI crash
