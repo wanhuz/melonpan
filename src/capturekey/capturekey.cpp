@@ -39,8 +39,8 @@ void capturekey::run() {
 }
 
 int capturekey::setKey() {
-	keyOCR = VK_LCONTROL;
-	keyTextGeneric = VK_LCONTROL;
+	keyOCR = VK_OEM_3;
+	keyTextGeneric = VK_OEM_3;
 	return 0;
 }
 
