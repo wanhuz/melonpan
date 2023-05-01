@@ -6,6 +6,7 @@
 #include <string>
 #include <iostream>
 #include <qdir.h>
+#include <qdebug.h>
 
 
 
@@ -18,12 +19,12 @@ Ocr::Ocr() {
     tessDataPath = QDir::currentPath();
     tessDataPath = tessDataPath.replace("/", "\\");
     tessDataPath = tessDataPath + "\\res\\tessdata\\";
-    //tessDataPath = "C:\\Users\\WanHuz\\source\\repos\\melonpan\\res\\tessdata\\"; //Debug Mode
+    tessDataPath = "C:\\Users\\WanHuz\\Documents\\GitHub\\melonpan\\res\\tessdata\\"; //Debug Mode
 
     QByteArray tessDataPath_char = tessDataPath.toLocal8Bit();
     const char* tessDataPath_char2 = tessDataPath_char.data();
     
-    if (api->Init(tessDataPath_char2, "jpn_vert")) {
+    if (api->Init(tessDataPath_char2, "jpn_vert_zodiac3539")) {
         QMessageBox err;
         err.setText("Could not initialize Tesseract file at " + tessDataPath + "\nProgram will now exit ");
         err.setIcon(QMessageBox::Critical);
@@ -45,7 +46,6 @@ QString Ocr::recognize(Pix* image) {
     outText = api->GetUTF8Text();
     outstring = QString::fromUtf8(outText);
 
-    delete[] outText;
     pixDestroy(&image);
 
     return outstring;
