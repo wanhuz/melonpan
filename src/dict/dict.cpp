@@ -7,7 +7,11 @@
 #include <qdir.h>
 #include <algorithm>
 
-
+#ifdef DEBUG_MODE
+#define ABSPATHTODICT dictPath = "C://xxx//melonpan//res//dict//JMdict_e"
+#else
+#define ABSPATHTODICT
+#endif
 
 Dict::Dict() {
     this->initFreqMap();
@@ -19,8 +23,8 @@ void Dict::load() {
     QByteArray dictData;
     
     dictPath = QDir::currentPath();
-    dictPath = dictPath + "/res/dict/JMdict_e"; //Deployment
-    //dictPath = "C://Users//WanHuz//source//repos//melonpan//res//dict//JMdict_e"; //Debug Mode
+    dictPath = dictPath + "/res/dict/JMdict_e";
+    ABSPATHTODICT;
     QFile dictFile(dictPath);
 
     if (!dictFile.open(QIODevice::ReadOnly | QIODevice::Text))

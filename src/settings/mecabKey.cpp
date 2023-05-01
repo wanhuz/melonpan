@@ -10,6 +10,13 @@
 #include <qdir.h>
 #include <qstring.h>
 
+#ifdef DEBUG_MODE
+#define ABSPATHTOMECABRC pathToMecabrc = "C:\\xxx\\melonpan\\res\\mecab\\etc\\mecabrc"
+#else
+#define ABSPATHTOMECABRC
+#endif
+
+
 using std::optional;
 using std::pair;
 using std::vector;
@@ -61,7 +68,9 @@ bool MeCabKey::verifyMeCabKey(std::string usid) {
         QString pathToMecabrc = QDir::currentPath();
         pathToMecabrc.replace("/", "\\");
         pathToMecabrc.append("\\res\\mecab\\etc\\mecabrc");
-        //pathToMecabrc = "C:\\Users\\WanHuz\\source\\repos\\melonpan\\res\\mecab\\etc\\mecabrc"; //debug mode
+
+        ABSPATHTOMECABRC;
+
         std::wstring pathToMecabrcstr = StringToWString(pathToMecabrc.toStdString());
 
         if (key.GetStringValue(mecab) == pathToMecabrc) { //Validate key correctness
@@ -85,10 +94,12 @@ bool MeCabKey::createMeCabKey(std::string usid) {
 
     RegKey key{ HKEY_USERS, keyPath };
 
-    //QString pathToMecabrc = "C:\\Users\\WanHuz\\source\\repos\\melonpan\\res\\mecab\\etc\\mecabrc"; //debug mode
     QString pathToMecabrc = QDir::currentPath();
     pathToMecabrc.replace("/", "\\");
     pathToMecabrc.append("\\res\\mecab\\etc\\mecabrc");
+
+    ABSPATHTOMECABRC;
+
     std::wstring pathToMecabrcstr = StringToWString(pathToMecabrc.toStdString());
     key.SetStringValue(mecab, pathToMecabrcstr);
     
