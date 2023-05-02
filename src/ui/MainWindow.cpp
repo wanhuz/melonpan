@@ -20,8 +20,8 @@
 #include "../capturekey/maincontroller.h"
 
 #ifdef DEBUG_MODE
-#define ABSPATHTOFONT fontPath = "C:\\xxx\\melonpan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"
-#define ABSPATHTOTRAYICON TrayIconPath = QIcon("C:\\xxx\\melonpan\\res\\ui\\melonpan.ico")
+#define ABSPATHTOFONT fontPath = "..\\res\\font\\NotoSansMonoCJKjp-Regular.otf"
+#define ABSPATHTOTRAYICON TrayIconPath = QIcon("..\\res\\ui\\melonpan.ico")
 #else
 #define ABSPATHTOFONT
 #define ABSPATHTOTRAYICON
