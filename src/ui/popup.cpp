@@ -13,7 +13,7 @@
 #define MIN_ENTRY 0
 
 #ifdef DEBUG_MODE
-#define ABSPATHTOFONT fontPath = "..\\res\\NotoSansMonoCJKjp-Regular.otf"
+#define ABSPATHTOFONT fontPath = "..\\res\\font\\NotoSansMonoCJKjp-Regular.otf"
 #else
 #define ABSPATHTOFONT
 #endif

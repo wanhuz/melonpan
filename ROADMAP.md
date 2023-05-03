@@ -11,22 +11,27 @@ Basic OCR Preprocessing? - sharpen image, b/w e,g,
 0.8
 Configuration Option
 Extra character in textbox break search
-Automatic font size recognition
 Search romaji
+Search speed improvement
 FIx searching english word sorted by japanese frequency
 
 0.7
-Search speed improvement
-Basic settings
+Automatic font size recognition
 
 0.6.3
 Fix horizontal capture for OCR
+Basic settings
+ - Default capture key
+ - Default Minimize to tray -minimize all time, minimize only when toggled, no minimize
 
 0.6.2
 Bugfix
-- Min UI crash
-- Memory leak
-Revise debug mode
+- Min UI crash x
+- Memory leak?
+- Clicking toggle button resize windows
+- Garbage input if capture text with minimal mode sometime
+Revise debug mode x
+Add shortcut with icon
 
 0.6.1
 Update to Tess 5 x
@@ -51,6 +56,5 @@ note.
 ux improvement
 - copy text from column
 - double click to select text from column
-ux bug
-- toggle resize windows
+
 capturekey not safe starting hook. check null val first
