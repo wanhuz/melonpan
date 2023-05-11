@@ -26,10 +26,6 @@ Basic settings
 
 0.6.2
 Bugfix
-- Min UI crash x
-- Memory leak?
-- Clicking toggle button resize windows
-- Garbage input if capture text with minimal mode sometime
 Revise debug mode x
 Add shortcut with icon
 
