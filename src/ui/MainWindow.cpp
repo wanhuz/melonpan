@@ -132,9 +132,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     connect(MainControl, SIGNAL(captureResult(QString)), textbox, SLOT(setText(QString)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureOCR(bool)));
-    connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureText(bool)));
-    connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(minBtn, &QPushButton::toggled, this, [=](const bool tempbool) {minMode = tempbool;});
     connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
     connect(trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
