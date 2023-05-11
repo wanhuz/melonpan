@@ -8,7 +8,7 @@
 #include <algorithm>
 
 #ifdef DEBUG_MODE
-#define ABSPATHTODICT dictPath = "C://xxx//melonpan//res//dict//JMdict_e"
+#define ABSPATHTODICT dictPath = "..//res//dict//JMdict_e"
 #else
 #define ABSPATHTODICT
 #endif

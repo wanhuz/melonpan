@@ -1,13 +1,9 @@
-1. Install MS Studio 2022
-2. Install Qt 5.15.1
-3. Install Vcpkg  
-4. Build the project from Visual Studio once to download dependencies using Vcpkg
+1. Install MS Visual Studio 2022
+2. Install Qt 5.15.1 
+3. Integrate Qt into Visual Studio using QT VS Tools Plugin
+   - Set Qt 5.15.1 to its folder (example: C:\Qt\5.15.1\msvc2019_64)
+4. Install Vcpkg  
 5. Install Mecab from official site, set to UTF-8 during installation
-6. To compile and run the program in debug mode, define absolute path to its resource folder in directive in file:
-- dict.cpp
-- MainWindow.cpp
-- mecabKey.cpp
-- ocr.cpp
-- popup.cpp
+6. Build the project from Visual Studio to download dependencies using Vcpkg and run it!
 
-x. If the program crash because of Mecab::createTagger, make sure the mecabrc absolute path is correct in mecabKey.cpp
+x. If the program crash because of Mecab::createTagger, make sure the mecabrc path is correct in mecabKey.cpp

@@ -9,7 +9,7 @@
 #include <qdebug.h>
 
 #ifdef DEBUG_MODE
-#define ABSTESSDATAPATH tessDataPath = "C:\\xxx\\melonpan\\res\\tessdata\\"
+#define ABSTESSDATAPATH tessDataPath = "..\\res\\tessdata\\"
 #else
 #define ABSTESSDATAPATH
 #endif

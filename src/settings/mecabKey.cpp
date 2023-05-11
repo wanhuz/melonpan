@@ -11,7 +11,7 @@
 #include <qstring.h>
 
 #ifdef DEBUG_MODE
-#define ABSPATHTOMECABRC pathToMecabrc = "C:\\xxx\\melonpan\\res\\mecab\\etc\\mecabrc"
+#define ABSPATHTOMECABRC pathToMecabrc = "..\\res\\mecab\\etc\\mecabrc"
 #else
 #define ABSPATHTOMECABRC
 #endif

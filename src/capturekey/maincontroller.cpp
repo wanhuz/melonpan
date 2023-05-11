@@ -90,6 +90,7 @@ void MainController::captureOCR() {
 It is a hacky solution, but it is the most optimal way to get text from different application types in Microsoft Windows*/
 void MainController::captureTextGeneric() {
 	Util::sendKeyInput();
+	Util::sendKeyInput(); //Fix for capture text sometimes capture garbage text
 }
 
 //Search word in dictionary

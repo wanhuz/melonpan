@@ -20,8 +20,8 @@
 #include "../capturekey/maincontroller.h"
 
 #ifdef DEBUG_MODE
-#define ABSPATHTOFONT fontPath = "C:\\xxx\\melonpan\\res\\font\\NotoSansMonoCJKjp-Regular.otf"
-#define ABSPATHTOTRAYICON TrayIconPath = QIcon("C:\\xxx\\melonpan\\res\\ui\\melonpan.ico")
+#define ABSPATHTOFONT fontPath = "..\\res\\font\\NotoSansMonoCJKjp-Regular.otf"
+#define ABSPATHTOTRAYICON TrayIconPath = QIcon("..\\res\\ui\\melonpan.ico")
 #else
 #define ABSPATHTOFONT
 #define ABSPATHTOTRAYICON
@@ -132,9 +132,7 @@ MainWindow::MainWindow(QWidget* parent)
 
     connect(MainControl, SIGNAL(captureResult(QString)), textbox, SLOT(setText(QString)));
     connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureOCR(bool)));
-    connect(OCRBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(startCaptureText(bool)));
-    connect(textBtn, SIGNAL(toggled(bool)), this, SLOT(alwaysOnTop(bool)));
     connect(minBtn, &QPushButton::toggled, this, [=](const bool tempbool) {minMode = tempbool;});
     connect(textbox, SIGNAL(textChanged(QString)), this, SLOT(search()));
     connect(trayIcon, &QSystemTrayIcon::activated, this, &MainWindow::iconActivated);
