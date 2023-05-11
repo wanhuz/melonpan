@@ -88,6 +88,8 @@
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
     <IncludePath>C:\Program Files %28x86%29\MeCab\sdk;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Program Files %28x86%29\MeCab\sdk;$(LibraryPath)</LibraryPath>
+    <OutDir>..\build\Release</OutDir>
+    <IntDir>..\build\Release</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='x86|x64'" />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -222,6 +224,7 @@
     <ClCompile Include="..\src\util\util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
     <QtMoc Include="..\src\capturekey\capturekey.h" />
     <QtMoc Include="..\src\capturekey\maincontroller.h" />
     <ClInclude Include="..\src\data\entry.h" />
@@ -243,6 +246,13 @@
   <ItemGroup>
     <QtRcc Include="..\res\ui\buttonicon.qrc" />
     <QtRcc Include="..\src\ui\MainWindow.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="melonpan.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\res\ui\melonpan.ico" />
+    <Image Include="icon1.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

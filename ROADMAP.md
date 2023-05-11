@@ -25,7 +25,7 @@ Basic settings
  - Default Minimize to tray -minimize all time, minimize only when toggled, no minimize
 
 0.6.2
-Bugfix
+Bugfix x
 Revise debug mode x
 Add shortcut with icon
 
