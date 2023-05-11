@@ -27,7 +27,7 @@ Basic settings
 0.6.2
 Bugfix x
 Revise debug mode x
-Add shortcut with icon
+Add shortcut with icon x
 
 0.6.1
 Update to Tess 5 x
